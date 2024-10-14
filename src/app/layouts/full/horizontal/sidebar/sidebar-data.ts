@@ -27,6 +27,11 @@ export const navItems: NavItem[] = [
         iconName: 'point',
         route: '/app/issues',
       },
+      {
+        displayName: 'Dashboard',
+        iconName: 'point',
+        route: '/app/dashboard',
+      },
     ],
   },
   {

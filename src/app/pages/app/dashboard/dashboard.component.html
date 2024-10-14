@@ -1,0 +1,84 @@
+<div class="dashboard">
+  <!-- Filtros -->
+  <div class="filters">
+    <mat-form-field appearance="fill">
+      <mat-label>Estado</mat-label>
+      <mat-select [(value)]="selectedEstado">
+        <mat-option value="">Todos</mat-option>
+        <mat-option value="Registrados">Registrados</mat-option>
+        <mat-option value="Cerrados">Cerrados</mat-option>
+        <mat-option value="En Curso">En Curso</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Origen</mat-label>
+      <mat-select [(value)]="selectedOrigen">
+        <mat-option value="">Todos</mat-option>
+        <mat-option value="Llamada">Llamada</mat-option>
+        <mat-option value="Correo">Correo</mat-option>
+        <mat-option value="Chatbot">Chatbot</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Fecha Inicial</mat-label>
+      <input matInput [matDatepicker]="picker1" [(ngModel)]="fechaInicial">
+      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+      <mat-datepicker #picker1></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Fecha Final</mat-label>
+      <input matInput [matDatepicker]="picker2" [(ngModel)]="fechaFinal">
+      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      <mat-datepicker #picker2></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  <!-- Resumen de incidentes -->
+  <div class="summary">
+    <button mat-raised-button color="primary">Registrados {{ totalRegistrados }}</button>
+    <button mat-raised-button color="accent">Cerrados {{ totalCerrados }}</button>
+    <button mat-raised-button color="warn">En Curso {{ totalEnCurso }}</button>
+  </div>
+
+  <!-- Gráficos -->
+  <div class="charts">
+    <div class="chart-container">
+      <canvas id="estadoCasosChart"></canvas>
+    </div>
+    <div class="chart-container">
+      <canvas id="variacionMensualChart"></canvas>
+    </div>
+    <div class="chart-container">
+      <canvas id="distribucionCanalChart"></canvas>
+    </div>
+    <div class="chart-container">
+      <canvas id="evolucionAcumuladaChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Indicadores de Totales -->
+  <div class="totals">
+    <mat-card>
+      <mat-card-title>Total Histórico</mat-card-title>
+      <mat-card-content>{{ totalHistorico }}</mat-card-content>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-title>Total Llamadas</mat-card-title>
+      <mat-card-content>{{ totalLlamadas }}</mat-card-content>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-title>Total Correos</mat-card-title>
+      <mat-card-content>{{ totalCorreos }}</mat-card-content>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-title>Total Chatbot</mat-card-title>
+      <mat-card-content>{{ totalChatbot }}</mat-card-content>
+    </mat-card>
+  </div>
+</div>
