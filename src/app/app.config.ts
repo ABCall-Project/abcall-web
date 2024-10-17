@@ -1,8 +1,25 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
+export interface AppSettings {
+  dir: 'ltr' | 'rtl';
+  theme: string;
+  sidenavOpened: boolean;
+  sidenavCollapsed: boolean;
+  boxed: boolean;
+  horizontal: boolean;
+  activeTheme: string;
+  language: string;
+  cardBorder: boolean;
+  navPos: 'side' | 'top';
+}
 
-import { routes } from './app.routes';
-
-export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes)]
+export const defaults: AppSettings = {
+  dir: 'ltr',
+  theme: 'light',
+  sidenavOpened: false,
+  sidenavCollapsed: false,
+  boxed: true,
+  horizontal: true,
+  cardBorder: false,
+  activeTheme: 'purple_theme',
+  language: 'en-us',
+  navPos: 'side',
 };

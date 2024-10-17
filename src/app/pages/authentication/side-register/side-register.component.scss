@@ -1,0 +1,54 @@
+.container {
+    height: calc(100vh - 80px);
+}
+
+.mat-form-field {
+    margin-bottom: 16px;
+}
+
+.footer {
+    background-color: #090041;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #e7e7e7;
+}
+
+.footer-logos a {
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+.footer-logos img {
+    transition: transform 0.3s ease;
+}
+
+.footer-logos img:hover {
+    transform: scale(1.1);
+}
+
+.text-center {
+    flex: 1;
+    text-align: center;
+    margin: 0;
+}
+
+
+.btn-primary-custom {
+    background-color: #090041;
+    width: 240px;
+    height: 40px;
+    color: white;
+    border-radius: 5px;
+    margin-left: 10px;
+    /* Separación entre los botones */
+}
+
+.btn-secondary-custom {
+    background-color: #FFFFFF;
+    width: 240px;
+    height: 40px;
+    color: black;
+    border-radius: 5px;
+}
