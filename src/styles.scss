@@ -3,6 +3,16 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+.center
+{
+  text-align: center;
+}
+
+.horizontal-topbar{
+  background-color: #090041 !important;  
+  color: #ffffff !important;
+}
+
 .dashboard {
     display: flex;
     flex-direction: column;
