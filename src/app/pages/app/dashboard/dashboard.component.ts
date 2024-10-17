@@ -61,7 +61,7 @@ export class DashboardComponent implements OnInit {
         labels: ['Registrados', 'Cerrados', 'En curso'],
         datasets: [{
           data: [60, 30, 10],
-          backgroundColor: ['#3f51b5', '#6200ea', '#00bcd4']
+          backgroundColor: ['#090041', '#272860', '#6563ff']
         }]
       }
     });
@@ -74,9 +74,9 @@ export class DashboardComponent implements OnInit {
       data: {
         labels: ['Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio'],
         datasets: [
-          { label: 'Registrados', data: [10, 20, 30, -10, 50], borderColor: '#3f51b5' },
-          { label: 'Cerrados', data: [5, -10, 20, 40, 10], borderColor: '#6200ea' },
-          { label: 'En curso', data: [-10, 15, 0, 20, 30], borderColor: '#00bcd4' }
+          { label: 'Registrados', data: [10, 20, 30, -10, 50], borderColor: '#090041' },
+          { label: 'Cerrados', data: [5, -10, 20, 40, 10], borderColor: '#272860' },
+          { label: 'En curso', data: [-10, 15, 0, 20, 30], borderColor: '#6563ff' }
         ]
       }
     });
@@ -89,9 +89,9 @@ export class DashboardComponent implements OnInit {
       data: {
         labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio'],
         datasets: [
-          { label: 'Llamada', data: [60, 50, 70, 60, 80, 70], backgroundColor: '#3f51b5' },
-          { label: 'Correo', data: [10, 15, 20, 10, 5, 15], backgroundColor: '#6200ea' },
-          { label: 'Chatbot', data: [5, 10, 20, 30, 40, 30], backgroundColor: '#00bcd4' }
+          { label: 'Llamada', data: [60, 50, 70, 60, 80, 70], backgroundColor: '#090041' },
+          { label: 'Correo', data: [10, 15, 20, 10, 5, 15], backgroundColor: '#272860' },
+          { label: 'Chatbot', data: [5, 10, 20, 30, 40, 30], backgroundColor: '#6563ff' }
         ]
       }
     });
@@ -104,9 +104,9 @@ export class DashboardComponent implements OnInit {
       data: {
         labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio'],
         datasets: [
-          { label: 'Llamada', data: [60, 110, 180, 240, 320, 390], backgroundColor: '#3f51b5', fill: true },
-          { label: 'Correo', data: [10, 25, 45, 55, 60, 75], backgroundColor: '#6200ea', fill: true },
-          { label: 'Chatbot', data: [5, 15, 35, 65, 105, 135], backgroundColor: '#00bcd4', fill: true }
+          { label: 'Llamada', data: [60, 110, 180, 240, 320, 390], backgroundColor: '#090041', fill: true },
+          { label: 'Correo', data: [10, 25, 45, 55, 60, 75], backgroundColor: '#272860', fill: true },
+          { label: 'Chatbot', data: [5, 15, 35, 65, 105, 135], backgroundColor: '#6563ff', fill: true }
         ]
       }
     });

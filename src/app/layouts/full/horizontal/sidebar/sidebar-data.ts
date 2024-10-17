@@ -5,7 +5,7 @@ export const navItems: NavItem[] = [
     navCap: 'Home',
   },
   {
-    displayName: 'Starter',
+    displayName: 'Inicio',
     iconName: 'home',
     route: '/starter',
   },
@@ -18,17 +18,17 @@ export const navItems: NavItem[] = [
     navCap: 'Other',
   },
   {
-    displayName: 'App',
+    displayName: 'Gestión de Incidentes',
     iconName: 'box-multiple',
     route: '/app',
     children: [
       {
-        displayName: 'Issues',
+        displayName: 'Incidentes',
         iconName: 'point',
         route: '/app/issues',
       },
       {
-        displayName: 'Dashboard',
+        displayName: 'Tableros de Control',
         iconName: 'point',
         route: '/app/dashboard',
       },
