@@ -35,40 +35,27 @@ export const navItems: NavItem[] = [
     ],
   },
   {
-    displayName: 'Menu Level',
+    displayName: 'Administración',
     iconName: 'box-multiple',
     route: '/menu-level',
     children: [
       {
-        displayName: 'Menu 1',
+        displayName: 'Cliente',
         iconName: 'point',
         route: '/menu-1',
         children: [
           {
-            displayName: 'Menu 1',
+            displayName: 'Consulta de facturación',
             iconName: 'point',
-            route: '/menu-1',
+            route: '/app/invoices',
           },
 
-          {
-            displayName: 'Menu 2',
-            iconName: 'point',
-            route: '/menu-2',
-          },
+         
         ],
       },
 
-      {
-        displayName: 'Menu 2',
-        iconName: 'point',
-        route: '/menu-2',
-      },
+     
     ],
   },
-  {
-    displayName: 'Disabled',
-    iconName: 'ban',
-    route: '/disabled',
-    disabled: true,
-  },
+ 
 ];
