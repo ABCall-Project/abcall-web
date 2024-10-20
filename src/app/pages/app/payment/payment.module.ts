@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { InvoiceListComponent } from './invoice-list/invoice-list.component';
 import { MaterialModule } from 'src/app/material.module'
 import { MatTableModule } from '@angular/material/table'; // Asegúrate de importar esto
-import { MatSortModule } from '@angular/material/sort'; // Importa e
+import { MatSortModule } from '@angular/material/sort';
+import { InvoiceDetailListComponent } from './invoice-detail-list/invoice-detail-list.component'; // Importa e
 
 @NgModule({
   imports: [
@@ -11,6 +12,9 @@ import { MatSortModule } from '@angular/material/sort'; // Importa e
     MaterialModule,
     MatTableModule,
     MatSortModule
+  ],
+  declarations: [
+    InvoiceDetailListComponent
   ]
 })
 export class PaymentModule { }

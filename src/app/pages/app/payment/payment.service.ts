@@ -39,4 +39,10 @@ export class PaymentService {
         map(response => response)  
       );
   }
+
+  downloadInvoice(invoiceNumber: string) {
+    console.log(invoiceNumber)
+    const url = `${environment.ApiBase}${environment.downloadInvoice}`.replace('{INVOICE_NUMBER}',invoiceNumber);
+    return this.http.get(url, { responseType: 'blob' }); 
+  }
 }
