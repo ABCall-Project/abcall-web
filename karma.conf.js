@@ -14,10 +14,10 @@ module.exports = function (config) {
         dir: require('path').join(__dirname, './coverage'),
         check: {
           global: {
-            statements: 50,
-            branches: 50,
-            functions: 50,
-            lines: 50
+            statements: 80,
+            branches: 80,
+            functions: 80,
+            lines: 80
           }
         }
       },

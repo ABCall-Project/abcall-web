@@ -1,13 +1,16 @@
 {
-  "name": "modernize",
+  "name": "abcall-web",
   "version": "0.0.0",
   "scripts": {
+    "setenv": "node ./scripts/set-env.js",
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "test:coverage": "ng test --code-coverage --karma-config ./karma.conf.js"
+    "start": "npm run setenv && ng serve",
+    "build": "npm run setenv && ng build",
+    "watch": "npm run setenv && ng build --watch --configuration development",
+    "test": "NODE_ENV=test npm run setenv && ng test",
+    "test:coverage": "NODE_ENV=test npm run setenv && ng test --code-coverage --karma-config ./karma.conf.js",
+    "test:ci": "NODE_ENV=test npm run setenv && ng test --no-watch --no-progress --browsers=ChromeHeadless",
+    "test:coverage:ci": "NODE_ENV=test npm run setenv && ng test --code-coverage --karma-config ./karma.conf.js --no-watch --no-progress --browsers=ChromeHeadless"
   },
   "private": true,
   "dependencies": {
@@ -38,6 +41,7 @@
     "@angular/compiler-cli": "^16.0.1",
     "@types/date-fns": "^2.6.0",
     "@types/jasmine": "~4.3.0",
+    "dotenv": "^16.4.5",
     "jasmine-core": "~4.5.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.1.0",
