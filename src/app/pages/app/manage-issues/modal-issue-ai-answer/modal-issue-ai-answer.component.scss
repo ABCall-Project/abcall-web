@@ -1,0 +1,28 @@
+
+.header-modal {
+    background-color: #6563FF; 
+    color: white;
+  }
+  
+
+  .custom-table {
+    display: table;
+    width: 100%;
+    max-width: 800px;
+    border-collapse: collapse;
+  }
+  
+  .row {
+    display: table-row;
+  }
+  
+  .cell {
+    display: table-cell;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .header {
+    font-weight: bold;
+    background-color: #f5f5f5;
+  }
