@@ -1,4 +1,4 @@
-name: Merge to Develop
+name: Merge to main
 on:
     pull_request:
       types:
@@ -6,7 +6,7 @@ on:
 jobs:
   tests:
     name: Tests
-    if: github.base_ref == 'develop'
+    if: success() && github.event.pull_request.merged == true && github.head_ref == 'develop'
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -79,3 +79,4 @@ jobs:
           sed "s/{{IMAGE_TAG}}/build-${GITHUB_RUN_NUMBER}/g" ./kubernetes/k8s-deployment.tmpl > kubernetes/new-k8s-deployment.yaml
           kubectl apply -f kubernetes/k8s-configMap.yaml
           kubectl apply -f kubernetes/new-k8s-deployment.yaml
+
