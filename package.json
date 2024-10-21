@@ -8,7 +8,9 @@
     "build": "npm run setenv && ng build",
     "watch": "npm run setenv && ng build --watch --configuration development",
     "test": "NODE_ENV=test npm run setenv && ng test",
-    "test:coverage": "NODE_ENV=test npm run setenv && ng test --code-coverage --karma-config ./karma.conf.js"
+    "test:coverage": "NODE_ENV=test npm run setenv && ng test --code-coverage --karma-config ./karma.conf.js",
+    "test:ci": "NODE_ENV=test npm run setenv && ng test --no-watch --no-progress --browsers=ChromeHeadless",
+    "test:coverage:ci": "NODE_ENV=test npm run setenv && ng test --code-coverage --karma-config ./karma.conf.js --no-watch --no-progress --browsers=ChromeHeadless"
   },
   "private": true,
   "dependencies": {

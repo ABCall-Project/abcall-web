@@ -24,7 +24,7 @@ jobs:
       run: |
         make run-tests
       env:
-        ENVIRONMENT: test
+        ENVIRONMENT: test:ci
     - name: Validate results with errors
       if: ${{ failure() }}
       env:
@@ -38,7 +38,7 @@ jobs:
     - name: Coverage calculation 📊
       id: Coverage
       run: |
-        make run-tests-coverage
+        make run-tests-coverage:ci
 
 
   deploy:
