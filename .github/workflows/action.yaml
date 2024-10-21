@@ -1,0 +1,66 @@
+name: Node.js CI
+
+on: [push]
+
+jobs:
+  tests:
+    name: Tests
+    runs-on: ubuntu-latest
+    environment:
+      name: staging
+    strategy:
+      matrix:
+        node-version: [20.x]
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Set up Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Install dependencies
+      run: |
+        npm install
+        npm install -g @angular/cli
+    - name: Running test 🧪
+      run: |
+        npm run test:ci
+    - name: Validate results with errors
+      if: ${{ failure() }}
+      env:
+        ERROR_MESSAGE: One or various test failed 🔴
+      run: echo "::set-output name=answer::${ERROR_MESSAGE}"
+    - name: Validate result without errors
+      if: ${{ success() }}
+      env:
+        MESSAGE_SUCCESS: All the tests were success
+      run: echo "::set-output name=answer::${MESSAGE_SUCCESS}"
+    - name: Coverage calculation 📊
+      id: Coverage
+      run: |
+        npm run test:coverage:ci
+
+  docker-build:
+    name: Build
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout de repositorio
+      uses: actions/checkout@v2
+    - name: Environment configuration
+      uses: actions/setup-python@v2
+      with:
+          python-version: '3.9'
+    - name: docker build 🐳
+      run: |
+        docker build . -t=abcall-web:build-$GITHUB_RUN_NUMBER
+    - name: Validate results with errors
+      if: ${{ failure() }}
+      env:
+        ERROR_MESSAGE: One or various build failed 🔴
+      run: echo "::set-output name=answer::${ERROR_MESSAGE}"
+    - name: Validate result without errors
+      if: ${{ success() }}
+      env:
+        MESSAGE_SUCCESS: All build were success
+      run: echo "::set-output name=answer::${MESSAGE_SUCCESS}"

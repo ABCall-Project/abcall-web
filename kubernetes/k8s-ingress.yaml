@@ -1,0 +1,21 @@
+###################################
+# INGRESS
+###################################
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: abcall-web-ingress
+  labels:
+    name:  abcall-web-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: abcall-web-service
+            port:
+              number: 80
