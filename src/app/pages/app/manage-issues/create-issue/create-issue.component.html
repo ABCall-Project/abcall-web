@@ -12,7 +12,7 @@
           <input matInput placeholder="Ingrese el asunto" />
         </mat-form-field>
 
-        <button mat-icon-button  style="margin: 0 8px;">
+        <button mat-icon-button  style="margin: 0 8px;" (click)="openModalIAAnswer()">
             <img src="../../../../../assets/images/svgs/ai.svg" alt="Información" style="width: 30px; height: 30px;" />
         </button>
 
@@ -62,7 +62,7 @@
     <div class="form-issues">
         <mat-form-field appearance="fill">
             <mat-label>Descripción</mat-label>
-            <input matInput placeholder="Ingrese la descripción"  />
+            <input matInput placeholder="Ingrese la descripción" [formControl]="descripcion"  />
            
         </mat-form-field>
     </div>

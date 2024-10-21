@@ -1,10 +1,64 @@
-import { Component } from '@angular/core';
+import { Component, Inject, ViewChild,OnInit } from '@angular/core';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { MatDialogModule } from '@angular/material/dialog';
 
+import { MatButtonModule } from '@angular/material/button';
+import { IInvoiceDetail } from '../../models/invoice-detail';
+
+import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatSort, MatSortHeader, Sort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
+import { CommonModule } from '@angular/common';
+
+import { MatCardModule } from '@angular/material/card';
+import { MatTableModule } from '@angular/material/table'; 
+import { MatSortModule } from '@angular/material/sort'; 
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { TablerIconsModule } from 'angular-tabler-icons';
+import { IssuesService } from '../issues.service';
+import { AnswerResponse } from '../../models/answerai-response';
+
+
+export interface DialogData {
+  question: string;
+}
 @Component({
   selector: 'app-modal-issue-ai-answer',
+  standalone: true,
   templateUrl: './modal-issue-ai-answer.component.html',
-  styleUrls: ['./modal-issue-ai-answer.component.scss']
+  styleUrls: ['./modal-issue-ai-answer.component.scss'],
+  imports: [CommonModule,MatDialogModule, MatButtonModule,MatCardModule,MatTableModule,MatSortModule,TablerIconsModule,MatPaginatorModule] 
 })
-export class ModalIssueAiAnswerComponent {
+export class ModalIssueAiAnswerComponent implements OnInit {
+  answer: string | undefined;
+  question:string;
+
+  constructor(private issuesService: IssuesService,@Inject(MAT_DIALOG_DATA) public data: DialogData) {
+    console.log('la pregunta')
+    console.log(data);
+  }
+
+  ngOnInit(): void {
+    this.question=this.data.question;
+    this.getIAAnswer(this.question)
+  }
+
+
+  getIAAnswer(question:string): void {
+    this.issuesService.getAnswer(question).subscribe(
+      (response: AnswerResponse) => {
+        this.answer = response.answer;
+        console.log(this.answer)
+      },
+      (error) => {
+        console.error('Error fetching answer:', error);
+      }
+    );
+  }
 
 }
