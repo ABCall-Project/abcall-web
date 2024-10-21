@@ -1,4 +1,4 @@
-name: Merge to Develop
+name: Merge to main
 on:
     pull_request:
       types:
@@ -6,7 +6,7 @@ on:
 jobs:
   tests:
     name: Tests
-    if: github.base_ref == 'develop'
+    if: success() && github.event.pull_request.merged == true && github.head_ref == 'develop'
     runs-on: ubuntu-latest
     strategy:
       matrix:
