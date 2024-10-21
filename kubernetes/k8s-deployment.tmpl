@@ -1,0 +1,50 @@
+###################################
+# abcall-payment-api
+###################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: abcall-web
+  labels:
+    app: abcall-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: abcall-web
+  template:
+    metadata:
+      labels:
+        app: abcall-web
+    spec:
+      containers:
+        - name:  abcall-web
+          image: abcall.azurecr.io/abcall-web:{{IMAGE_TAG}}
+          env:
+            - name: "NODE_ENV"
+              valueFrom:
+                configMapKeyRef:
+                  name: web-configmap
+                  key: NODE_ENV
+            - name: "ABCALL_BFF_BASE_URL"
+              valueFrom:
+                configMapKeyRef:
+                  name: web-configmap
+                  key: ABCALL_BFF_BASE_URL
+          ports:
+            - containerPort: 80
+          imagePullPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: abcall-web-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: abcall-web-service
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

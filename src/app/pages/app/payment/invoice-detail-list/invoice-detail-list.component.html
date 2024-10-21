@@ -1,0 +1,90 @@
+<div class="d-flex flex-row justify-content-center align-items-center header-modal" >
+    <h2 mat-dialog-title style="color: white;" >Detalle de facturación</h2>
+</div>
+<mat-dialog-content class="mat-typography">
+    <mat-card class="cardWithShadow">
+        <div class="table-responsive">
+          <table
+            mat-table
+            [dataSource]="dataSource"
+            matSort
+            class="no-wrap m-t-0 v-middle w-100"
+          >
+            <ng-container matColumnDef="fecha">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                class="f-w-600 f-s-15"
+              >
+                Fecha
+              </th>
+              <td mat-cell *matCellDef="let element" class="f-s-14">
+                {{ element.issueDate ? (element.issueDate | date: 'dd/MM/yyyy') : (data.generationDate| date: 'dd/MM/yyyy') }}
+              </td>
+            </ng-container>
+      
+            <ng-container matColumnDef="descripcion">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                class="f-w-600 f-s-15"
+              >
+                Descripción
+              </th>
+              <td mat-cell *matCellDef="let element" class="f-s-14">
+                {{ element.detail }}
+              </td>
+            </ng-container>
+      
+            <ng-container matColumnDef="hora">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                class="f-w-600 f-s-15"
+              >
+                Hora
+              </th>
+              <td mat-cell *matCellDef="let element" class="f-s-14">
+                {{ element.issueDate ? (element.issueDate | date: 'hh:mm a') : (data.generationDate| date: 'hh:mm a') }}
+              </td>
+            </ng-container>
+      
+            <ng-container matColumnDef="costo">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                class="f-w-600 f-s-15"
+              >
+                Costo
+              </th>
+              <td mat-cell *matCellDef="let element" class="f-s-14">
+                {{ element.totalAmount | currency }}
+              </td>
+            </ng-container>
+      
+        
+      
+      
+  
+  
+        
+      
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+          <mat-paginator
+            [pageSizeOptions]="[5, 8, 10]"
+            [length]="totalRows"
+            showFirstLastButtons
+          ></mat-paginator>
+        </div>
+    </mat-card>
+  
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+  <button mat-flat-button color="primary" [mat-dialog-close]="true" cdkFocusInitial style="width: 300px;">Cerrar</button>
+</mat-dialog-actions>
