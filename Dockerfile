@@ -3,8 +3,11 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
 RUN npm install -g npm@10.2.4
-RUN npm install
+RUN npm install -g rollup
+
+RUN rm -f node_modules/@angular/compiler-cli/ngcc/ngcc_lock_file
 RUN npm install -g @angular/cli
+RUN npm install --legacy-peer-deps
 
 ENV PATH="./node_modules/.bin:$PATH"
 
