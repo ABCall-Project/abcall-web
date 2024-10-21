@@ -48,7 +48,7 @@ jobs:
     needs: tests
     steps:
       - name: Checkout repository
-        uses: actions/checkout@
+        uses: actions/checkout@v3
       - name: Log in to Azure
         uses: azure/login@v1
         with:
