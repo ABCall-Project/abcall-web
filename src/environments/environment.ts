@@ -1,5 +1,6 @@
 import { paymentUrls } from "./environment.payment";
+import { config } from "./env";
 export const environment = {
-    ApiBase:'http://localhost:5001',
+    ...config,
     ...paymentUrls,
 }
