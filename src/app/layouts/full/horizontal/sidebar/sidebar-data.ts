@@ -25,7 +25,14 @@ export const navItems: NavItem[] = [
       {
         displayName: 'Incidentes',
         iconName: 'point',
-        route: '/app/issues',
+        route: '/menu-level',
+        children: [
+          {
+            displayName: 'Crear Incidente',
+            iconName: 'point',
+            route: '/app/new-issue',
+          },
+        ]
       },
       {
         displayName: 'Tableros de Control',
