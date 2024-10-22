@@ -8,9 +8,12 @@ metadata:
   name: abcall-web-ingress
   labels:
     name:  abcall-web-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - http:
+  - host: abcall-web.local
+    http:
       paths:
       - pathType: Prefix
         path: /
