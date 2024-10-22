@@ -77,4 +77,6 @@ jobs:
           sed "s/{{IMAGE_TAG}}/build-${GITHUB_RUN_NUMBER}/g" ./kubernetes/k8s-deployment.tmpl > kubernetes/new-k8s-deployment.yaml
           kubectl apply -f kubernetes/k8s-configMap.yaml
           kubectl apply -f kubernetes/new-k8s-deployment.yaml
+          kubectl apply -f kubernetes/k8s-ingress-controller.yaml
+          kubectl get pods -n ingress-nginx
 
