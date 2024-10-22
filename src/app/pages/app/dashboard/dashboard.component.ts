@@ -9,6 +9,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatCardModule } from '@angular/material/card';
 import { FormsModule } from '@angular/forms';
 import { Chart } from 'chart.js/auto';
+import { IssuesService } from 'src/app/services/issues.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -44,13 +45,17 @@ export class DashboardComponent implements OnInit {
   totalCorreos = 5;
   totalChatbot = 40;
 
-  constructor() {}
+  constructor(private issuesServices: IssuesService) {
+
+  }
 
   ngOnInit(): void {
     this.createEstadoCasosChart();
     this.createVariacionMensualChart();
     this.createDistribucionCanalChart();
     this.createEvolucionAcumuladaChart();
+
+    this.issuesServices.getIssuesDasboard('845eb227-5356-4169-9799-95a97ec5ce33').subscribe((response)=>{console.log(response)});
   }
 
   createEstadoCasosChart() {

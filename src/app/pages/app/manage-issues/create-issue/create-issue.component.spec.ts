@@ -16,8 +16,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 
-import { IInvoice } from '../../models/invoice';
-import { IInvoiceDetail } from '../../models/invoice-detail';
+import { IInvoice } from '../../../../models/invoice';
+import { IInvoiceDetail } from '../../../../models/invoice-detail';
 
 import { ModalMessageComponent } from '../../modal-message/modal-message.component';
 

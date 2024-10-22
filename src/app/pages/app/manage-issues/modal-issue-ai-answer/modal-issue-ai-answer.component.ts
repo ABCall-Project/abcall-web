@@ -8,7 +8,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
 
 import { MatButtonModule } from '@angular/material/button';
-import { IInvoiceDetail } from '../../models/invoice-detail';
+import { IInvoiceDetail } from '../../../../models/invoice-detail';
 
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatSort, MatSortHeader, Sort } from '@angular/material/sort';
@@ -20,8 +20,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort'; 
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { TablerIconsModule } from 'angular-tabler-icons';
-import { IssuesService } from '../issues.service';
-import { AnswerResponse } from '../../models/answerai-response';
+import { AnswerResponse } from '../../../../models/answerai-response';
+import { IssuesService } from 'src/app/services/issues.service';
 
 
 export interface DialogData {
