@@ -4,7 +4,7 @@ import { PaymentService } from '../payment.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 import { InvoiceDetailListComponent } from './invoice-detail-list.component';
-import { IInvoiceDetail } from '../../models/invoice-detail';
+import { IInvoiceDetail } from '../../../../models/invoice-detail';
 import { TablerIconsModule } from 'angular-tabler-icons';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 

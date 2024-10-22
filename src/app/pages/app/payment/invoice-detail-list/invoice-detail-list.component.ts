@@ -9,7 +9,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 import { MatButtonModule } from '@angular/material/button';
 import { PaymentService } from '../payment.service';
-import { IInvoiceDetail } from '../../models/invoice-detail';
+import { IInvoiceDetail } from '../../../../models/invoice-detail';
 
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatSort, MatSortHeader, Sort } from '@angular/material/sort';
