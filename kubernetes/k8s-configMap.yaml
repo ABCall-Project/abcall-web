@@ -4,4 +4,4 @@ metadata:
   name: web-configmap
 data:
   NODE_ENV: "production"
-  ABCALL_BFF_BASE_URL: "http://10.244.0.55:3002"
+  ABCALL_BFF_BASE_URL: "http://172.212.38.79:3002"
