@@ -402,7 +402,8 @@ export class DashboardComponent implements OnInit {
             {
               label: 'Llamadas',
               data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.channel_plan_id === type).length),
-              backgroundColor: '#090041'
+              backgroundColor: '#090041',
+              borderColor: '#090041'
             }
           ]
         }
@@ -419,7 +420,8 @@ export class DashboardComponent implements OnInit {
             {
               label: 'Correos',
               data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.channel_plan_id === type).length),
-              backgroundColor: '#272860'
+              backgroundColor: '#272860',
+              borderColor: '#272860'
             }
           ]
         }
@@ -436,8 +438,9 @@ export class DashboardComponent implements OnInit {
             {
               label: 'Chatbot',
               data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.channel_plan_id === type).length),
-              backgroundColor: '#6563ff'
-            }
+              backgroundColor: '#6563ff',
+              borderColor: '#6563ff'
+          }
           ]
         }
       });
@@ -451,17 +454,20 @@ export class DashboardComponent implements OnInit {
           {
             label: 'Llamadas',
             data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.channel_plan_id === this.callId).length),
-            backgroundColor: '#090041'
+            backgroundColor: '#090041',
+            borderColor: '#090041'
           },
           {
             label: 'Correos',
             data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.channel_plan_id === this.mailId).length),
-            backgroundColor: '#272860'
+            backgroundColor: '#272860',
+            borderColor: '#272860'
           },
           {
             label: 'Chatbot',
             data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.channel_plan_id === this.chatboId).length),
-            backgroundColor: '#6563ff'
+            backgroundColor: '#6563ff',
+            borderColor: '#6563ff'
           }
         ]
       }
