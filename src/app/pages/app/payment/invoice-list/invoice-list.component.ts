@@ -7,7 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { PaymentService } from '../payment.service';
 import { CommonModule } from '@angular/common';
-import { IInvoice } from '../../models/invoice';
+import { IInvoice } from '../../../../models/invoice';
 import { MatTableModule } from '@angular/material/table'; 
 import { MatSortModule } from '@angular/material/sort'; 
 import { RouterModule } from '@angular/router';

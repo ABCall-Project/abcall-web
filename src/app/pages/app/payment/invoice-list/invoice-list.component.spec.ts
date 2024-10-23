@@ -12,8 +12,8 @@ import { PaymentService } from '../payment.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 import { InvoiceListComponent } from './invoice-list.component';
-import { IInvoice } from '../../models/invoice';
-import { IInvoiceDetail } from '../../models/invoice-detail';
+import { IInvoice } from '../../../../models/invoice';
+import { IInvoiceDetail } from '../../../../models/invoice-detail';
 import { InvoiceDetailListComponent } from '../invoice-detail-list/invoice-detail-list.component';
 import { ModalMessageComponent } from '../../modal-message/modal-message.component';
 

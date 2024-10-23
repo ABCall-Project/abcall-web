@@ -3,10 +3,10 @@ import { Injectable } from '@angular/core';
 import { map } from 'rxjs';
 
 import { environment } from '../../../../environments/environment';
-import { IInvoice } from '../models/invoice';
-import { ITotalCostResponse } from  '../models/total-cost';
+import { IInvoice } from '../../../models/invoice';
+import { ITotalCostResponse } from  '../../../models/total-cost';
 import { Observable } from 'rxjs';
-import { IInvoiceDetail } from '../models/invoice-detail';
+import { IInvoiceDetail } from '../../../models/invoice-detail';
 
 @Injectable({
   providedIn: 'root'

@@ -2,9 +2,9 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { PaymentService } from './payment.service';
 import { environment } from '../../../../environments/environment';
-import { IInvoice } from '../models/invoice';
-import { ITotalCostResponse } from '../models/total-cost';
-import { IInvoiceDetail } from '../models/invoice-detail';
+import { IInvoice } from '../../../models/invoice';
+import { ITotalCostResponse } from '../../../models/total-cost';
+import { IInvoiceDetail } from '../../../models/invoice-detail';
 
 describe('PaymentService', () => {
   let service: PaymentService;
