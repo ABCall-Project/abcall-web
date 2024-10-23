@@ -43,7 +43,7 @@ rules:
     resources: ["ingresses", "ingressclasses"]
     verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
   - apiGroups: [""]
-    resources: ["pods", "services", "endpoints", "secrets", "events"]
+    resources: ["pods", "services", "endpoints", "secrets", "events", "nodes"]
     verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
   - apiGroups: [""]
     resources: ["configmaps"]
