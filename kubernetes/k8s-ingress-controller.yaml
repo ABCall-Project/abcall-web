@@ -8,6 +8,8 @@ kind: ConfigMap
 metadata:
   name: nginx-configuration
   namespace: ingress-nginx
+data:
+  proxy-body-size: "8m"
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -22,20 +24,14 @@ metadata:
   namespace: ingress-nginx
 rules:
   - apiGroups: ["networking.k8s.io"]
-    resources: ["ingressclasses"]
-    verbs: ["get", "list", "watch"]
-  - apiGroups: [""]
-    resources: ["pods", "services", "endpoints", "secrets"]
+    resources: ["ingresses", "ingressclasses"]
     verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
-  - apiGroups:
-    - ""
-    resources:
-    - configmaps
-    verbs:
-    - list
-    - watch
-    - get
-    - create
+  - apiGroups: [""]
+    resources: ["pods", "services", "endpoints", "secrets", "events"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["get", "list", "watch", "create"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
