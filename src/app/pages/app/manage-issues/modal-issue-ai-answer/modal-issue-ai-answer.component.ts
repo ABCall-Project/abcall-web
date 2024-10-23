@@ -22,6 +22,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { TablerIconsModule } from 'angular-tabler-icons';
 import { AnswerResponse } from '../../../../models/answerai-response';
 import { IssuesService } from 'src/app/services/issues.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 
 
 export interface DialogData {
@@ -32,11 +34,12 @@ export interface DialogData {
   standalone: true,
   templateUrl: './modal-issue-ai-answer.component.html',
   styleUrls: ['./modal-issue-ai-answer.component.scss'],
-  imports: [CommonModule,MatDialogModule, MatButtonModule,MatCardModule,MatTableModule,MatSortModule,TablerIconsModule,MatPaginatorModule] 
+  imports: [CommonModule,MatDialogModule, MatButtonModule,MatCardModule,MatTableModule,MatSortModule,TablerIconsModule,MatPaginatorModule,MatProgressSpinnerModule] 
 })
 export class ModalIssueAiAnswerComponent implements OnInit {
   answer: string | undefined;
   question:string;
+  isLoading: boolean = false;
 
   constructor(private issuesService: IssuesService,@Inject(MAT_DIALOG_DATA) public data: DialogData) {
     console.log('la pregunta')
@@ -50,13 +53,16 @@ export class ModalIssueAiAnswerComponent implements OnInit {
 
 
   getIAAnswer(question:string): void {
+    this.isLoading = true;
     this.issuesService.getAnswer(question).subscribe(
       (response: AnswerResponse) => {
         this.answer = response.answer;
+        this.isLoading = false;
         console.log(this.answer)
       },
       (error) => {
         console.error('Error fetching answer:', error);
+        this.isLoading = false;
       }
     );
   }
