@@ -1,22 +1,29 @@
-<div class="d-flex flex-row justify-content-center align-items-center header-modal" >
-    <h2 mat-dialog-title style="color: white;">Solución sugerida</h2>
+<div class="d-flex flex-row justify-content-center align-items-center header-modal">
+  <h2 mat-dialog-title style="color: white;">Solución sugerida</h2>
 </div>
+
 <mat-dialog-content class="mat-typography">
-    <mat-card class="cardWithShadow">
-        <div class="custom-table">
-            <div class="row">
-              <div class="cell" style="color: #090041;"><b>Descripción:</b></div>
-              <div class="cell">{{data.question}}</div>
-            </div>
-          
-            <div class="row">
-              <div class="cell"style="color: #090041;"><b>Posibles soluciones:</b></div>
-              <div class="cell">{{answer}}</div>
-            </div>
-          </div>
-    </mat-card>
-  
+  <mat-card class="cardWithShadow">
+    <div *ngIf="isLoading" class="spinner-container">
+      
+      <mat-spinner></mat-spinner>
+    </div>
+
+    <div *ngIf="!isLoading" class="custom-table">
+      
+      <div class="row">
+        <div class="cell" style="color: #090041;"><b>Descripción:</b></div>
+        <div class="cell">{{ data.question }}</div>
+      </div>
+    
+      <div class="row">
+        <div class="cell" style="color: #090041;"><b>Posibles soluciones:</b></div>
+        <div class="cell">{{ answer }}</div>
+      </div>
+    </div>
+  </mat-card>
 </mat-dialog-content>
+
 <mat-dialog-actions align="center">
   <button mat-flat-button color="primary" [mat-dialog-close]="true" cdkFocusInitial style="width: 300px;">Cerrar</button>
 </mat-dialog-actions>
