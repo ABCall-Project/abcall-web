@@ -40,7 +40,7 @@ metadata:
   namespace: ingress-nginx
 rules:
   - apiGroups: ["networking.k8s.io"]
-    resources: ["ingresses", "ingressclasses"]
+    resources: ["ingresses", "ingressclasses","ingresses/status"]
     verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
   - apiGroups: [""]
     resources: ["pods", "services", "endpoints", "secrets", "events", "nodes"]
@@ -51,6 +51,9 @@ rules:
   - apiGroups: [""]
     resources: ["nodes"] 
     verbs: ["get", "list", "watch", "create"]
+  - apiGroups: ["extensions"]
+    resources: ["ingresses","ingresses/status"] 
+    verbs: ["get", "list", "watch", "create","update"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
