@@ -4,14 +4,6 @@ metadata:
   name: ingress-nginx
 ---
 apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: nginx-configuration
-  namespace: ingress-nginx
-data:
-  proxy-body-size: "8m"
----
-apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: nginx-ingress-serviceaccount
@@ -69,8 +61,6 @@ spec:
           args:
             - /nginx-ingress-controller
             - --configmap=$(POD_NAMESPACE)/nginx-configuration
-            - --tcp-services-configmap=$(POD_NAMESPACE)/tcp-services
-            - --udp-services-configmap=$(POD_NAMESPACE)/udp-services
           env:
             - name: POD_NAME
               valueFrom:
