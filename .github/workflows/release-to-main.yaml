@@ -78,6 +78,7 @@ jobs:
           kubectl apply -f kubernetes/k8s-configMap.yaml
           kubectl apply -f kubernetes/new-k8s-deployment.yaml
           kubectl apply -f kubernetes/nginx-configuration.yaml
+          kubectl apply -f kubernetes/k8s-ingress.yaml
           kubectl apply -f kubernetes/k8s-ingress-controller.yaml
           kubectl get pods -n ingress-nginx
 
