@@ -5,35 +5,35 @@
   <!-- Filtros -->
   <div class="filters">
     <mat-form-field appearance="fill">
-      <mat-label>Estado</mat-label>
-      <mat-select [(value)]="selectedEstado">
+      <mat-label>Estado del incidente</mat-label>
+      <mat-select [(value)]="selectedState" (selectionChange)="OnSelectionState($event)">
         <mat-option value="">Todos</mat-option>
-        <mat-option value="Registrados">Registrados</mat-option>
-        <mat-option value="Cerrados">Cerrados</mat-option>
-        <mat-option value="En Curso">En Curso</mat-option>
+        <mat-option value="574408a7-3aa0-4eab-b279-62ed10e6107e">Registrados</mat-option>
+        <mat-option value="791353c6-3899-4d35-bcd9-af8775e240bf">Solucionados</mat-option>
+        <mat-option value="18e7d7dd-247b-4e27-aa0e-4f15e8ba5930">En progreso</mat-option>
       </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>Origen</mat-label>
-      <mat-select [(value)]="selectedOrigen">
+      <mat-label>Origen del incidente</mat-label>
+      <mat-select [(value)]="selectedOrigen" (selectionChange)="OnSelectionChange($event)">
         <mat-option value="">Todos</mat-option>
-        <mat-option value="Llamada">Llamada</mat-option>
-        <mat-option value="Correo">Correo</mat-option>
-        <mat-option value="Chatbot">Chatbot</mat-option>
+        <mat-option value="6938edfe-9f4b-445b-8dd5-fbaa570a273a">Llamada</mat-option>
+        <mat-option value="d256f4b9-f970-4222-9a7b-3e83def73038">Correo</mat-option>
+        <mat-option value="3a46cc3e-b2ee-4aa0-8498-163e04eb1430">Chatbot</mat-option>
       </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Fecha Inicial</mat-label>
-      <input matInput [matDatepicker]="picker1" [(ngModel)]="fechaInicial">
+      <input matInput [matDatepicker]="picker1" [(ngModel)]="initialDate">
       <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
       <mat-datepicker #picker1></mat-datepicker>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Fecha Final</mat-label>
-      <input matInput [matDatepicker]="picker2" [(ngModel)]="fechaFinal">
+      <input matInput [matDatepicker]="picker2" [(ngModel)]="endDate">
       <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
       <mat-datepicker #picker2></mat-datepicker>
     </mat-form-field>
@@ -41,9 +41,10 @@
 
   <!-- Resumen de incidentes -->
   <div class="summary">
-    <button mat-raised-button color="primary">Registrados {{ totalRegistrados }}</button>
-    <button mat-raised-button color="primary">Cerrados {{ totalCerrados }}</button>
-    <button mat-raised-button color="primary">En Curso {{ totalEnCurso }}</button>
+    <button mat-raised-button color="primary">Registrados: {{ totalCreated }}</button>
+    <button mat-raised-button color="primary">Cerrados: {{ totalClosed }}</button>
+    <button mat-raised-button color="primary">En Curso: {{ totalInProgress }}</button>
+    <button mat-raised-button color="primary">Total Histórico: {{ totalIssues }}</button>
   </div>
 
   <!-- Gráficos -->
@@ -54,34 +55,21 @@
     <div class="chart-container">
       <canvas id="variacionMensualChart"></canvas>
     </div>
+  </div>
+  <!-- Indicadores de Totales -->
+  <br>
+  <div class="summary">
+    <button mat-raised-button color="primary">Total Llamadas: {{ totalCalls }}</button>
+    <button mat-raised-button color="primary">Total Correos: {{ totalMails }}</button>
+    <button mat-raised-button color="primary">Total Chatbot: {{ totalChatbot }}</button>
+  </div>
+  <br>
+  <div class="charts">
     <div class="chart-container">
       <canvas id="distribucionCanalChart"></canvas>
     </div>
     <div class="chart-container">
       <canvas id="evolucionAcumuladaChart"></canvas>
     </div>
-  </div>
-
-  <!-- Indicadores de Totales -->
-  <div class="totals">
-    <mat-card>
-      <mat-card-title>Total Histórico</mat-card-title>
-      <mat-card-content>{{ totalHistorico }}</mat-card-content>
-    </mat-card>
-
-    <mat-card>
-      <mat-card-title>Total Llamadas</mat-card-title>
-      <mat-card-content>{{ totalLlamadas }}</mat-card-content>
-    </mat-card>
-
-    <mat-card>
-      <mat-card-title>Total Correos</mat-card-title>
-      <mat-card-content>{{ totalCorreos }}</mat-card-content>
-    </mat-card>
-
-    <mat-card>
-      <mat-card-title>Total Chatbot</mat-card-title>
-      <mat-card-content>{{ totalChatbot }}</mat-card-content>
-    </mat-card>
   </div>
 </div>
