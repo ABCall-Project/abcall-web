@@ -41,10 +41,10 @@
 
   <!-- Resumen de incidentes -->
   <div class="summary">
-    <button mat-raised-button color="primary">Registrados: {{ totalRegistrados }}</button>
-    <button mat-raised-button color="primary">Cerrados: {{ totalCerrados }}</button>
-    <button mat-raised-button color="primary">En Curso: {{ totalEnCurso }}</button>
-    <button mat-raised-button color="primary">Total Histórico: {{ totalHistorico }}</button>
+    <button mat-raised-button color="primary">Registrados: {{ totalCreated }}</button>
+    <button mat-raised-button color="primary">Cerrados: {{ totalClosed }}</button>
+    <button mat-raised-button color="primary">En Curso: {{ totalInProgress }}</button>
+    <button mat-raised-button color="primary">Total Histórico: {{ totalIssues }}</button>
   </div>
 
   <!-- Gráficos -->
@@ -59,8 +59,8 @@
   <!-- Indicadores de Totales -->
   <br>
   <div class="summary">
-    <button mat-raised-button color="primary">Total Llamadas: {{ totalLlamadas }}</button>
-    <button mat-raised-button color="primary">Total Correos: {{ totalEnCurso }}</button>
+    <button mat-raised-button color="primary">Total Llamadas: {{ totalCalls }}</button>
+    <button mat-raised-button color="primary">Total Correos: {{ totalMails }}</button>
     <button mat-raised-button color="primary">Total Chatbot: {{ totalChatbot }}</button>
   </div>
   <br>
