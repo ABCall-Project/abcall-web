@@ -5,36 +5,64 @@ export const navItems: NavItem[] = [
     navCap: 'Home',
   },
   {
-    displayName: 'Starter',
+    displayName: 'Inicio',
     iconName: 'home',
     route: '/starter',
-  },  
+  },
+  // {
+  //   displayName: 'Issues',
+  //   iconName: 'home',
+  //   route: '/app/issues',
+  // },
   {
-    displayName: 'Disabled',
-    iconName: 'ban',
-    route: '/disabled',
-    disabled: true,
+    navCap: 'Other',
   },
   {
-    displayName: 'Chip',
-    iconName: 'mood-smile',
-    route: '/',
-    chip: true,
-    chipClass: 'bg-primary text-white',
-    chipContent: '9',
+    displayName: 'Gestión de Incidentes',
+    iconName: 'box-multiple',
+    route: '/app',
+    children: [
+      {
+        displayName: 'Incidentes',
+        iconName: 'point',
+        route: '/menu-level',
+        children: [
+          {
+            displayName: 'Crear Incidente',
+            iconName: 'point',
+            route: '/app/new-issue',
+          },
+        ]
+      },
+      {
+        displayName: 'Tableros de Control',
+        iconName: 'point',
+        route: '/app/dashboard',
+      },
+    ],
   },
   {
-    displayName: 'Outlined',
-    iconName: 'mood-smile',
-    route: '/',
-    chip: true,
-    chipClass: 'b-1 border-primary text-primary',
-    chipContent: 'outlined',
+    displayName: 'Administración',
+    iconName: 'box-multiple',
+    route: '/menu-level',
+    children: [
+      {
+        displayName: 'Cliente',
+        iconName: 'point',
+        route: '/menu-1',
+        children: [
+          {
+            displayName: 'Consulta de facturación',
+            iconName: 'point',
+            route: '/app/invoices',
+          },
+
+         
+        ],
+      },
+
+     
+    ],
   },
-  {
-    displayName: 'External Link',
-    iconName: 'star',
-    route: 'https://www.google.com/',
-    external: true,
-  },
+ 
 ];

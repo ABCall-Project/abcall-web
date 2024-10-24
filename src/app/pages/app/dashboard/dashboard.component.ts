@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
@@ -7,13 +7,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatCardModule } from '@angular/material/card';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Chart } from 'chart.js/auto';
 import { IssuesService } from 'src/app/services/issues.service';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
+  encapsulation: ViewEncapsulation.None,
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
   imports: [
@@ -25,7 +26,8 @@ import { IssuesService } from 'src/app/services/issues.service';
     MatDatepickerModule,
     MatNativeDateModule,
     MatCardModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class DashboardComponent implements OnInit {
@@ -53,6 +55,11 @@ export class DashboardComponent implements OnInit {
   totalCalls = 0;
   totalMails = 0;
   totalChatbot = 0;
+
+  dateForm = new FormGroup({
+    startDate: new FormControl(''),
+    endDate: new FormControl('')
+  });
 
 
 
@@ -88,6 +95,14 @@ export class DashboardComponent implements OnInit {
         this.createDistribucionCanalChart(issues);
         this.createEvolucionAcumuladaChart(issues);
       });
+    });
+
+    this.dateForm.get('startDate')?.valueChanges.subscribe(value => {
+      this.onDateChange();
+    });
+
+    this.dateForm.get('endDate')?.valueChanges.subscribe(value => {
+      this.onDateChange();
     });
   }
 
@@ -175,7 +190,12 @@ export class DashboardComponent implements OnInit {
       })
     )].filter(mes => mes !== null) as number[];
 
-    const monthNames = uniqueMonths.map(mes => new Date(0, mes).toLocaleString('es-ES', { month: 'long' }));
+    uniqueMonths.sort((a, b) => a - b);
+
+    var monthNames = uniqueMonths.map(mes => new Date(0, mes).toLocaleString('es-ES', { month: 'long' }));
+
+    monthNames = uniqueMonths.map(month => monthNames[month]);
+
     const dataPorMes = (mes: unknown) => {
       if (typeof mes === 'number') {
         return response.filter((issue: any) => new Date(issue.created_at).getMonth() === mes);
@@ -275,7 +295,11 @@ export class DashboardComponent implements OnInit {
       })
     )].filter(mes => mes !== null) as number[];
 
-    const monthNames = uniqueMonths.map(mes => new Date(0, mes).toLocaleString('es-ES', { month: 'long' }));
+    uniqueMonths.sort((a, b) => a - b);
+
+    var monthNames = uniqueMonths.map(mes => new Date(0, mes).toLocaleString('es-ES', { month: 'long' }));
+
+    monthNames = uniqueMonths.map(month => monthNames[month]);
     const dataPorMes = (mes: unknown) => {
       if (typeof mes === 'number') {
         return response.filter((issue: any) => new Date(issue.created_at).getMonth() === mes);
@@ -375,7 +399,11 @@ export class DashboardComponent implements OnInit {
       })
     )].filter(mes => mes !== null) as number[];
 
-    const monthNames = uniqueMonths.map(mes => new Date(0, mes).toLocaleString('es-ES', { month: 'long' }));
+    uniqueMonths.sort((a, b) => a - b);
+
+    var monthNames = uniqueMonths.map(mes => new Date(0, mes).toLocaleString('es-ES', { month: 'long' }));
+
+    monthNames = uniqueMonths.map(month => monthNames[month]);
     const dataPorMes = (mes: unknown) => {
       if (typeof mes === 'number') {
         return response.filter((issue: any) => new Date(issue.created_at).getMonth() === mes);
@@ -440,7 +468,7 @@ export class DashboardComponent implements OnInit {
               data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.channel_plan_id === type).length),
               backgroundColor: '#6563ff',
               borderColor: '#6563ff'
-          }
+            }
           ]
         }
       });
@@ -471,10 +499,11 @@ export class DashboardComponent implements OnInit {
           }
         ]
       }
-    }); 
+    });
   }
 
   OnSelectionState(event: MatSelectChange) {
+    this.selectedState = event.value;
     this.issuesServices.getIssuesDasboard(this.customerId).subscribe((issues) => {
       this.createEstadoCasosChart(issues, event.value);
       this.createVariacionMensualChart(issues, event.value);
@@ -482,9 +511,25 @@ export class DashboardComponent implements OnInit {
   }
 
   OnSelectionChange(event: MatSelectChange) {
+    this.selectedOrigen = event.value;
     this.issuesServices.getIssuesDasboard(this.customerId).subscribe((issues) => {
       this.createDistribucionCanalChart(issues, event.value);
       this.createEvolucionAcumuladaChart(issues, event.value);
+    });
+  }
+
+  onDateChange() {
+    const startDateValue = this.dateForm.get('startDate')?.value;
+    const endDateValue = this.dateForm.get('endDate')?.value;
+
+    const startDate = startDateValue ? new Date(startDateValue) : undefined;
+    const endDate = endDateValue ? new Date(endDateValue) :undefined;
+
+    this.issuesServices.getIssuesDasboard(this.customerId, undefined, undefined, startDate, endDate).subscribe((issues) => {
+      this.createEstadoCasosChart(issues, this.selectedState ?? '');
+      this.createVariacionMensualChart(issues, this.selectedState ?? '');
+      this.createDistribucionCanalChart(issues, this.selectedOrigen ?? '');
+      this.createEvolucionAcumuladaChart(issues, this.selectedOrigen ?? '');
     });
   }
 }
