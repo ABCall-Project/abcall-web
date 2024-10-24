@@ -1,8 +1,11 @@
 import { paymentUrls } from "./environment.payment";
-import { config } from "./env"
 import { issuesUrls } from "./environment.issues"
 export const environment = {
-    ...config,
+    ...{
+        production: true,
+        environment: 'production',
+        ApiBase: 'http://172.212.38.79:3002'
+    },
     ...paymentUrls,
     ...issuesUrls,
     
