@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
+import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -29,91 +29,462 @@ import { IssuesService } from 'src/app/services/issues.service';
   ]
 })
 export class DashboardComponent implements OnInit {
-  
-  // Propiedades que faltaban
-  selectedEstado: string | null = null;
-  selectedOrigen: string | null = null;
-  fechaInicial: Date | null = null;
-  fechaFinal: Date | null = null;
 
-  // Propiedades de resumen
-  totalRegistrados = 60;
-  totalCerrados = 30;
-  totalEnCurso = 10;
-  totalHistorico = 350;
-  totalLlamadas = 200;
-  totalCorreos = 5;
-  totalChatbot = 40;
+  customerId: string;
+
+  /*Guid from Channel Type*/
+  callId: string;
+  mailId: string;
+  chatboId: string;
+  /*Guid from State*/
+  createdId: string;
+  inProgressId: string;
+  closedId: string;
+
+  selectedState: string | null = null;
+  selectedOrigen: string | null = null;
+  initialDate: Date | null = null;
+  endDate: Date | null = null;
+
+  totalCreated = 0;
+  totalClosed = 0;
+  totalInProgress = 0;
+  totalIssues = 0;
+  totalCalls = 0;
+  totalMails = 0;
+  totalChatbot = 0;
+
+
 
   constructor(private issuesServices: IssuesService) {
+    this.customerId = '845eb227-5356-4169-9799-95a97ec5ce33';
 
+    this.callId = '6938edfe-9f4b-445b-8dd5-fbaa570a273a';
+    this.mailId = 'd256f4b9-f970-4222-9a7b-3e83def73038';
+    this.chatboId = '3a46cc3e-b2ee-4aa0-8498-163e04eb1430';
+
+    this.createdId = '574408a7-3aa0-4eab-b279-62ed10e6107e';
+    this.inProgressId = '18e7d7dd-247b-4e27-aa0e-4f15e8ba5930';
+    this.closedId = '791353c6-3899-4d35-bcd9-af8775e240bf';
   }
 
   ngOnInit(): void {
-    this.createEstadoCasosChart();
-    this.createVariacionMensualChart();
-    this.createDistribucionCanalChart();
-    this.createEvolucionAcumuladaChart();
 
-    this.issuesServices.getIssuesDasboard('845eb227-5356-4169-9799-95a97ec5ce33').subscribe((response)=>{console.log(response)});
+
+    this.issuesServices.getIssuesDasboard(this.customerId).subscribe((issues) => {
+      this.totalCreated = issues.filter((issue: any) => issue.status === this.createdId).length;
+      this.totalClosed = issues.filter((issue: any) => issue.status === this.closedId).length;
+      this.totalInProgress = issues.filter((issue: any) => issue.status === this.inProgressId).length;
+
+      this.totalCalls = issues.filter((issue: any) => issue.channel_plan_id === this.callId).length;
+      this.totalMails = issues.filter((issue: any) => issue.channel_plan_id === this.mailId).length;
+      this.totalChatbot = issues.filter((issue: any) => issue.channel_plan_id === this.chatboId).length;
+
+      this.totalIssues = issues.length;
+
+      this.issuesServices.getIssuesDasboard(this.customerId).subscribe((issues) => {
+        this.createEstadoCasosChart(issues);
+        this.createVariacionMensualChart(issues);
+        this.createDistribucionCanalChart(issues);
+        this.createEvolucionAcumuladaChart(issues);
+      });
+    });
   }
 
-  createEstadoCasosChart() {
+  createEstadoCasosChart(response: any, type?: string) {
     const ctx = document.getElementById('estadoCasosChart') as HTMLCanvasElement;
+
+    const existingChart = Chart.getChart(ctx);
+
+    if (existingChart) {
+      existingChart.destroy();
+    }
+
+    const registrados = response.filter((issue: any) => issue.status === this.createdId).length;
+    const cerrados = response.filter((issue: any) => issue.status === this.closedId).length;
+    const enCurso = response.filter((issue: any) => issue.status === this.inProgressId).length;
+
+    //Created
+    if (type === this.createdId) {
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Registrados'],
+          datasets: [{
+            data: [registrados],
+            backgroundColor: ['#090041']
+          }]
+        }
+      });
+      return;
+    }
+    //Solved
+    else if (type === this.closedId) {
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Solucionados'],
+          datasets: [{
+            data: [cerrados],
+            backgroundColor: ['#272860']
+          }]
+        }
+      });
+      return;
+    }
+    //In Progress
+    else if (type === this.inProgressId) {
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['En progreso'],
+          datasets: [{
+            data: [cerrados],
+            backgroundColor: ['#6563ff']
+          }]
+        }
+      });
+      return;
+    }
+
     new Chart(ctx, {
       type: 'doughnut',
       data: {
-        labels: ['Registrados', 'Cerrados', 'En curso'],
+        labels: ['Registrados', 'Solucionados', 'En progreso'],
         datasets: [{
-          data: [60, 30, 10],
+          data: [registrados, cerrados, enCurso],
           backgroundColor: ['#090041', '#272860', '#6563ff']
         }]
       }
     });
   }
 
-  createVariacionMensualChart() {
+  createVariacionMensualChart(response: any, type?: string) {
     const ctx = document.getElementById('variacionMensualChart') as HTMLCanvasElement;
+
+    const existingChart = Chart.getChart(ctx);
+
+    if (existingChart) {
+      existingChart.destroy();
+    }
+
+    const uniqueMonths = [...new Set(
+      response.map((issue: any) => {
+        const mes = new Date(issue.created_at).getMonth();
+        return typeof mes === 'number' ? mes : null;
+      })
+    )].filter(mes => mes !== null) as number[];
+
+    const monthNames = uniqueMonths.map(mes => new Date(0, mes).toLocaleString('es-ES', { month: 'long' }));
+    const dataPorMes = (mes: unknown) => {
+      if (typeof mes === 'number') {
+        return response.filter((issue: any) => new Date(issue.created_at).getMonth() === mes);
+      } else {
+        return [];
+      }
+    };
+
+    //Created
+    if (type === this.createdId) {
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: monthNames,
+          datasets: [
+            {
+              label: 'Registrados',
+              data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.status === type).length),
+              borderColor: '#090041'
+            }
+          ]
+        }
+      });
+      return;
+    }
+    //Solved
+    else if (type === this.closedId) {
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: monthNames,
+          datasets: [
+            {
+              label: 'Solucionados',
+              data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.status === type).length),
+              borderColor: '#272860'
+            }
+          ]
+        }
+      });
+      return;
+    }
+    //In Progress
+    else if (type === this.inProgressId) {
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: monthNames,
+          datasets: [
+            {
+              label: 'En progreso',
+              data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.status === type).length),
+              borderColor: '#6563ff'
+            }
+          ]
+        }
+      });
+      return;
+    }
     new Chart(ctx, {
       type: 'line',
       data: {
-        labels: ['Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio'],
+        labels: monthNames,  // Labels dinámicos según los meses encontrados
         datasets: [
-          { label: 'Registrados', data: [10, 20, 30, -10, 50], borderColor: '#090041' },
-          { label: 'Cerrados', data: [5, -10, 20, 40, 10], borderColor: '#272860' },
-          { label: 'En curso', data: [-10, 15, 0, 20, 30], borderColor: '#6563ff' }
+          {
+            label: 'Registrados',
+            data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.status === this.createdId).length),
+            borderColor: '#090041'
+          },
+          {
+            label: 'Solucionados',
+            data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.status === this.closedId).length),
+            borderColor: '#272860'
+          },
+          {
+            label: 'En progreso',
+            data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.status === this.inProgressId).length),
+            borderColor: '#6563ff'
+          }
         ]
       }
     });
   }
 
-  createDistribucionCanalChart() {
+  createDistribucionCanalChart(response: any, type?: string) {
     const ctx = document.getElementById('distribucionCanalChart') as HTMLCanvasElement;
+    const existingChart = Chart.getChart(ctx);
+
+    if (existingChart) {
+      existingChart.destroy();
+    }
+
+    const uniqueMonths = [...new Set(
+      response.map((issue: any) => {
+        const mes = new Date(issue.created_at).getMonth();
+        return typeof mes === 'number' ? mes : null;
+      })
+    )].filter(mes => mes !== null) as number[];
+
+    const monthNames = uniqueMonths.map(mes => new Date(0, mes).toLocaleString('es-ES', { month: 'long' }));
+    const dataPorMes = (mes: unknown) => {
+      if (typeof mes === 'number') {
+        return response.filter((issue: any) => new Date(issue.created_at).getMonth() === mes);
+      } else {
+        return [];
+      }
+    };
+
+    //Calls
+    if (type === this.callId) {
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: monthNames,
+          datasets: [
+            {
+              label: 'Llamadas',
+              data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.channel_plan_id === type).length),
+              backgroundColor: '#090041'
+            }
+          ]
+        }
+      });
+      return;
+    }
+    //Mail
+    else if (type === this.mailId) {
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: monthNames,
+          datasets: [
+            {
+              label: 'Correos',
+              data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.channel_plan_id === type).length),
+              backgroundColor: '#272860'
+            }
+          ]
+        }
+      });
+      return;
+    }
+    //Chatbot
+    else if (type === this.chatboId) {
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: monthNames,
+          datasets: [
+            {
+              label: 'Chatbot',
+              data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.channel_plan_id === type).length),
+              backgroundColor: '#6563ff'
+            }
+          ]
+        }
+      });
+      return;
+    }
     new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio'],
+        labels: monthNames,  // Labels dinámicos según los meses encontrados
         datasets: [
-          { label: 'Llamada', data: [60, 50, 70, 60, 80, 70], backgroundColor: '#090041' },
-          { label: 'Correo', data: [10, 15, 20, 10, 5, 15], backgroundColor: '#272860' },
-          { label: 'Chatbot', data: [5, 10, 20, 30, 40, 30], backgroundColor: '#6563ff' }
+          {
+            label: 'Llamadas',
+            data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.channel_plan_id === this.callId).length),
+            backgroundColor: '#090041'
+          },
+          {
+            label: 'Correos',
+            data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.channel_plan_id === this.mailId).length),
+            backgroundColor: '#272860'
+          },
+          {
+            label: 'Chatbot',
+            data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.channel_plan_id === this.chatboId).length),
+            backgroundColor: '#6563ff'
+          }
         ]
       }
     });
   }
 
-  createEvolucionAcumuladaChart() {
+  createEvolucionAcumuladaChart(response: any, type?: string) {
     const ctx = document.getElementById('evolucionAcumuladaChart') as HTMLCanvasElement;
+    const existingChart = Chart.getChart(ctx);
+
+    if (existingChart) {
+      existingChart.destroy();
+    }
+
+    const uniqueMonths = [...new Set(
+      response.map((issue: any) => {
+        const mes = new Date(issue.created_at).getMonth();
+        return typeof mes === 'number' ? mes : null;
+      })
+    )].filter(mes => mes !== null) as number[];
+
+    const monthNames = uniqueMonths.map(mes => new Date(0, mes).toLocaleString('es-ES', { month: 'long' }));
+    const dataPorMes = (mes: unknown) => {
+      if (typeof mes === 'number') {
+        return response.filter((issue: any) => new Date(issue.created_at).getMonth() === mes);
+      } else {
+        return [];
+      }
+    };
+
+    const acumularDatos = (meses: number[]) => {
+      let acumulado = 0;
+      return meses.map(mes => {
+        acumulado += response.filter((issue: any) => new Date(issue.created_at).getMonth() === mes).length;
+        return acumulado;
+      });
+    };
+
+    //Calls
+    if (type === this.callId) {
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: monthNames,
+          datasets: [
+            {
+              label: 'Llamadas',
+              data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.channel_plan_id === type).length),
+              backgroundColor: '#090041',
+              borderColor: '#090041'
+            }
+          ]
+        }
+      });
+      return;
+    }
+    //Mail
+    else if (type === this.mailId) {
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: monthNames,
+          datasets: [
+            {
+              label: 'Correos',
+              data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.channel_plan_id === type).length),
+              backgroundColor: '#272860',
+              borderColor: '#272860'
+            }
+          ]
+        }
+      });
+      return;
+    }
+    //Chatbot
+    else if (type === this.chatboId) {
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: monthNames,
+          datasets: [
+            {
+              label: 'Chatbot',
+              data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.channel_plan_id === type).length),
+              backgroundColor: '#6563ff',
+              borderColor: '#6563ff'
+          }
+          ]
+        }
+      });
+      return;
+    }
     new Chart(ctx, {
       type: 'line',
       data: {
-        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio'],
+        labels: monthNames,  // Labels dinámicos según los meses encontrados
         datasets: [
-          { label: 'Llamada', data: [60, 110, 180, 240, 320, 390], backgroundColor: '#090041', fill: true },
-          { label: 'Correo', data: [10, 25, 45, 55, 60, 75], backgroundColor: '#272860', fill: true },
-          { label: 'Chatbot', data: [5, 15, 35, 65, 105, 135], backgroundColor: '#6563ff', fill: true }
+          {
+            label: 'Llamadas',
+            data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.channel_plan_id === this.callId).length),
+            backgroundColor: '#090041',
+            borderColor: '#090041'
+          },
+          {
+            label: 'Correos',
+            data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.channel_plan_id === this.mailId).length),
+            backgroundColor: '#272860',
+            borderColor: '#272860'
+          },
+          {
+            label: 'Chatbot',
+            data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.channel_plan_id === this.chatboId).length),
+            backgroundColor: '#6563ff',
+            borderColor: '#6563ff'
+          }
         ]
       }
+    }); 
+  }
+
+  OnSelectionState(event: MatSelectChange) {
+    this.issuesServices.getIssuesDasboard(this.customerId).subscribe((issues) => {
+      this.createEstadoCasosChart(issues, event.value);
+      this.createVariacionMensualChart(issues, event.value);
+    });
+  }
+
+  OnSelectionChange(event: MatSelectChange) {
+    this.issuesServices.getIssuesDasboard(this.customerId).subscribe((issues) => {
+      this.createDistribucionCanalChart(issues, event.value);
+      this.createEvolucionAcumuladaChart(issues, event.value);
     });
   }
 }
