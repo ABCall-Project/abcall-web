@@ -4,42 +4,46 @@
   </div>
   <!-- Filtros -->
   <div class="filters">
-    <mat-form-field appearance="fill">
-      <mat-label>Estado del incidente</mat-label>
-      <mat-select [(value)]="selectedState" (selectionChange)="OnSelectionState($event)">
-        <mat-option value="">Todos</mat-option>
-        <mat-option value="574408a7-3aa0-4eab-b279-62ed10e6107e">Registrados</mat-option>
-        <mat-option value="791353c6-3899-4d35-bcd9-af8775e240bf">Solucionados</mat-option>
-        <mat-option value="18e7d7dd-247b-4e27-aa0e-4f15e8ba5930">En progreso</mat-option>
-      </mat-select>
-    </mat-form-field>
+    <form [formGroup]="dateForm" class="responsive-form">
+      <mat-form-field appearance="fill">
+        <mat-label>Estado del incidente</mat-label>
+        <mat-select [(value)]="selectedState" (selectionChange)="OnSelectionState($event)">
+          <mat-option value="">Todos</mat-option>
+          <mat-option value="574408a7-3aa0-4eab-b279-62ed10e6107e">Registrados</mat-option>
+          <mat-option value="791353c6-3899-4d35-bcd9-af8775e240bf">Solucionados</mat-option>
+          <mat-option value="18e7d7dd-247b-4e27-aa0e-4f15e8ba5930">En progreso</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Origen del incidente</mat-label>
-      <mat-select [(value)]="selectedOrigen" (selectionChange)="OnSelectionChange($event)">
-        <mat-option value="">Todos</mat-option>
-        <mat-option value="6938edfe-9f4b-445b-8dd5-fbaa570a273a">Llamada</mat-option>
-        <mat-option value="d256f4b9-f970-4222-9a7b-3e83def73038">Correo</mat-option>
-        <mat-option value="3a46cc3e-b2ee-4aa0-8498-163e04eb1430">Chatbot</mat-option>
-      </mat-select>
-    </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Origen del incidente</mat-label>
+        <mat-select [(value)]="selectedOrigen" (selectionChange)="OnSelectionChange($event)">
+          <mat-option value="">Todos</mat-option>
+          <mat-option value="6938edfe-9f4b-445b-8dd5-fbaa570a273a">Llamada</mat-option>
+          <mat-option value="d256f4b9-f970-4222-9a7b-3e83def73038">Correo</mat-option>
+          <mat-option value="3a46cc3e-b2ee-4aa0-8498-163e04eb1430">Chatbot</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Fecha Inicial</mat-label>
-      <input matInput [matDatepicker]="picker1" [(ngModel)]="initialDate">
-      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-      <mat-datepicker #picker1></mat-datepicker>
-    </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Fecha Final</mat-label>
-      <input matInput [matDatepicker]="picker2" [(ngModel)]="endDate">
-      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-      <mat-datepicker #picker2></mat-datepicker>
-    </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Fecha Inicial</mat-label>
+        <input matInput [matDatepicker]="initialDateField" formControlName="startDate">
+        <mat-datepicker-toggle matSuffix [for]="initialDateField"></mat-datepicker-toggle>
+        <mat-datepicker #initialDateField></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Fecha Final</mat-label>
+        <input matInput [matDatepicker]="finalDateField" formControlName="endDate">
+        <mat-datepicker-toggle matSuffix [for]="finalDateField"></mat-datepicker-toggle>
+        <mat-datepicker #finalDateField></mat-datepicker>
+      </mat-form-field>
+    </form>
   </div>
 
   <!-- Resumen de incidentes -->
+  <h3>Estado de Incidentes</h3>
   <div class="summary">
     <button mat-raised-button color="primary">Registrados: {{ totalCreated }}</button>
     <button mat-raised-button color="primary">Cerrados: {{ totalClosed }}</button>
@@ -58,6 +62,7 @@
   </div>
   <!-- Indicadores de Totales -->
   <br>
+  <h3>Origen de Incidentes</h3>
   <div class="summary">
     <button mat-raised-button color="primary">Total Llamadas: {{ totalCalls }}</button>
     <button mat-raised-button color="primary">Total Correos: {{ totalMails }}</button>
