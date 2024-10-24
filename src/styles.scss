@@ -114,7 +114,25 @@ body {
   position: absolute;
   bottom: 10px;
   right: 10px;
-  color: white;  
-  padding: 5px 10px 20px 0px;  
-  font-size: 1.2rem; /* Puedes ajustar el tamaño del texto */
+  color: white;
+  padding: 5px 10px 20px 0px;
+  font-size: 1.2rem;
+  /* Puedes ajustar el tamaño del texto */
+}
+
+.responsive-form {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.responsive-form mat-form-field {
+  flex: 1 1 40%;
+}
+
+@media (max-width: 768px) {
+  .responsive-form mat-form-field {
+    flex: 1 1 100%;
+  }
 }
