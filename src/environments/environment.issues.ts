@@ -1,4 +1,4 @@
 export const issuesUrls = {
-    getIAResponse:'/issues/getIAResponse?question={QUESTION}',
-    getIssuesDashboard:'/issues/getIssuesDasboard?customer_id={CUSTOMER_ID}',
+    getIAResponse:'/invoices/getIAResponse?question={QUESTION}',
+    getIssuesDashboard:'/invoices/getIssuesDasboard?customer_id={CUSTOMER_ID}',
 }
