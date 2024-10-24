@@ -20,6 +20,9 @@ spec:
       containers:
         - name:  abcall-web
           image: abcall.azurecr.io/abcall-web:1.0.0
+          ports:
+            - containerPort: 80
+          imagePullPolicy: Always
           env:
             - name: "NODE_ENV"
               valueFrom:
@@ -31,16 +34,14 @@ spec:
                 configMapKeyRef:
                   name: web-configmap
                   key: ABCALL_BFF_BASE_URL
-              command: ["/bin/sh", "-c"]
-              args:
-                - |
-                  touch .env &&
-                  echo "NODE_ENV=${NODE_ENV}" > .env
-                  echo "ABCALL_BFF_BASE_URL=${ABCALL_BFF_BASE_URL}" >> .env
-                  echo "Adding environments"
-          ports:
-            - containerPort: 80
-          imagePullPolicy: Always
+          volumeMounts:
+          - name: env-volume
+            mountPath: /app/.env
+            subPath: .env
+      volumes:
+      - name: env-volume
+        configMap:
+          name: web-configmap
 
 ---
 apiVersion: v1
