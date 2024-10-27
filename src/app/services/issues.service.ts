@@ -17,8 +17,6 @@ export class IssuesService {
 
   getIssuesDasboard(customerId:string, status?:string, channelPlanId?:string, createdAt?:Date, closedAt?:Date){
     const url=`${environment.ApiBase}${environment.getIssuesDashboard}`.replace('{CUSTOMER_ID}',customerId);
-    console.log('el environment ');
-    console.log(environment);
     return this.http.get<IIssuesDashboard[]>(url)
     .pipe(
       map(reponse => {

@@ -62,7 +62,6 @@ export class CreateIssueComponent {
 
   openModalIAAnswer() {
     const valorDescripcion = this.descripcion.value;
-    console.log(valorDescripcion)
 
     if (valorDescripcion && valorDescripcion.trim() !== '') {
       this.dialog.open(ModalIssueAiAnswerComponent, {

@@ -7,17 +7,22 @@
     </div>
 
     <div class="row">
-        <h2>{{ totalCost | currency }}</h2>
+      <h2 *ngIf="!isLoadingCost">{{ totalCost | currency }}</h2>
+      <mat-spinner *ngIf="isLoadingCost" [diameter]="32"></mat-spinner>
     </div>
     <div class="row" style="display: flex; justify-content: flex-end;">
-        <button mat-raised-button class="download-button" (click)="downloadInvoice()">DESCARGAR</button>
+        <button *ngIf="!isDownloading" mat-raised-button class="download-button" (click)="downloadInvoice()">DESCARGAR</button>
+        <mat-spinner *ngIf="isDownloading" [diameter]="32"></mat-spinner>
     </div>
 
     <br/>
     
 
     <mat-card class="cardWithShadow">
-      <div class="table-responsive">
+      <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center" style="height: 200px;">
+        <mat-spinner [diameter]="48"></mat-spinner>
+      </div>
+      <div *ngIf="!isLoading" class="table-responsive">
         <table
           mat-table
           [dataSource]="dataSource"
