@@ -3,7 +3,10 @@
 </div>
 <mat-dialog-content class="mat-typography">
     <mat-card class="cardWithShadow">
-        <div class="table-responsive">
+        <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center" style="height: 200px;">
+          <mat-spinner [diameter]="48"></mat-spinner>
+        </div>
+        <div *ngIf="!isLoading" class="table-responsive">
           <table
             mat-table
             [dataSource]="dataSource"

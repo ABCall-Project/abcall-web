@@ -42,8 +42,7 @@ export class ModalIssueAiAnswerComponent implements OnInit {
   isLoading: boolean = false;
 
   constructor(private issuesService: IssuesService,@Inject(MAT_DIALOG_DATA) public data: DialogData) {
-    console.log('la pregunta')
-    console.log(data);
+
   }
 
   ngOnInit(): void {
@@ -58,7 +57,6 @@ export class ModalIssueAiAnswerComponent implements OnInit {
       (response: AnswerResponse) => {
         this.answer = response.answer;
         this.isLoading = false;
-        console.log(this.answer)
       },
       (error) => {
         console.error('Error fetching answer:', error);

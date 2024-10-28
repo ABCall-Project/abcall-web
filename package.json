@@ -5,7 +5,7 @@
     "setenv": "node ./scripts/set-env.js",
     "ng": "ng",
     "start": "npm run setenv && ng serve",
-    "build": "npm run setenv && ng build",
+    "build": "npm run setenv && ng build --configuration production",
     "watch": "npm run setenv && ng build --watch --configuration development",
     "test": "NODE_ENV=test npm run setenv && ng test",
     "test:coverage": "NODE_ENV=test npm run setenv && ng test --code-coverage --karma-config ./karma.conf.js",
