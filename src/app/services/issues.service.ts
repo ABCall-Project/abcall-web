@@ -23,4 +23,8 @@ export class IssuesService {
         return reponse;
       }));
   }  
+
+  getPredictiveAIAnswer(userId:string): Observable<AnswerResponse> {
+    return this.http.get<AnswerResponse>(`${environment.ApiBase}${environment.getIAResponse}`.replace('{USER_ID}',userId));
+  }
 }

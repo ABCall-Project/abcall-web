@@ -8,5 +8,5 @@ export const environment = {
     },
     ...paymentUrls,
     ...issuesUrls,
-    
+    key:'54T;uv3Dr885',
 }
