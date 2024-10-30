@@ -28,6 +28,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { ModalMessageComponent } from '../../modal-message/modal-message.component';
 import { ModalIssueAiAnswerComponent } from '../modal-issue-ai-answer/modal-issue-ai-answer.component';
+import { ModalPredictiveAnswerComponent } from '../modal-predictive-answer/modal-predictive-answer.component';
 
 @Component({
   selector: 'app-create-issue',
@@ -65,6 +66,7 @@ export class CreateIssueComponent {
 
     if (valorDescripcion && valorDescripcion.trim() !== '') {
       this.dialog.open(ModalIssueAiAnswerComponent, {
+        width: '80%',
         data: {
           question: valorDescripcion,
         },
@@ -84,5 +86,15 @@ export class CreateIssueComponent {
         buttonCloseTitle:'Aceptar'
       },
     });
+  }
+
+
+  openPredictiveAnswer() {
+      this.dialog.open(ModalPredictiveAnswerComponent, {
+        width: '70%',
+        data: {
+          context: '',
+        },
+      });    
   }
 }
