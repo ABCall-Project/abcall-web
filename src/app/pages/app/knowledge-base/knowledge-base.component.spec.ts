@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { KnowledgeBaseComponent } from './knowledge-base.component';
 
 describe('KnowledgeBaseComponent', () => {
@@ -8,7 +7,7 @@ describe('KnowledgeBaseComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [KnowledgeBaseComponent]
+      imports: [KnowledgeBaseComponent]  // Cambiado a imports
     });
     fixture = TestBed.createComponent(KnowledgeBaseComponent);
     component = fixture.componentInstance;

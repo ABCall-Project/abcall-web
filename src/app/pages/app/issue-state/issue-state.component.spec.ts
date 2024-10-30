@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { IssueStateComponent } from './issue-state.component';
 
 describe('IssueStateComponent', () => {
@@ -8,7 +7,7 @@ describe('IssueStateComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [IssueStateComponent]
+      imports: [IssueStateComponent]  // Cambiado a imports
     });
     fixture = TestBed.createComponent(IssueStateComponent);
     component = fixture.componentInstance;
