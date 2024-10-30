@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatCardModule } from '@angular/material/card';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Chart } from 'chart.js/auto';
 import { IssuesService } from 'src/app/services/issues.service';
@@ -26,6 +27,7 @@ import { IssuesService } from 'src/app/services/issues.service';
     MatDatepickerModule,
     MatNativeDateModule,
     MatCardModule,
+    MatProgressSpinnerModule,
     FormsModule,
     ReactiveFormsModule
   ]
@@ -61,8 +63,6 @@ export class DashboardComponent implements OnInit {
     endDate: new FormControl('')
   });
 
-
-
   constructor(private issuesServices: IssuesService) {
     this.customerId = '845eb227-5356-4169-9799-95a97ec5ce33';
 
@@ -76,8 +76,6 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-
     this.issuesServices.getIssuesDasboard(this.customerId).subscribe((issues) => {
       this.totalCreated = issues.filter((issue: any) => issue.status === this.createdId).length;
       this.totalClosed = issues.filter((issue: any) => issue.status === this.closedId).length;
@@ -89,87 +87,63 @@ export class DashboardComponent implements OnInit {
 
       this.totalIssues = issues.length;
 
-      this.issuesServices.getIssuesDasboard(this.customerId).subscribe((issues) => {
-        this.createEstadoCasosChart(issues);
-        this.createVariacionMensualChart(issues);
-        this.createDistribucionCanalChart(issues);
-        this.createEvolucionAcumuladaChart(issues);
-      });
+      this.createEstadoCasosChart(issues);
+      this.createVariacionMensualChart(issues);
+      this.createDistribucionCanalChart(issues);
+      this.createEvolucionAcumuladaChart(issues);
     });
 
-    this.dateForm.get('startDate')?.valueChanges.subscribe(value => {
-      this.onDateChange();
-    });
-
-    this.dateForm.get('endDate')?.valueChanges.subscribe(value => {
+    this.dateForm.valueChanges.subscribe(() => {
       this.onDateChange();
     });
   }
 
   createEstadoCasosChart(response: any, type?: string) {
     const ctx = document.getElementById('estadoCasosChart') as HTMLCanvasElement;
-
     const existingChart = Chart.getChart(ctx);
 
     if (existingChart) {
       existingChart.destroy();
     }
 
-    const registrados = response.filter((issue: any) => issue.status === this.createdId).length;
-    const cerrados = response.filter((issue: any) => issue.status === this.closedId).length;
-    const enCurso = response.filter((issue: any) => issue.status === this.inProgressId).length;
+    const isWithinDateRange = (issueDate: Date): boolean => {
+      if (this.initialDate && this.endDate) {
+        return issueDate >= this.initialDate && issueDate <= this.endDate;
+      } else if (this.initialDate) {
+        return issueDate >= this.initialDate;
+      } else if (this.endDate) {
+        return issueDate <= this.endDate;
+      }
+      return true;
+    };
 
-    //Created
-    if (type === this.createdId) {
-      new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-          labels: ['Registrados'],
-          datasets: [{
-            data: [registrados],
-            backgroundColor: ['#090041']
-          }]
-        }
-      });
-      return;
-    }
-    //Solved
-    else if (type === this.closedId) {
-      new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-          labels: ['Solucionados'],
-          datasets: [{
-            data: [cerrados],
-            backgroundColor: ['#272860']
-          }]
-        }
-      });
-      return;
-    }
-    //In Progress
-    else if (type === this.inProgressId) {
-      new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-          labels: ['En progreso'],
-          datasets: [{
-            data: [cerrados],
-            backgroundColor: ['#6563ff']
-          }]
-        }
-      });
-      return;
-    }
+    const registrados = response.filter((issue: any) => issue.status === this.createdId && isWithinDateRange(new Date(issue.created_at))).length;
+    const cerrados = response.filter((issue: any) => issue.status === this.closedId && isWithinDateRange(new Date(issue.created_at))).length;
+    const enCurso = response.filter((issue: any) => issue.status === this.inProgressId && isWithinDateRange(new Date(issue.created_at))).length;
+
+    this.totalCreated = registrados;
+    this.totalClosed = cerrados;
+    this.totalInProgress = enCurso;
+    
+    const data = type
+      ? [
+        type === this.createdId ? registrados : 0,
+        type === this.closedId ? cerrados : 0,
+        type === this.inProgressId ? enCurso : 0
+      ]
+      : [registrados, cerrados, enCurso];
 
     new Chart(ctx, {
       type: 'doughnut',
       data: {
         labels: ['Registrados', 'Solucionados', 'En progreso'],
         datasets: [{
-          data: [registrados, cerrados, enCurso],
+          data: data,
           backgroundColor: ['#090041', '#272860', '#6563ff']
         }]
+      },
+      options: {
+        cutout: '50%' 
       }
     });
   }
@@ -179,103 +153,75 @@ export class DashboardComponent implements OnInit {
 
     const existingChart = Chart.getChart(ctx);
 
+    const registrados = response.filter((issue: any) => issue.status === this.createdId).length;
+    const cerrados = response.filter((issue: any) => issue.status === this.closedId).length;
+    const enCurso = response.filter((issue: any) => issue.status === this.inProgressId).length;
+
+    this.totalCreated = registrados;
+    this.totalClosed = cerrados;
+    this.totalInProgress = enCurso;
+
     if (existingChart) {
       existingChart.destroy();
     }
 
+    const isWithinDateRange = (issueDate: Date): boolean => {
+      if (this.initialDate && this.endDate) {
+        return issueDate >= this.initialDate && issueDate <= this.endDate;
+      } else if (this.initialDate) {
+        return issueDate >= this.initialDate;
+      } else if (this.endDate) {
+        return issueDate <= this.endDate;
+      }
+      return true;
+    };
+
     const uniqueMonths = [...new Set(
-      response.map((issue: any) => {
-        const mes = new Date(issue.created_at).getMonth();
-        return typeof mes === 'number' ? mes : null;
-      })
+      response
+        .filter((issue: any) => isWithinDateRange(new Date(issue.created_at)))
+        .map((issue: any) => {
+          const mes = new Date(issue.created_at).getMonth();
+          return typeof mes === 'number' ? mes : null;
+        })
     )].filter(mes => mes !== null) as number[];
 
     uniqueMonths.sort((a, b) => a - b);
 
-    var monthNames = uniqueMonths.map(mes => new Date(0, mes).toLocaleString('es-ES', { month: 'long' }));
+    let monthNames = uniqueMonths.map(mes => new Date(0, mes).toLocaleString('es-ES', { month: 'long' }));
 
-    monthNames = uniqueMonths.map(month => monthNames[month]);
-
-    const dataPorMes = (mes: unknown) => {
-      if (typeof mes === 'number') {
-        return response.filter((issue: any) => new Date(issue.created_at).getMonth() === mes);
-      } else {
-        return [];
-      }
+    const dataPorMes = (mes: number) => {
+      return response.filter((issue: any) =>
+        new Date(issue.created_at).getMonth() === mes &&
+        isWithinDateRange(new Date(issue.created_at))
+      );
     };
 
-    //Created
-    if (type === this.createdId) {
-      new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: monthNames,
-          datasets: [
-            {
-              label: 'Registrados',
-              data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.status === type).length),
-              borderColor: '#090041'
-            }
-          ]
-        }
-      });
-      return;
-    }
-    //Solved
-    else if (type === this.closedId) {
-      new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: monthNames,
-          datasets: [
-            {
-              label: 'Solucionados',
-              data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.status === type).length),
-              borderColor: '#272860'
-            }
-          ]
-        }
-      });
-      return;
-    }
-    //In Progress
-    else if (type === this.inProgressId) {
-      new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: monthNames,
-          datasets: [
-            {
-              label: 'En progreso',
-              data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.status === type).length),
-              borderColor: '#6563ff'
-            }
-          ]
-        }
-      });
-      return;
-    }
+    const datasets = [
+      {
+        label: 'Registrados',
+        data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.status === this.createdId).length),
+        borderColor: '#090041',
+        hidden: type ? type !== this.createdId : false
+      },
+      {
+        label: 'Solucionados',
+        data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.status === this.closedId).length),
+        borderColor: '#272860',
+        hidden: type ? type !== this.closedId : false
+      },
+      {
+        label: 'En progreso',
+        data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.status === this.inProgressId).length),
+        borderColor: '#6563ff',
+        hidden: type ? type !== this.inProgressId : false
+      }
+    ];
+
     new Chart(ctx, {
       type: 'line',
       data: {
-        labels: monthNames,  // Labels dinámicos según los meses encontrados
-        datasets: [
-          {
-            label: 'Registrados',
-            data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.status === this.createdId).length),
-            borderColor: '#090041'
-          },
-          {
-            label: 'Solucionados',
-            data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.status === this.closedId).length),
-            borderColor: '#272860'
-          },
-          {
-            label: 'En progreso',
-            data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.status === this.inProgressId).length),
-            borderColor: '#6563ff'
-          }
-        ]
+        labels: monthNames,
+        datasets: datasets
       }
     });
   }
@@ -288,98 +234,71 @@ export class DashboardComponent implements OnInit {
       existingChart.destroy();
     }
 
+    const calls = response.filter((issue: any) => issue.channel_plan_id === this.callId).length;
+    const chats = response.filter((issue: any) => issue.channel_plan_id === this.chatboId).length;
+    const mails = response.filter((issue: any) => issue.channel_plan_id === this.mailId).length;
+
+    this.totalCalls = calls;
+    this.totalChatbot = chats;
+    this.totalMails = mails;
+
+    const isWithinDateRange = (issueDate: Date): boolean => {
+      if (this.initialDate && this.endDate) {
+        return issueDate >= this.initialDate && issueDate <= this.endDate;
+      } else if (this.initialDate) {
+        return issueDate >= this.initialDate;
+      } else if (this.endDate) {
+        return issueDate <= this.endDate;
+      }
+      return true;
+    };
+
     const uniqueMonths = [...new Set(
-      response.map((issue: any) => {
-        const mes = new Date(issue.created_at).getMonth();
-        return typeof mes === 'number' ? mes : null;
-      })
+      response
+        .filter((issue: any) => isWithinDateRange(new Date(issue.created_at)))
+        .map((issue: any) => {
+          const mes = new Date(issue.created_at).getMonth();
+          return typeof mes === 'number' ? mes : null;
+        })
     )].filter(mes => mes !== null) as number[];
 
     uniqueMonths.sort((a, b) => a - b);
 
-    var monthNames = uniqueMonths.map(mes => new Date(0, mes).toLocaleString('es-ES', { month: 'long' }));
+    let monthNames = uniqueMonths.map(mes => new Date(0, mes).toLocaleString('es-ES', { month: 'long' }));
 
-    monthNames = uniqueMonths.map(month => monthNames[month]);
-    const dataPorMes = (mes: unknown) => {
-      if (typeof mes === 'number') {
-        return response.filter((issue: any) => new Date(issue.created_at).getMonth() === mes);
-      } else {
-        return [];
-      }
+    const dataPorMes = (mes: number) => {
+      return response.filter((issue: any) =>
+        new Date(issue.created_at).getMonth() === mes &&
+        isWithinDateRange(new Date(issue.created_at))
+      );
     };
 
-    //Calls
-    if (type === this.callId) {
-      new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: monthNames,
-          datasets: [
-            {
-              label: 'Llamadas',
-              data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.channel_plan_id === type).length),
-              backgroundColor: '#090041'
-            }
-          ]
-        }
-      });
-      return;
-    }
-    //Mail
-    else if (type === this.mailId) {
-      new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: monthNames,
-          datasets: [
-            {
-              label: 'Correos',
-              data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.channel_plan_id === type).length),
-              backgroundColor: '#272860'
-            }
-          ]
-        }
-      });
-      return;
-    }
-    //Chatbot
-    else if (type === this.chatboId) {
-      new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: monthNames,
-          datasets: [
-            {
-              label: 'Chatbot',
-              data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.channel_plan_id === type).length),
-              backgroundColor: '#6563ff'
-            }
-          ]
-        }
-      });
-      return;
-    }
+    const datasets = [
+      {
+        label: 'Llamadas',
+        data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.channel_plan_id === this.callId).length),
+        backgroundColor: '#090041',
+        hidden: type ? type !== this.callId : false
+      },
+      {
+        label: 'Correos',
+        data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.channel_plan_id === this.mailId).length),
+        backgroundColor: '#272860',
+        hidden: type ? type !== this.mailId : false
+      },
+      {
+        label: 'Chatbot',
+        data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.channel_plan_id === this.chatboId).length),
+        backgroundColor: '#6563ff',
+        hidden: type ? type !== this.chatboId : false
+      }
+    ];
+
     new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: monthNames,  // Labels dinámicos según los meses encontrados
-        datasets: [
-          {
-            label: 'Llamadas',
-            data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.channel_plan_id === this.callId).length),
-            backgroundColor: '#090041'
-          },
-          {
-            label: 'Correos',
-            data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.channel_plan_id === this.mailId).length),
-            backgroundColor: '#272860'
-          },
-          {
-            label: 'Chatbot',
-            data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.channel_plan_id === this.chatboId).length),
-            backgroundColor: '#6563ff'
-          }
-        ]
+        labels: monthNames,
+        datasets: datasets
       }
     });
   }
@@ -392,112 +311,83 @@ export class DashboardComponent implements OnInit {
       existingChart.destroy();
     }
 
+    const calls = response.filter((issue: any) => issue.channel_plan_id === this.callId).length;
+    const chats = response.filter((issue: any) => issue.channel_plan_id === this.chatboId).length;
+    const mails = response.filter((issue: any) => issue.channel_plan_id === this.mailId).length;
+
+    this.totalCalls = calls;
+    this.totalChatbot = chats;
+    this.totalMails = mails;
+
+    const isWithinDateRange = (issueDate: Date): boolean => {
+      if (this.initialDate && this.endDate) {
+        return issueDate >= this.initialDate && issueDate <= this.endDate;
+      } else if (this.initialDate) {
+        return issueDate >= this.initialDate;
+      } else if (this.endDate) {
+        return issueDate <= this.endDate;
+      }
+      return true;
+    };
+
     const uniqueMonths = [...new Set(
-      response.map((issue: any) => {
-        const mes = new Date(issue.created_at).getMonth();
-        return typeof mes === 'number' ? mes : null;
-      })
+      response
+        .filter((issue: any) => isWithinDateRange(new Date(issue.created_at)))
+        .map((issue: any) => {
+          const mes = new Date(issue.created_at).getMonth();
+          return typeof mes === 'number' ? mes : null;
+        })
     )].filter(mes => mes !== null) as number[];
 
     uniqueMonths.sort((a, b) => a - b);
 
-    var monthNames = uniqueMonths.map(mes => new Date(0, mes).toLocaleString('es-ES', { month: 'long' }));
+    let monthNames = uniqueMonths.map(mes => new Date(0, mes).toLocaleString('es-ES', { month: 'long' }));
 
-    monthNames = uniqueMonths.map(month => monthNames[month]);
-    const dataPorMes = (mes: unknown) => {
-      if (typeof mes === 'number') {
-        return response.filter((issue: any) => new Date(issue.created_at).getMonth() === mes);
-      } else {
-        return [];
-      }
+    const dataPorMes = (mes: number) => {
+      return response.filter((issue: any) =>
+        new Date(issue.created_at).getMonth() === mes &&
+        isWithinDateRange(new Date(issue.created_at))
+      );
     };
 
-    const acumularDatos = (meses: number[]) => {
+    const acumularDatos = (meses: number[], channelType?: string) => {
       let acumulado = 0;
       return meses.map(mes => {
-        acumulado += response.filter((issue: any) => new Date(issue.created_at).getMonth() === mes).length;
+        const count = dataPorMes(mes).filter((issue: any) => !channelType || issue.channel_plan_id === channelType).length;
+        acumulado += count;
         return acumulado;
       });
     };
 
-    //Calls
-    if (type === this.callId) {
-      new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: monthNames,
-          datasets: [
-            {
-              label: 'Llamadas',
-              data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.channel_plan_id === type).length),
-              backgroundColor: '#090041',
-              borderColor: '#090041'
-            }
-          ]
-        }
-      });
-      return;
-    }
-    //Mail
-    else if (type === this.mailId) {
-      new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: monthNames,
-          datasets: [
-            {
-              label: 'Correos',
-              data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.channel_plan_id === type).length),
-              backgroundColor: '#272860',
-              borderColor: '#272860'
-            }
-          ]
-        }
-      });
-      return;
-    }
-    //Chatbot
-    else if (type === this.chatboId) {
-      new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: monthNames,
-          datasets: [
-            {
-              label: 'Chatbot',
-              data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.channel_plan_id === type).length),
-              backgroundColor: '#6563ff',
-              borderColor: '#6563ff'
-            }
-          ]
-        }
-      });
-      return;
-    }
+    const datasets = [
+      {
+        label: 'Llamadas',
+        data: acumularDatos(uniqueMonths, this.callId),
+        backgroundColor: '#090041',
+        borderColor: '#090041',
+        hidden: type ? type !== this.callId : false
+      },
+      {
+        label: 'Correos',
+        data: acumularDatos(uniqueMonths, this.mailId),
+        backgroundColor: '#272860',
+        borderColor: '#272860',
+        hidden: type ? type !== this.mailId : false
+      },
+      {
+        label: 'Chatbot',
+        data: acumularDatos(uniqueMonths, this.chatboId),
+        backgroundColor: '#6563ff',
+        borderColor: '#6563ff',
+        hidden: type ? type !== this.chatboId : false
+      }
+    ];
+
     new Chart(ctx, {
       type: 'line',
       data: {
-        labels: monthNames,  // Labels dinámicos según los meses encontrados
-        datasets: [
-          {
-            label: 'Llamadas',
-            data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.channel_plan_id === this.callId).length),
-            backgroundColor: '#090041',
-            borderColor: '#090041'
-          },
-          {
-            label: 'Correos',
-            data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.channel_plan_id === this.mailId).length),
-            backgroundColor: '#272860',
-            borderColor: '#272860'
-          },
-          {
-            label: 'Chatbot',
-            data: uniqueMonths.map((mes): number => dataPorMes(mes).filter((issue: any) => issue.channel_plan_id === this.chatboId).length),
-            backgroundColor: '#6563ff',
-            borderColor: '#6563ff'
-          }
-        ]
+        labels: monthNames,
+        datasets: datasets
       }
     });
   }
@@ -518,18 +408,25 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  onDateChange() {
+  onDateChange() {   
     const startDateValue = this.dateForm.get('startDate')?.value;
     const endDateValue = this.dateForm.get('endDate')?.value;
 
     const startDate = startDateValue ? new Date(startDateValue) : undefined;
-    const endDate = endDateValue ? new Date(endDateValue) :undefined;
+    const endDate = endDateValue ? new Date(endDateValue) : undefined;
 
     this.issuesServices.getIssuesDasboard(this.customerId, undefined, undefined, startDate, endDate).subscribe((issues) => {
       this.createEstadoCasosChart(issues, this.selectedState ?? '');
       this.createVariacionMensualChart(issues, this.selectedState ?? '');
       this.createDistribucionCanalChart(issues, this.selectedOrigen ?? '');
       this.createEvolucionAcumuladaChart(issues, this.selectedOrigen ?? '');
-    });
+    });        
+  }
+
+  resetForm() {      
+    this.dateForm.reset();
+      
+    this.selectedState = null;
+    this.selectedOrigen = null;  
   }
 }

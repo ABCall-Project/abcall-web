@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -9,18 +9,27 @@ import { AnswerResponse } from '../models/answerai-response';
   providedIn: 'root'
 })
 export class IssuesService {
-  constructor(private readonly http:HttpClient) { }
+  constructor(private readonly http: HttpClient) { }
 
-  getAnswer(question:string): Observable<AnswerResponse> {
-    return this.http.get<AnswerResponse>(`${environment.ApiBase}${environment.getIAResponse}`.replace('{QUESTION}',question));
+  getAnswer(question: string): Observable<AnswerResponse> {
+    return this.http.get<AnswerResponse>(`${environment.ApiBase}${environment.getIAResponse}`.replace('{QUESTION}', question));
   }
 
-  getIssuesDasboard(customerId:string, status?:string, channelPlanId?:string, createdAt?:Date, closedAt?:Date){
-    const url=`${environment.ApiBase}${environment.getIssuesDashboard}`.replace('{CUSTOMER_ID}',customerId);
-    return this.http.get<IIssuesDashboard[]>(url)
-    .pipe(
-      map(reponse => {
-        return reponse;
-      }));
-  }  
+  getIssuesDasboard(customerId: string, status?: string, channelPlanId?: string, createdAt?: Date, closedAt?: Date) {
+    const url = `${environment.ApiBase}${environment.getIssuesDashboard}`.replace('{CUSTOMER_ID}', customerId);
+
+    const createdAtStr = createdAt ? createdAt.toISOString().split('T')[0] : undefined;
+    const closedAtStr = closedAt ? closedAt.toISOString().split('T')[0] : undefined;
+
+    let params = new HttpParams();
+    if (status) params = params.set('status', status);
+    if (channelPlanId) params = params.set('channel_plan_id', channelPlanId);
+    if (createdAtStr) params = params.set('created_at', createdAtStr);
+    if (closedAtStr) params = params.set('closed_at', closedAtStr);
+
+    return this.http.get<IIssuesDashboard[]>(url, { params })
+      .pipe(
+        map(response => response)
+      );
+  }
 }
