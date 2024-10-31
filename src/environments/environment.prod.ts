@@ -1,5 +1,7 @@
 import { paymentUrls } from "./environment.payment";
 import { issuesUrls } from "./environment.issues"
+import { customersUrls } from "./environment.customers";
+import { usersUrls } from "./environment.users";
 export const environment = {
     ...{
         production: true,
@@ -8,5 +10,7 @@ export const environment = {
     },
     ...paymentUrls,
     ...issuesUrls,
-    
+    ...customersUrls,
+    ...usersUrls
+
 }
