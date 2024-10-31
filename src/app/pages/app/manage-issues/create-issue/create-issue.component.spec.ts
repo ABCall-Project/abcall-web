@@ -60,7 +60,7 @@ describe('CreateIssueComponent', () => {
   });
 
   it('should open the AI answer modal if description is not empty', () => {
-    component.description.setValue('Una descripción válida');
+    component.form.get('description')?.setValue('Una descripción válida');
 
     component.openModalIAAnswer();
 
@@ -70,7 +70,7 @@ describe('CreateIssueComponent', () => {
   });
 
   it('should not open the AI answer modal if description is empty and should open error modal', () => {
-    component.description.setValue('');
+    component.form.get('description')?.setValue('');
 
     component.openModalIAAnswer();
 
@@ -84,7 +84,7 @@ describe('CreateIssueComponent', () => {
   });
 
   it('should trim whitespace and open error modal if description only contains spaces', () => {
-    component.description.setValue('   ');
+    component.form.get('description')?.setValue('   ');
 
     component.openModalIAAnswer();
 
