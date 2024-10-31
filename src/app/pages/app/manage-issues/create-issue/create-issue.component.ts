@@ -8,7 +8,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CommonModule } from '@angular/common';
 import { IInvoice } from '../../../../models/invoice';
 import { MatTableModule } from '@angular/material/table';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { TablerIconsModule } from 'angular-tabler-icons';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -61,7 +61,7 @@ export class CreateIssueComponent implements OnInit {
   public fileName: string = '';
   public file: File
 
-  constructor(public dialog: MatDialog, public customersService: CustomersService, public usersService: UsersService, public issuesService: IssuesService) { }
+  constructor(public dialog: MatDialog, public customersService: CustomersService, public usersService: UsersService, public issuesService: IssuesService, private router: Router) { }
 
   form: FormGroup = new FormGroup({
     subject: new FormControl('', [Validators.required, Validators.maxLength(100)]),
@@ -79,7 +79,7 @@ export class CreateIssueComponent implements OnInit {
   }
 
   openModalIAAnswer() {
-    const valorDescripcion = this.form.get('descripcion')?.value;
+    const valorDescripcion = this.form.get('description')?.value;
     console.log(valorDescripcion)
 
     if (valorDescripcion && valorDescripcion.trim() !== '') {
@@ -152,6 +152,9 @@ export class CreateIssueComponent implements OnInit {
       this.file = file
     }
   }
+  onCancel() {
+    this.router.navigate(['/starter']);
+  }
   submit() {
     if (this.form.valid) {
       const formData = new FormData();
@@ -162,8 +165,22 @@ export class CreateIssueComponent implements OnInit {
       formData.append('file', this.file);
 
       this.issuesService.createIssue(formData).subscribe(response => {
+        this.dialog.open(ModalMessageComponent, {
+          data: {
+            title: 'Incidentes',
+            message: response.message,
+            buttonCloseTitle: 'Aceptar'
+          },
+        });
         console.log('Data submitted successfully', response);
       }, error => {
+        this.dialog.open(ModalMessageComponent, {
+          data: {
+            title: 'Incidentes',
+            message: 'Ocurrio un error inesperado',
+            buttonCloseTitle: 'Aceptar'
+          },
+        });
         console.error('Error submitting data', error);
       });
 

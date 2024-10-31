@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { IIssuesDashboard } from '../models/issue/issues-dashboard';
 import { AnswerResponse } from '../models/issue/answerai-response';
 import { Issue } from '../models/issue/issue';
+import { IssueResponse } from '../models/issue/issue-response';
 
 @Injectable({
   providedIn: 'root'
@@ -25,8 +26,8 @@ export class IssuesService {
         }));
   }
 
-  createIssue(issue: FormData): Observable<FormData> {
-    return this.http.post<FormData>(`${environment.ApiIssues}${environment.createIssue}`, issue);
+  createIssue(issue: FormData): Observable<IssueResponse> {
+    return this.http.post<IssueResponse>(`${environment.ApiIssues}${environment.createIssue}`, issue);
   }
 
 }

@@ -2,12 +2,12 @@
 import { CreateIssueComponent } from './create-issue.component';
 
 
-import { RouterTestingModule } from '@angular/router/testing'; 
-import { MatDialogModule } from '@angular/material/dialog'; 
-import { MatPaginatorModule } from '@angular/material/paginator'; 
-import { MatSortModule } from '@angular/material/sort'; 
-import { MatTableModule } from '@angular/material/table'; 
-import { CommonModule } from '@angular/common'; 
+import { RouterTestingModule } from '@angular/router/testing';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { CommonModule } from '@angular/common';
 import { TablerIconsModule } from 'angular-tabler-icons';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
@@ -34,15 +34,15 @@ describe('CreateIssueComponent', () => {
     dialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, BrowserAnimationsModule, CreateIssueComponent, 
-        RouterTestingModule,   
-        MatDialogModule,       
-        MatPaginatorModule,   
-        MatSortModule,       
-        MatTableModule,      
-        CommonModule, TablerIconsModule.pick({ eye: 'eye' }) ,
-        HttpClientTestingModule 
-        ],
+      imports: [ReactiveFormsModule, BrowserAnimationsModule, CreateIssueComponent,
+        RouterTestingModule,
+        MatDialogModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatTableModule,
+        CommonModule, TablerIconsModule.pick({ eye: 'eye' }),
+        HttpClientTestingModule
+      ],
       providers: [
         { provide: MatDialog, useValue: dialogSpy }
       ]
@@ -60,8 +60,8 @@ describe('CreateIssueComponent', () => {
   });
 
   it('should open the AI answer modal if description is not empty', () => {
-    component.descripcion.setValue('Una descripción válida');
-    
+    component.description.setValue('Una descripción válida');
+
     component.openModalIAAnswer();
 
     expect(dialogSpy.open).toHaveBeenCalledWith(ModalIssueAiAnswerComponent, {
@@ -70,7 +70,7 @@ describe('CreateIssueComponent', () => {
   });
 
   it('should not open the AI answer modal if description is empty and should open error modal', () => {
-    component.descripcion.setValue('');
+    component.description.setValue('');
 
     component.openModalIAAnswer();
 
@@ -84,7 +84,7 @@ describe('CreateIssueComponent', () => {
   });
 
   it('should trim whitespace and open error modal if description only contains spaces', () => {
-    component.descripcion.setValue('   ');
+    component.description.setValue('   ');
 
     component.openModalIAAnswer();
 
