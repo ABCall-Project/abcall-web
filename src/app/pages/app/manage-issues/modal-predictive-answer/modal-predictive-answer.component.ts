@@ -28,7 +28,7 @@ import { environment } from '../../../../../environments/environment';
 import { Nl2brPipe } from '../../../../pipe/nl2br.pipe';
 
 export interface DialogData {
-  question: string;
+  userId: string;
 }
 
 
@@ -45,14 +45,7 @@ export class ModalPredictiveAnswerComponent {
   userId!: string;
 
   constructor(private issuesService: IssuesService,@Inject(MAT_DIALOG_DATA) public data: DialogData) {
-    const encryptionKey = environment.key;
-    const encryptedData = sessionStorage.getItem('ref');
-
-    if (encryptedData) {
-      const bytes = CryptoJS.AES.decrypt(encryptedData, encryptionKey);
-      const decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-      this.userId=decryptedData.userId;
-    }
+      this.userId=data.userId;
   }
 
   ngOnInit(): void {

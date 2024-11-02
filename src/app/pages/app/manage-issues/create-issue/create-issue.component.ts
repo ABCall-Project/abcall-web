@@ -118,12 +118,30 @@ export class CreateIssueComponent implements OnInit {
 
 
   openPredictiveAnswer() {
+    const clientId = this.form.get('customerId')?.value;
+    console.log(clientId)
+
+    if (clientId && clientId.trim() !== '') {
       this.dialog.open(ModalPredictiveAnswerComponent, {
         width: '70%',
         data: {
-          context: '',
+          question: clientId,
         },
-      });    
+      });
+    } else {
+      this.openModalErrorUserEmpty();
+    }
+   
+  }
+
+  openModalErrorUserEmpty() {
+    this.dialog.open(ModalMessageComponent, {
+      data: {
+        title: 'Incidentes',
+        message: 'Debe seleccionar un cliente ',
+        buttonCloseTitle: 'Aceptar'
+      },
+    });
   }
 
   loadCustomers(): void {
