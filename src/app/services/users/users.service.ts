@@ -12,7 +12,7 @@ export class UsersService {
   constructor(private readonly http: HttpClient) { }
 
   getUsersByRole(roleId: string): Observable<User[]> {
-    return this.http.get<User[]>(`${environment.ApiUsers}${environment.getUsersByRole}${roleId}`);
+    return this.http.get<User[]>(`${environment.ApiBase}${environment.getUsersByRole}${roleId}`);
   }
 
 }
