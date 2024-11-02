@@ -1,4 +1,4 @@
-import { Component, Inject, ViewChild,OnInit } from '@angular/core';
+import { Component, Inject, ViewChild,OnInit,Pipe, PipeTransform } from '@angular/core';
 import {
   MatDialog,
   MatDialogRef,
@@ -25,19 +25,22 @@ import { IssuesService } from 'src/app/services/issues.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import * as CryptoJS from 'crypto-js';
 import { environment } from '../../../../../environments/environment';
+import { Nl2brPipe } from '../../../../pipe/nl2br.pipe';
 
 export interface DialogData {
   question: string;
 }
+
+
 @Component({
   selector: 'app-modal-predictive-answer',
   standalone:true,
   templateUrl: './modal-predictive-answer.component.html',
   styleUrls: ['./modal-predictive-answer.component.scss'],
-  imports: [CommonModule,MatDialogModule, MatButtonModule,MatCardModule,MatTableModule,MatSortModule,TablerIconsModule,MatPaginatorModule,MatProgressSpinnerModule] 
+  imports: [CommonModule,MatDialogModule, MatButtonModule,MatCardModule,MatTableModule,MatSortModule,TablerIconsModule,MatPaginatorModule,MatProgressSpinnerModule,Nl2brPipe] 
 })
 export class ModalPredictiveAnswerComponent {
-  answer: string | undefined;
+  answer: string ='';
   isLoading: boolean = false;
   userId!: string;
 
@@ -63,6 +66,7 @@ export class ModalPredictiveAnswerComponent {
       (response: AnswerResponse) => {
         this.answer = response.answer;
         this.isLoading = false;
+
       },
       (error) => {
         console.error('Error fetching answer:', error);

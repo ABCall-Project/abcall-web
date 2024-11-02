@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { CreateIssueComponent } from './create-issue/create-issue.component';
 import { ModalIssueAiAnswerComponent } from './modal-issue-ai-answer/modal-issue-ai-answer.component';
 import { ModalPredictiveAnswerComponent } from './modal-predictive-answer/modal-predictive-answer.component';
+import { Nl2brPipe } from './modal-predictive-answer/nl2br.pipe';
 
 
 
@@ -10,7 +11,8 @@ import { ModalPredictiveAnswerComponent } from './modal-predictive-answer/modal-
   declarations: [
     CreateIssueComponent,
     ModalIssueAiAnswerComponent,
-    ModalPredictiveAnswerComponent
+    ModalPredictiveAnswerComponent,
+    Nl2brPipe
   ],
   imports: [
     CommonModule

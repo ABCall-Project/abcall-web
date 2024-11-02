@@ -25,6 +25,6 @@ export class IssuesService {
   }  
 
   getPredictiveAIAnswer(userId:string): Observable<AnswerResponse> {
-    return this.http.get<AnswerResponse>(`${environment.ApiBase}${environment.getIAResponse}`.replace('{USER_ID}',userId));
+    return this.http.get<AnswerResponse>(`${environment.ApiBase}${environment.getIAPredictiveAnswer}`.replace('{USER_ID}',userId));
   }
 }
