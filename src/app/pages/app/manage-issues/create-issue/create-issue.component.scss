@@ -1,39 +1,73 @@
 .form-issues {
-    display: flex;
-    flex-wrap: nowrap; 
-    justify-content: space-between;
-    gap: 10px;
-  }
-  
-  mat-form-field {
-    flex: 1 1 calc(50% - 10px);
-  }
-  
- 
-  button {
-    min-width: 40px; 
-    height: 40px; 
-  }
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  gap: 10px;
+}
 
-  .button-container {
-    display: flex;                 
-    justify-content: center;       
-    height: 100vh;                 
-  }
+mat-form-field {
+  flex: 1 1 calc(50% - 10px);
+}
 
 
-  .custom-button {
-    background-color: #090041; 
-    color: white;              
-  }
-  
-  .transparent-button {
-    background-color: transparent; 
-    border: 1px solid black;     
-    color: black;               
-    padding: 8px 16px;          
-    cursor: pointer;            
-    transition: background-color 0.3s; 
-  }
-  
+button {
+  min-width: 40px;
+  height: 40px;
+}
 
+.button-container {
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+}
+
+
+.custom-button {
+  background-color: #090041;
+  color: white;
+}
+
+.transparent-button {
+  background-color: transparent;
+  border: 1px solid black;
+  color: black;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.file-upload-container {
+  display: flex;
+  flex-direction: column;
+  font-family: Arial, sans-serif;
+}
+
+.file-upload-label {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.6);
+  margin-bottom: 4px;
+}
+
+.file-upload-wrapper {
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(0, 0, 0, 0.23);
+  border-radius: 4px;
+  padding: 8px;
+}
+
+.file-upload-input {
+  flex-grow: 1;
+  border: none;
+  outline: none;
+  font-size: 16px;
+}
+
+.file-upload-input[type="file"]::file-selector-button {
+  display: none;
+}
+
+mat-icon {
+  color: rgba(0, 0, 0, 0.6);
+  margin-left: 8px;
+}

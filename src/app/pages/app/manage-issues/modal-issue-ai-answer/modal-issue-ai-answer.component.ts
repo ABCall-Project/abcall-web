@@ -1,4 +1,4 @@
-import { Component, Inject, ViewChild,OnInit } from '@angular/core';
+import { Component, Inject, ViewChild, OnInit } from '@angular/core';
 import {
   MatDialog,
   MatDialogRef,
@@ -16,11 +16,11 @@ import { MatPaginator } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
 
 import { MatCardModule } from '@angular/material/card';
-import { MatTableModule } from '@angular/material/table'; 
-import { MatSortModule } from '@angular/material/sort'; 
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { TablerIconsModule } from 'angular-tabler-icons';
-import { AnswerResponse } from '../../../../models/answerai-response';
+import { AnswerResponse } from '../../../../models/issue/answerai-response';
 import { IssuesService } from 'src/app/services/issues.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
@@ -34,24 +34,24 @@ export interface DialogData {
   standalone: true,
   templateUrl: './modal-issue-ai-answer.component.html',
   styleUrls: ['./modal-issue-ai-answer.component.scss'],
-  imports: [CommonModule,MatDialogModule, MatButtonModule,MatCardModule,MatTableModule,MatSortModule,TablerIconsModule,MatPaginatorModule,MatProgressSpinnerModule] 
+  imports: [CommonModule, MatDialogModule, MatButtonModule, MatCardModule, MatTableModule, MatSortModule, TablerIconsModule, MatPaginatorModule, MatProgressSpinnerModule]
 })
 export class ModalIssueAiAnswerComponent implements OnInit {
   answer: string | undefined;
-  question:string;
+  question: string;
   isLoading: boolean = false;
 
-  constructor(private issuesService: IssuesService,@Inject(MAT_DIALOG_DATA) public data: DialogData) {
+  constructor(private issuesService: IssuesService, @Inject(MAT_DIALOG_DATA) public data: DialogData) {
 
   }
 
   ngOnInit(): void {
-    this.question=this.data.question;
+    this.question = this.data.question;
     this.getIAAnswer(this.question)
   }
 
 
-  getIAAnswer(question:string): void {
+  getIAAnswer(question: string): void {
     this.isLoading = true;
     this.issuesService.getAnswer(question).subscribe(
       (response: AnswerResponse) => {
