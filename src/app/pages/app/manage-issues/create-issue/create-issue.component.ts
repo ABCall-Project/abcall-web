@@ -27,10 +27,11 @@ import { Channel } from 'src/app/models/channel/channel';
 import { UsersService } from 'src/app/services/users/users.service';
 import { User } from 'src/app/models/user/user';
 import { IssuesService } from 'src/app/services/issues.service';
+import { ModalPredictiveAnswerComponent } from '../modal-predictive-answer/modal-predictive-answer.component';
 
 export const ROLES = {
   Agent: 'e4f78f9c-4e24-4588-9315-92dd601c8caa'
-}import { ModalPredictiveAnswerComponent } from '../modal-predictive-answer/modal-predictive-answer.component';
+}
 
 @Component({
   selector: 'app-create-issue',

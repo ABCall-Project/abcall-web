@@ -10,7 +10,7 @@
     <form class="m-t-30" [formGroup]="form" (ngSubmit)="submit()">
     
     <div class="row">
-        <button mat-icon-button  style="margin: 0 8px;" (click)="openPredictiveAnswer()">
+        <button mat-icon-button type="button" style="margin: 0 8px;" (click)="openPredictiveAnswer()">
             <img src="../../../../../assets/images/svgs/idea.svg" alt="Información" style="width: 30px; height: 30px;" />
         </button>
     </div>
@@ -21,7 +21,7 @@
                 <input matInput formControlName="subject" placeholder="Ingrese el asunto" />
             </mat-form-field>
 
-            <button mat-icon-button style="margin: 0 8px;" (click)="openModalIAAnswer()">
+            <button mat-icon-button type="button" style="margin: 0 8px;" (click)="openModalIAAnswer()">
                 <img src="../../../../../assets/images/svgs/ai.svg" alt="Información"
                     style="width: 30px; height: 30px;" />
             </button>

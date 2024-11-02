@@ -23,7 +23,7 @@ import { TablerIconsModule } from 'angular-tabler-icons';
 import { AnswerResponse } from '../../../../models/issue/answerai-response';
 import { IssuesService } from 'src/app/services/issues.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
+import { Nl2brPipe } from '../../../../pipe/nl2br.pipe';
 
 
 export interface DialogData {
@@ -34,10 +34,10 @@ export interface DialogData {
   standalone: true,
   templateUrl: './modal-issue-ai-answer.component.html',
   styleUrls: ['./modal-issue-ai-answer.component.scss'],
-  imports: [CommonModule, MatDialogModule, MatButtonModule, MatCardModule, MatTableModule, MatSortModule, TablerIconsModule, MatPaginatorModule, MatProgressSpinnerModule]
+  imports: [CommonModule, MatDialogModule, MatButtonModule, MatCardModule, MatTableModule, MatSortModule, TablerIconsModule, MatPaginatorModule, MatProgressSpinnerModule,Nl2brPipe]
 })
 export class ModalIssueAiAnswerComponent implements OnInit {
-  answer: string | undefined;
+  answer: string='';
   question: string;
   isLoading: boolean = false;
 

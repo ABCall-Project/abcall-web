@@ -20,7 +20,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort'; 
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { TablerIconsModule } from 'angular-tabler-icons';
-import { AnswerResponse } from '../../../../models/answerai-response';
+import { AnswerResponse } from '../../../../models/issue/answerai-response';
 import { IssuesService } from 'src/app/services/issues.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import * as CryptoJS from 'crypto-js';
