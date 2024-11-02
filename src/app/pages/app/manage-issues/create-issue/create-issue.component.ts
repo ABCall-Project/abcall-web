@@ -28,7 +28,7 @@ import { UsersService } from 'src/app/services/users/users.service';
 import { User } from 'src/app/models/user/user';
 import { IssuesService } from 'src/app/services/issues.service';
 
-const ROLES = {
+export const ROLES = {
   Agent: 'e4f78f9c-4e24-4588-9315-92dd601c8caa'
 }
 @Component({
@@ -152,9 +152,11 @@ export class CreateIssueComponent implements OnInit {
       this.file = file
     }
   }
+
   onCancel() {
     this.router.navigate(['/starter']);
   }
+
   submit() {
     if (this.form.valid) {
       const formData = new FormData();
