@@ -9,11 +9,7 @@
     <br /><br />
     <form class="m-t-30" [formGroup]="form" (ngSubmit)="submit()">
     
-    <div class="row">
-        <button mat-icon-button type="button" style="margin: 0 8px;" (click)="openPredictiveAnswer()">
-            <img src="../../../../../assets/images/svgs/idea.svg" alt="Información" style="width: 30px; height: 30px;" />
-        </button>
-    </div>
+    
 
     <div class="form-issues">
             <mat-form-field appearance="fill">
@@ -56,16 +52,37 @@
             </mat-form-field>
         </div>
 
-        <div class="form-issues">
-            <mat-form-field appearance="fill" class="file-upload-field">
-                <mat-label>Archivo</mat-label>
-                <input type="text" matInput formControlName="file" placeholder="Seleccionar archivo" readonly />
-                <button mat-icon-button matSuffix (click)="fileInput.click()" type="button" aria-label="Upload file">
-                    <mat-icon>attach_file</mat-icon>
-                </button>
-                <input #fileInput type="file" (change)="onFileSelected($event)" hidden />
-            </mat-form-field>
-        </div>
+        
+
+            <div class="container-fluid"> 
+                <div class="row">
+                    
+                    <div class="col-md-6" style="padding-right: 3em;">
+                        <mat-form-field appearance="fill" class="file-upload-field w-100">
+                            <mat-label>Archivo</mat-label>
+                            <input type="text" matInput formControlName="file" placeholder="Seleccionar archivo" readonly />
+                            <button mat-icon-button matSuffix (click)="fileInput.click()" type="button" aria-label="Upload file">
+                                <mat-icon>attach_file</mat-icon>
+                            </button>
+                            <input #fileInput type="file" (change)="onFileSelected($event)" hidden />
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-md-3">
+                        &nbsp;
+                    </div>
+        
+                    
+                    <div class="col-md-3 d-flex flex-column align-items-center">
+                        <button mat-icon-button type="button" (click)="openPredictiveAnswer()">
+                            <img src="../../../../../assets/images/svgs/idea.svg" alt="Información" style="width: 30px; height: 30px;" />
+                        </button>
+                        <div>Sugerencias de analítica predictiva</div>
+                    </div>
+                </div>
+            </div>
+        
+        
 
         <div class="form-issues">
             <mat-form-field appearance="fill">
