@@ -27,7 +27,7 @@ export class IssuesService {
   }
 
   createIssue(issue: FormData): Observable<IssueResponse> {
-    return this.http.post<IssueResponse>(`${environment.ApiIssues}${environment.createIssue}`, issue);
+    return this.http.post<IssueResponse>(`${environment.ApiBase}${environment.createIssue}`, issue);
   }
 
 }

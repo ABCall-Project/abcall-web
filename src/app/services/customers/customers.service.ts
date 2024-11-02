@@ -12,10 +12,10 @@ export class CustomersService {
 
   constructor(private readonly http: HttpClient) { }
   getCustomers(): Observable<Customer[]> {
-    return this.http.get<Customer[]>(`${environment.ApiCustomers}${environment.getCustomerList}`);
+    return this.http.get<Customer[]>(`${environment.ApiBase}${environment.getCustomerList}`);
   }
 
   getChannelByPlan(planId: string): Observable<Channel[]> {
-    return this.http.get<Channel[]>(`${environment.ApiCustomers}${environment.getChannelByPlan}${planId}`);
+    return this.http.get<Channel[]>(`${environment.ApiBase}${environment.getChannelByPlan}${planId}`);
   }
 }
