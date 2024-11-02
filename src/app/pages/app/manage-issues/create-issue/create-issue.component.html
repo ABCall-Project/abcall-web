@@ -3,74 +3,75 @@
         <h1>Creación de incidente</h1>
     </div>
     <div class="row" style="display: flex; justify-content: flex-end;">
-        <img src="../../../../../assets/images/svgs/OnlineTime.svg" style="width: 20px; height: 20px;"> &nbsp;&nbsp; <b>Tiempo en línea:</b> 00:01:00
+        <img src="../../../../../assets/images/svgs/OnlineTime.svg" style="width: 20px; height: 20px;"> &nbsp;&nbsp;
+        <b>Tiempo en línea:</b> 00:01:00
     </div>
-    <br/><br/>
-    <div class="form-issues">
-        <mat-form-field appearance="fill">
-          <mat-label>Asunto</mat-label>
-          <input matInput placeholder="Ingrese el asunto" />
-        </mat-form-field>
+    <br /><br />
+    <form class="m-t-30" [formGroup]="form" (ngSubmit)="submit()">
+        <div class="form-issues">
+            <mat-form-field appearance="fill">
+                <mat-label>Asunto</mat-label>
+                <input matInput formControlName="subject" placeholder="Ingrese el asunto" />
+            </mat-form-field>
 
-        <button mat-icon-button  style="margin: 0 8px;" (click)="openModalIAAnswer()">
-            <img src="../../../../../assets/images/svgs/ai.svg" alt="Información" style="width: 30px; height: 30px;" />
-        </button>
+            <button mat-icon-button style="margin: 0 8px;" (click)="openModalIAAnswer()">
+                <img src="../../../../../assets/images/svgs/ai.svg" alt="Información"
+                    style="width: 30px; height: 30px;" />
+            </button>
 
-        <mat-form-field appearance="fill">
-            <mat-label>Asesor</mat-label>
-            <input matInput placeholder="Ingrese el asesor" />
-        </mat-form-field>
-        
-       
-    
-     
-        
-    </div>
+            <mat-form-field appearance="fill">
+                <mat-label>Asesor</mat-label>
+                <mat-select formControlName="agentId">
+                    <mat-option *ngFor="let agent of agents" [value]="agent.id">{{ agent.name }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
 
-    <div class="form-issues">
-        <mat-form-field appearance="fill">
-            <mat-label>Origen incidente</mat-label>
-            <mat-select >
-              <mat-option value="">Todos</mat-option>
-              <mat-option value="Llamada">Llamada</mat-option>
-              <mat-option value="Correo">Correo</mat-option>
-              <mat-option value="Chatbot">Chatbot</mat-option>
-            </mat-select>
-        </mat-form-field>
-
-        &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
-
-        <mat-form-field appearance="fill">
-            <mat-label>Cliente</mat-label>
-            <mat-select >
-                <mat-option value="">Todos</mat-option>
-            </mat-select>
-        </mat-form-field>
-    </div>
+        <div class="form-issues">
+            <mat-form-field appearance="fill">
+                <mat-label>Origen incidente</mat-label>
+                <mat-select formControlName="channelId">
+                    <mat-option *ngFor="let channel of channels" [value]="channel.id">{{ channel.name }}</mat-option>
+                </mat-select>
+            </mat-form-field>
 
 
-    <div class="form-issues">
-        <mat-form-field appearance="fill">
-            <mat-label>File</mat-label>
-            <input matInput  />
-            <mat-icon matSuffix>
-              <i-tabler name="paperclip" class="icon-20 d-flex"></i-tabler>
-            </mat-icon>
-        </mat-form-field>
-    </div>
+            &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+            &nbsp;&nbsp; &nbsp;
 
-    <div class="form-issues">
-        <mat-form-field appearance="fill">
-            <mat-label>Descripción</mat-label>
-            <input matInput placeholder="Ingrese la descripción" [formControl]="descripcion"  />
-           
-        </mat-form-field>
-    </div>
+            <mat-form-field appearance="fill">
+                <mat-label>Cliente</mat-label>
+                <mat-select formControlName="customerId" (selectionChange)="onCustomerSelect($event.value)">
+                    <mat-option *ngFor="let customer of customers" [value]="customer.id">{{ customer.name }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
 
-    <div class="button-container">
-        <button mat-raised-button class="transparent-button">Cancelar</button>&nbsp;&nbsp;&nbsp;
-        <button mat-raised-button class="custom-button">Confirmar</button>
-        
-    </div>
-    
+        <div class="form-issues">
+            <mat-form-field appearance="fill" class="file-upload-field">
+                <mat-label>Archivo</mat-label>
+                <input type="text" matInput formControlName="file" placeholder="Seleccionar archivo" readonly />
+                <button mat-icon-button matSuffix (click)="fileInput.click()" type="button" aria-label="Upload file">
+                    <mat-icon>attach_file</mat-icon>
+                </button>
+                <input #fileInput type="file" (change)="onFileSelected($event)" hidden />
+            </mat-form-field>
+        </div>
+
+        <div class="form-issues">
+            <mat-form-field appearance="fill">
+                <mat-label>Descripción</mat-label>
+                <input matInput placeholder="Ingrese la descripción" formControlName="description" />
+            </mat-form-field>
+        </div>
+
+        <div class="button-container">
+            <button mat-raised-button class="transparent-button" type="button" (click)="onCancel()">Cancelar</button>
+            &nbsp;&nbsp;&nbsp;
+            <button mat-raised-button class="custom-button">Confirmar</button>
+
+        </div>
+    </form>
 </div>

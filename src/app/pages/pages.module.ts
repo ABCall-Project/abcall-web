@@ -6,13 +6,14 @@ import { PagesRoutes } from './pages.routing.module';
 import { MaterialModule } from '../material.module';
 import { FormsModule } from '@angular/forms';
 
+
 @NgModule({
   imports: [
     CommonModule,
     MaterialModule,
     FormsModule,
     RouterModule.forChild(PagesRoutes),
-    StarterComponent
+    StarterComponent,
   ],
 })
-export class PagesModule {}
+export class PagesModule { }
