@@ -10,6 +10,8 @@ import { MatCardModule } from '@angular/material/card';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Chart } from 'chart.js/auto';
 import { IssuesService } from 'src/app/services/issues.service';
+import * as CryptoJS from 'crypto-js';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-dashboard',
@@ -64,7 +66,15 @@ export class DashboardComponent implements OnInit {
 
 
   constructor(private issuesServices: IssuesService) {
-    this.customerId = '845eb227-5356-4169-9799-95a97ec5ce33';
+
+    const encryptionKey = environment.key;
+    const encryptedData = sessionStorage.getItem('ref');
+
+    if (encryptedData) {
+      const bytes = CryptoJS.AES.decrypt(encryptedData, encryptionKey);
+      const decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+      this.customerId=decryptedData.customerId;
+    }
 
     this.callId = '6938edfe-9f4b-445b-8dd5-fbaa570a273a';
     this.mailId = 'd256f4b9-f970-4222-9a7b-3e83def73038';

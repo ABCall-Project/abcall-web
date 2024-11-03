@@ -1,4 +1,4 @@
-import { Component, Inject, ViewChild, OnInit } from '@angular/core';
+import { Component, Inject, ViewChild,OnInit,Pipe, PipeTransform } from '@angular/core';
 import {
   MatDialog,
   MatDialogRef,
@@ -16,47 +16,50 @@ import { MatPaginator } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
 
 import { MatCardModule } from '@angular/material/card';
-import { MatTableModule } from '@angular/material/table';
-import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table'; 
+import { MatSortModule } from '@angular/material/sort'; 
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { TablerIconsModule } from 'angular-tabler-icons';
 import { AnswerResponse } from '../../../../models/issue/answerai-response';
 import { IssuesService } from 'src/app/services/issues.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import * as CryptoJS from 'crypto-js';
+import { environment } from '../../../../../environments/environment';
 import { Nl2brPipe } from '../../../../pipe/nl2br.pipe';
 
-
 export interface DialogData {
-  question: string;
+  userId: string;
 }
+
+
 @Component({
-  selector: 'app-modal-issue-ai-answer',
-  standalone: true,
-  templateUrl: './modal-issue-ai-answer.component.html',
-  styleUrls: ['./modal-issue-ai-answer.component.scss'],
-  imports: [CommonModule, MatDialogModule, MatButtonModule, MatCardModule, MatTableModule, MatSortModule, TablerIconsModule, MatPaginatorModule, MatProgressSpinnerModule,Nl2brPipe]
+  selector: 'app-modal-predictive-answer',
+  standalone:true,
+  templateUrl: './modal-predictive-answer.component.html',
+  styleUrls: ['./modal-predictive-answer.component.scss'],
+  imports: [CommonModule,MatDialogModule, MatButtonModule,MatCardModule,MatTableModule,MatSortModule,TablerIconsModule,MatPaginatorModule,MatProgressSpinnerModule,Nl2brPipe] 
 })
-export class ModalIssueAiAnswerComponent implements OnInit {
-  answer: string='';
-  question: string;
+export class ModalPredictiveAnswerComponent {
+  answer: string ='';
   isLoading: boolean = false;
+  userId!: string;
 
-  constructor(private issuesService: IssuesService, @Inject(MAT_DIALOG_DATA) public data: DialogData) {
-
+  constructor(private issuesService: IssuesService,@Inject(MAT_DIALOG_DATA) public data: DialogData) {
+      this.userId=data.userId;
   }
 
   ngOnInit(): void {
-    this.question = this.data.question;
-    this.getIAAnswer(this.question)
+
+    this.getPredictiveIAAnswer(this.userId)
   }
 
-
-  getIAAnswer(question: string): void {
+  getPredictiveIAAnswer(userId:string): void {
     this.isLoading = true;
-    this.issuesService.getAnswer(question).subscribe(
+    this.issuesService.getPredictiveAIAnswer(userId).subscribe(
       (response: AnswerResponse) => {
         this.answer = response.answer;
         this.isLoading = false;
+
       },
       (error) => {
         console.error('Error fetching answer:', error);

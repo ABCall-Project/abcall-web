@@ -21,6 +21,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort'; 
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { TablerIconsModule } from 'angular-tabler-icons';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 export interface DialogData {
   invoice: string;
@@ -32,7 +33,7 @@ export interface DialogData {
   standalone: true,
   templateUrl: './invoice-detail-list.component.html',
   styleUrls: ['./invoice-detail-list.component.scss'],
-  imports: [CommonModule,MatDialogModule, MatButtonModule,MatCardModule,MatTableModule,MatSortModule,TablerIconsModule,MatPaginatorModule] 
+  imports: [CommonModule,MatDialogModule, MatButtonModule,MatCardModule,MatTableModule,MatSortModule,TablerIconsModule,MatPaginatorModule,MatProgressSpinnerModule] 
 
 })
 export class InvoiceDetailListComponent implements OnInit {
@@ -42,10 +43,10 @@ export class InvoiceDetailListComponent implements OnInit {
   dataSource = new MatTableDataSource(this.invoiceDetails);
   totalRows: number | undefined;
   displayedColumns: string[] = ['fecha','descripcion','hora','costo'];
+  isLoading: boolean = false;
   
 
   constructor(private readonly paymentService:PaymentService,@Inject(MAT_DIALOG_DATA) public data: DialogData){
-    console.log(data);
   }
   ngOnInit(): void {
     this.invoiceId=this.data.invoice;
@@ -53,11 +54,12 @@ export class InvoiceDetailListComponent implements OnInit {
   }
 
   getInvoiceDetails(){
+    this.isLoading=true;
     this.paymentService.getInvoiceDetails(this.invoiceId).subscribe(invoiceDetails => {
-      console.log(invoiceDetails); 
       this.invoiceDetails = invoiceDetails; 
       this.dataSource.data = this.invoiceDetails;
       this.totalRows = this.invoiceDetails.length;
+      this.isLoading=false;
     });
   }
 }
