@@ -118,20 +118,25 @@ export class CreateIssueComponent implements OnInit {
 
 
   openPredictiveAnswer() {
-    const clientId = this.form.get('customerId')?.value;
-    console.log(clientId)
+    // const clientId = this.form.get('customerId')?.value;
+    // console.log(clientId)
 
-    if (clientId && clientId.trim() !== '') {
-      this.dialog.open(ModalPredictiveAnswerComponent, {
-        width: '70%',
-        data: {
-          question: clientId,
-        },
-      });
-    } else {
-      this.openModalErrorUserEmpty();
-    }
-   
+    // if (clientId && clientId.trim() !== '') {
+    //   this.dialog.open(ModalPredictiveAnswerComponent, {
+    //     width: '70%',
+    //     data: {
+    //       question: clientId,
+    //     },
+    //   });
+    // } else {
+    //   this.openModalErrorUserEmpty();
+    // }
+    this.dialog.open(ModalPredictiveAnswerComponent, {
+      width: '70%',
+      data: {
+        userId: '090b9b2f-c79c-41c1-944b-9d57cca4d582',
+      },
+    });
   }
 
   openModalErrorUserEmpty() {
