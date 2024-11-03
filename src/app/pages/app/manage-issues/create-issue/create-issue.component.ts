@@ -27,10 +27,12 @@ import { Channel } from 'src/app/models/channel/channel';
 import { UsersService } from 'src/app/services/users/users.service';
 import { User } from 'src/app/models/user/user';
 import { IssuesService } from 'src/app/services/issues.service';
+import { ModalPredictiveAnswerComponent } from '../modal-predictive-answer/modal-predictive-answer.component';
 
 export const ROLES = {
   Agent: 'e4f78f9c-4e24-4588-9315-92dd601c8caa'
 }
+
 @Component({
   selector: 'app-create-issue',
   standalone: true,
@@ -84,6 +86,7 @@ export class CreateIssueComponent implements OnInit {
 
     if (valorDescripcion && valorDescripcion.trim() !== '') {
       this.dialog.open(ModalIssueAiAnswerComponent, {
+        width: '80%',
         data: {
           question: valorDescripcion,
         },
@@ -108,6 +111,34 @@ export class CreateIssueComponent implements OnInit {
       data: {
         title: 'Incidentes',
         message: 'Favor ingresar todos los campos',
+        buttonCloseTitle: 'Aceptar'
+      },
+    });
+  }
+
+
+  openPredictiveAnswer() {
+    const clientId = this.form.get('customerId')?.value;
+    console.log(clientId)
+
+    if (clientId && clientId.trim() !== '') {
+      this.dialog.open(ModalPredictiveAnswerComponent, {
+        width: '70%',
+        data: {
+          question: clientId,
+        },
+      });
+    } else {
+      this.openModalErrorUserEmpty();
+    }
+   
+  }
+
+  openModalErrorUserEmpty() {
+    this.dialog.open(ModalMessageComponent, {
+      data: {
+        title: 'Incidentes',
+        message: 'Debe seleccionar un cliente ',
         buttonCloseTitle: 'Aceptar'
       },
     });

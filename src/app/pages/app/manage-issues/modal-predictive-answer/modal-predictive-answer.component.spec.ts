@@ -1,5 +1,5 @@
-import { ModalIssueAiAnswerComponent } from './modal-issue-ai-answer.component';
-import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { ModalPredictiveAnswerComponent } from './modal-predictive-answer.component';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of, throwError } from 'rxjs';
@@ -8,19 +8,19 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IssuesService } from 'src/app/services/issues.service';
 import { AnswerResponse } from '../../../../models/issue/answerai-response';
 
-describe('ModalIssueAiAnswerComponent', () => {
-  let component: ModalIssueAiAnswerComponent;
-  let fixture: ComponentFixture<ModalIssueAiAnswerComponent>;
+describe('ModalPredictiveAnswerComponent', () => {
+  let component: ModalPredictiveAnswerComponent;
+  let fixture: ComponentFixture<ModalPredictiveAnswerComponent>;
   let issuesService: IssuesService;
 
-  const mockDialogData = { question: 'qué es AI' };
-  const mockAnswerResponse: AnswerResponse = { answer: 'Respuesta de AI sobre inteligencia artificial' };
+  const mockDialogData = { userId: 'eeacd878-b1d0-4e3c-adac-817a8c655432' };
+  const mockAnswerResponse: AnswerResponse = { answer: 'Predictive analytics response' };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
-        ModalIssueAiAnswerComponent,
+        ModalPredictiveAnswerComponent,
         TablerIconsModule.pick({ eye: 'eye' }),
         BrowserAnimationsModule
       ],
@@ -29,7 +29,7 @@ describe('ModalIssueAiAnswerComponent', () => {
         { provide: MatDialogRef, useValue: {} }
       ]
     });
-    fixture = TestBed.createComponent(ModalIssueAiAnswerComponent);
+    fixture = TestBed.createComponent(ModalPredictiveAnswerComponent);
     component = fixture.componentInstance;
     issuesService = TestBed.inject(IssuesService);
 
@@ -40,30 +40,30 @@ describe('ModalIssueAiAnswerComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call getIAAnswer and load the answer on success', () => {
-    spyOn(issuesService, 'getAnswer').and.returnValue(of(mockAnswerResponse));
-
-    component.getIAAnswer(mockDialogData.question);
+  it('should call getPredictiveIAAnswer and load the answer on success', () => {
+    spyOn(issuesService, 'getPredictiveAIAnswer').and.returnValue(of(mockAnswerResponse));
+    component.getPredictiveIAAnswer(mockDialogData.userId);
 
     expect(component.isLoading).toBe(false);
     expect(component.answer).toBe(mockAnswerResponse.answer);
-    expect(issuesService.getAnswer).toHaveBeenCalledWith(mockDialogData.question);
+    expect(issuesService.getPredictiveAIAnswer).toHaveBeenCalledWith(mockDialogData.userId);
   });
 
   it('should set isLoading to true while loading answer', () => {
-    spyOn(issuesService, 'getAnswer').and.returnValue(of(mockAnswerResponse));
+    spyOn(issuesService, 'getPredictiveAIAnswer').and.returnValue(of(mockAnswerResponse));
+    component.isLoading = false;
 
-    component.getIAAnswer(mockDialogData.question);
+    component.getPredictiveIAAnswer(mockDialogData.userId);
 
     expect(component.isLoading).toBe(false);
   });
 
-  it('should handle error when getIAAnswer fails', () => {
+  it('should handle error when getPredictiveIAAnswer fails', () => {
     const errorResponse = { message: 'Error fetching answer' };
-    spyOn(issuesService, 'getAnswer').and.returnValue(throwError(errorResponse));
+    spyOn(issuesService, 'getPredictiveAIAnswer').and.returnValue(throwError(errorResponse));
     spyOn(console, 'error');
 
-    component.getIAAnswer(mockDialogData.question);
+    component.getPredictiveIAAnswer(mockDialogData.userId);
 
     expect(component.isLoading).toBe(false);
     expect(component.answer).toBe('');

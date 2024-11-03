@@ -18,6 +18,7 @@ import { ModalIssueAiAnswerComponent } from '../modal-issue-ai-answer/modal-issu
 import { Router } from '@angular/router';
 import { IssuesService } from 'src/app/services/issues.service';
 import { CustomersService } from 'src/app/services/customers/customers.service';
+import { ModalPredictiveAnswerComponent } from '../modal-predictive-answer/modal-predictive-answer.component';
 
 
 describe('CreateIssueComponent', () => {
@@ -75,6 +76,7 @@ describe('CreateIssueComponent', () => {
     component.openModalIAAnswer();
 
     expect(dialogSpy.open).toHaveBeenCalledWith(ModalIssueAiAnswerComponent, {
+      width: '80%',
       data: { question: 'Una descripción válida' },
     });
   });
@@ -220,6 +222,50 @@ describe('CreateIssueComponent', () => {
   it('should call loadChannels with the correct customerId on onCustomerSelect', () => {
     const mockCustomerId = '12345';
     component.onCustomerSelect(mockCustomerId);
+  });
+
+  it('should open ModalPredictiveAnswerComponent if customerId is valid', () => {
+    const validClientId = '12345';
+    component.form.get('customerId')?.setValue(validClientId);
+    
+    component.openPredictiveAnswer();
+
+    expect(dialogSpy.open).toHaveBeenCalledWith(ModalPredictiveAnswerComponent, {
+      width: '70%',
+      data: { question: validClientId },
+    });
+  });
+
+  it('should open error modal if customerId is empty', () => {
+    component.form.get('customerId')?.setValue('');
+
+    spyOn(component, 'openModalErrorUserEmpty').and.callThrough();
+    component.openPredictiveAnswer();
+
+    expect(component.openModalErrorUserEmpty).toHaveBeenCalled();
+    expect(dialogSpy.open).toHaveBeenCalledWith(ModalMessageComponent, {
+      data: {
+        title: 'Incidentes',
+        message: 'Debe seleccionar un cliente ',
+        buttonCloseTitle: 'Aceptar',
+      },
+    });
+  });
+
+  it('should open error modal if customerId contains only spaces', () => {
+    component.form.get('customerId')?.setValue('   ');
+
+    spyOn(component, 'openModalErrorUserEmpty').and.callThrough();
+    component.openPredictiveAnswer();
+
+    expect(component.openModalErrorUserEmpty).toHaveBeenCalled();
+    expect(dialogSpy.open).toHaveBeenCalledWith(ModalMessageComponent, {
+      data: {
+        title: 'Incidentes',
+        message: 'Debe seleccionar un cliente ',
+        buttonCloseTitle: 'Aceptar',
+      },
+    });
   });
 
 });

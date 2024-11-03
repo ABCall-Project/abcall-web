@@ -30,4 +30,8 @@ export class IssuesService {
     return this.http.post<IssueResponse>(`${environment.ApiBase}${environment.createIssue}`, issue);
   }
 
+
+  getPredictiveAIAnswer(userId:string): Observable<AnswerResponse> {
+    return this.http.get<AnswerResponse>(`${environment.ApiBase}${environment.getIAPredictiveAnswer}`.replace('{USER_ID}',userId));
+  }
 }
