@@ -7,14 +7,20 @@ describe('IssueStateComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [IssueStateComponent]  // Cambiado a imports
+      imports: [IssueStateComponent]
     });
     fixture = TestBed.createComponent(IssueStateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create the component', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should log "Cerrando el diálogo" when close is called', () => {
+    spyOn(console, 'log');
+    component.close();
+    expect(console.log).toHaveBeenCalledWith("Cerrando el diálogo");
   });
 });
