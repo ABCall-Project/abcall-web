@@ -22,7 +22,8 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { InvoiceDetailListComponent } from '../invoice-detail-list/invoice-detail-list.component';
 import { ModalMessageComponent } from '../../modal-message/modal-message.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
+import * as CryptoJS from 'crypto-js';
+import { environment } from '../../../../../environments/environment';
 @Component({
   selector: 'app-invoice-list',
   standalone: true,
@@ -55,8 +56,20 @@ export class InvoiceListComponent implements OnInit {
   isDownloading: boolean=false;
 
 
+  
+
   constructor(private readonly paymentService:PaymentService,public dialog: MatDialog){
-    this.customerId='845eb227-5356-4169-9799-95a97ec5ce33';
+    const encryptionKey = environment.key;
+    const encryptedData = sessionStorage.getItem('ref');
+
+    if (encryptedData) {
+      const bytes = CryptoJS.AES.decrypt(encryptedData, encryptionKey);
+      const decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+      this.customerId=decryptedData.customerId;
+    }
+
+
+    
   }
   
   ngOnInit(): void {
