@@ -11,6 +11,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IIssuesDashboard } from 'src/app/models/issue/issues-dashboard';
+import { environment } from 'src/environments/environment';
+import * as CryptoJS from 'crypto-js';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -178,5 +180,88 @@ describe('DashboardComponent', () => {
     component.createEvolucionAcumuladaChart(mockIssues);
 
     expect(ctxSpy).toHaveBeenCalledWith('evolucionAcumuladaChart');
+  });
+
+  it('should filter issues correctly based on initial and end dates in createEstadoCasosChart', () => {
+    const mockIssues = [
+      { status: component.createdId, created_at: new Date('2024-01-01') },
+      { status: component.closedId, created_at: new Date('2024-02-01') },
+      { status: component.inProgressId, created_at: new Date('2024-03-01') }
+    ];
+  
+    // Configuramos fechas de inicio y fin
+    component.initialDate = new Date('2024-01-01');
+    component.endDate = new Date('2024-02-28');
+  
+    component.createEstadoCasosChart(mockIssues);
+  
+    // Solo los issues entre las fechas deberían contarse
+    expect(component.totalCreated).toBe(1);
+    expect(component.totalClosed).toBe(1);
+    expect(component.totalInProgress).toBe(0); // Fuera del rango
+  });
+
+  it('should handle an unexpected state in OnSelectionState', () => {
+    const mockEvent = { value: 'unexpectedState' };
+    const mockIssues = [
+      { status: component.createdId, channel_plan_id: component.callId, created_at: new Date('2024-01-01') }
+    ];
+  
+    issuesService.getIssuesDasboard.and.returnValue(of(mockIssues));
+    component.OnSelectionState(mockEvent as any);
+  
+    // Verifica que el valor se asigna y no causa error
+    expect(component.selectedState).toBe('unexpectedState');
+    expect(issuesService.getIssuesDasboard).toHaveBeenCalledWith(component.customerId);
+  });
+
+  it('should handle null start or end date in onDateChange', () => {
+    component.dateForm.setValue({ startDate: null, endDate: '2024-12-31' });
+    const mockIssues = [
+      { status: component.createdId, channel_plan_id: component.callId, created_at: new Date('2024-01-01') }
+    ];
+    issuesService.getIssuesDasboard.and.returnValue(of(mockIssues));
+  
+    component.onDateChange();
+  
+    expect(issuesService.getIssuesDasboard).toHaveBeenCalledWith(
+      component.customerId,
+      undefined,
+      undefined,
+      undefined, // startDate es null
+      new Date('2024-12-31')
+    );
+  });
+
+  it('should decrypt and set customerId from sessionStorage if present', () => {
+    const mockData = { customerId: '12345' };
+    const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(mockData), environment.key).toString();
+    sessionStorage.setItem('ref', encryptedData);
+  
+    const newFixture = TestBed.createComponent(DashboardComponent);
+    const newComponent = newFixture.componentInstance;
+  
+    expect(newComponent.customerId).toBe('12345');
+  });
+  
+  it('should not set customerId if sessionStorage ref is missing', () => {
+    sessionStorage.removeItem('ref'); // Aseguramos que no hay datos
+  
+    const newFixture = TestBed.createComponent(DashboardComponent);
+    const newComponent = newFixture.componentInstance;
+  
+    expect(newComponent.customerId).toBeUndefined();
+  });
+
+  it('should reset form and selected fields when resetForm is called', () => {
+    component.dateForm.setValue({ startDate: '2024-01-01', endDate: '2024-12-31' });
+    component.selectedState = component.createdId;
+    component.selectedOrigen = component.callId;
+  
+    component.resetForm();
+  
+    expect(component.dateForm.value).toEqual({ startDate: null, endDate: null });
+    expect(component.selectedState).toBeNull();
+    expect(component.selectedOrigen).toBeNull();
   });
 });
