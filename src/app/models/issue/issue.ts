@@ -1,7 +1,10 @@
 export interface Issue {
-    auth_user_id: string,
-    auth_user_agent_id: string,
+    id: string
+    auth_user_id?: string,
+    auth_user_agent_id?: string,
     subject: string,
     description: string,
-    file?: File;
+    file?: File,
+    status?: string,
+    created_at?: string
 }

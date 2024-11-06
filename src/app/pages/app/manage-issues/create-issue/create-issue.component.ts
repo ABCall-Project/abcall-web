@@ -61,7 +61,7 @@ export class CreateIssueComponent implements OnInit {
   public channels: Channel[] = [];
   public agents: User[] = [];
   public fileName: string = '';
-  public file: File
+  public file: File;
 
   constructor(public dialog: MatDialog, public customersService: CustomersService, public usersService: UsersService, public issuesService: IssuesService, private router: Router) { }
 
@@ -206,10 +206,11 @@ export class CreateIssueComponent implements OnInit {
         this.dialog.open(ModalMessageComponent, {
           data: {
             title: 'Incidentes',
-            message: response.message,
+            message: 'Incidente creado correctamente!',
             buttonCloseTitle: 'Aceptar'
           },
         });
+        this.form.reset();
         console.log('Data submitted successfully', response);
       }, error => {
         this.dialog.open(ModalMessageComponent, {
