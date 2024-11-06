@@ -90,6 +90,30 @@ describe('IssuesService', () => {
     req.flush(mockIssues);
   });
 
+  it('Should send parameters with date and channel id filter', () => {
+    const customerId = '123';
+    const status = 'open';
+    const channelId = 'mock-channel-id';
+    const createdAt = new Date('2024-01-01');
+    const closedAt = new Date('2024-02-01');
+    const mockIssues: IIssuesDashboard[] = [
+      { status: 'open', channel_plan_id: 'plan-1', created_at: new Date('2024-01-01') }
+    ];
+
+    service.getIssuesDasboard(customerId, status, channelId, createdAt, closedAt).subscribe((issues) => {
+      expect(issues.length).toBe(1);
+      expect(issues[0].status).toBe('open');
+    });
+
+    const req = httpMock.expectOne(
+      `${environment.ApiBase}${environment.getIssuesDashboard}&status=${status}&channel_plan_id=${channelId}&created_at=${createdAt.toISOString().split('T')[0]}&closed_at=${closedAt.toISOString().split('T')[0]}`.replace('{CUSTOMER_ID}', customerId)
+    );
+    expect(req.request.method).toBe('GET');
+    expect(req.request.params.has('status')).toBeTrue();
+    expect(req.request.params.get('status')).toBe(status);
+    req.flush(mockIssues);
+  });
+
   it('Should create an issue and return the response', () => {
     const issueData = new FormData();
     const expectedMessage = 'mock message';
@@ -101,7 +125,7 @@ describe('IssuesService', () => {
 
     const req = httpMock.expectOne(`${environment.ApiBase}${environment.createIssue}`);
     expect(req.request.method).toBe('POST');
-    req.flush(mockIssueResponse); // Simulate the response
+    req.flush(mockIssueResponse);
   });
 
 });
