@@ -31,11 +31,6 @@ export const navItems: NavItem[] = [
             displayName: 'Crear Incidente',
             iconName: 'point',
             route: '/app/new-issue',
-          },
-          {
-            displayName: 'Detalle de Incidente',
-            iconName: 'point',
-            route: '/app/issue-state',
           }
         ]
       },

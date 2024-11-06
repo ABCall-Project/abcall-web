@@ -7,7 +7,6 @@ import { MaterialModule } from 'src/app/material.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AppsRoutes } from './apps.routing.module';
 import { MatIconModule } from '@angular/material/icon';
-import { IssueStateComponent } from './issue-state/issue-state.component';
 import { KnowledgeBaseComponent } from './knowledge-base/knowledge-base.component';
 
 @NgModule({

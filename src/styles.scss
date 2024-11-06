@@ -160,6 +160,33 @@ mat-error {
   font-weight: bold;
 }
 
+.file-upload-form {
+  text-align: left;
+  padding-top: 20px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.preview {
+  margin-top: 20px;
+  text-align: left;
+  white-space: pre-wrap;
+  background-color: #f4f4f4;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.confirmation-message {
+  margin-top: 20px;
+  color: green;
+  font-weight: bold;
+}
+
 /*Issue Details*/
 
 .incident-details {

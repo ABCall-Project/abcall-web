@@ -7,7 +7,6 @@ import { MatCardModule } from '@angular/material/card';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 
-
 @Component({
   selector: 'app-knowledge-base',
   encapsulation: ViewEncapsulation.None,
@@ -27,7 +26,9 @@ import { MatSelectModule } from '@angular/material/select';
 })
 export class KnowledgeBaseComponent {
   selectedFile: File | null = null;
+  fileContent: string | null = null;
   fileError: string | null = null;
+  confirmationMessage: string | null = null;
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -42,6 +43,7 @@ export class KnowledgeBaseComponent {
       const reader = new FileReader();
       reader.onload = (e) => {
         const content = e.target?.result as string;
+        this.fileContent = content; // Mostrar contenido para previsualización
         if (this.isValidStructure(content)) {
           this.fileError = null;
         } else {
@@ -59,8 +61,17 @@ export class KnowledgeBaseComponent {
 
   onSubmit(): void {
     if (this.selectedFile && !this.fileError) {
+      this.confirmationMessage = 'La base de conocimiento ha sido cargada de manera correcta';
       console.log("Archivo cargado correctamente:", this.selectedFile.name);
+    } else {
+      this.confirmationMessage = null;
     }
   }
-}
 
+  onCancel(): void {
+    this.selectedFile = null;
+    this.fileContent = null;
+    this.fileError = null;
+    this.confirmationMessage = null;
+  }
+}
