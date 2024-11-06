@@ -7,17 +7,14 @@
     Cargar Archivo
   </button>
 
-  <!-- Mensaje de error si el archivo no es válido -->
   <mat-error *ngIf="fileError">{{ fileError }}</mat-error>
 </form>
 
-<!-- Área de previsualización -->
 <div *ngIf="fileContent" class="preview">
   <h3>Previsualización del archivo:</h3>
   <pre>{{ fileContent }}</pre>
 </div>
 
-<!-- Mensaje de confirmación -->
 <div *ngIf="confirmationMessage" class="confirmation-message">
   {{ confirmationMessage }}
 </div>

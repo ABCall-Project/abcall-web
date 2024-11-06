@@ -43,7 +43,7 @@ export class KnowledgeBaseComponent {
       const reader = new FileReader();
       reader.onload = (e) => {
         const content = e.target?.result as string;
-        this.fileContent = content; // Mostrar contenido para previsualización
+        this.fileContent = content;
         if (this.isValidStructure(content)) {
           this.fileError = null;
         } else {

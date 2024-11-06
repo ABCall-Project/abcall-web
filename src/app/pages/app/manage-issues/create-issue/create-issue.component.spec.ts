@@ -17,8 +17,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ModalIssueAiAnswerComponent } from '../modal-issue-ai-answer/modal-issue-ai-answer.component';
 import { Router } from '@angular/router';
 import { IssuesService } from 'src/app/services/issues.service';
-import { CustomersService } from 'src/app/services/customers/customers.service';
 import { ModalPredictiveAnswerComponent } from '../modal-predictive-answer/modal-predictive-answer.component';
+import { Customer } from 'src/app/models/customer/customer';
 
 
 describe('CreateIssueComponent', () => {
@@ -26,16 +26,13 @@ describe('CreateIssueComponent', () => {
   let fixture: ComponentFixture<CreateIssueComponent>;
   let dialogSpy: jasmine.SpyObj<MatDialog>;
   let mockRouter: jasmine.SpyObj<Router>;
-  let mockIssuesService: jasmine.SpyObj<IssuesService>;
-  let mockCustomersService: jasmine.SpyObj<CustomersService>;
-
+  let mockIssuesService: jasmine.SpyObj<IssuesService>;  
 
 
   beforeEach(async () => {
     dialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
     mockRouter = jasmine.createSpyObj('Router', ['navigate']);
     mockIssuesService = jasmine.createSpyObj('IssuesService', ['createIssue']);
-    mockCustomersService = jasmine.createSpyObj('CustomersService', ['getCustomers', 'getChannelByPlan']);
 
 
     await TestBed.configureTestingModule({
@@ -54,7 +51,9 @@ describe('CreateIssueComponent', () => {
         { provide: IssuesService, useValue: mockIssuesService },
 
       ]
-    }).compileComponents();
+    }).compileComponents();    
+
+    
   });
 
   beforeEach(() => {
@@ -266,5 +265,26 @@ describe('CreateIssueComponent', () => {
   //     },
   //   });
   // });
+  it('should open ModalPredictiveAnswerComponent with default userId on openPredictiveAnswer', () => {
+    component.openPredictiveAnswer();
 
+    expect(dialogSpy.open).toHaveBeenCalledWith(ModalPredictiveAnswerComponent, {
+      width: '70%',
+      data: {
+        userId: '090b9b2f-c79c-41c1-944b-9d57cca4d582',
+      },
+    });
+  });
+
+  it('should open ModalMessageComponent with correct data on openModalErrorUserEmpty', () => {
+    component.openModalErrorUserEmpty();
+
+    expect(dialogSpy.open).toHaveBeenCalledWith(ModalMessageComponent, {
+      data: {
+        title: 'Incidentes',
+        message: 'Debe seleccionar un cliente ',
+        buttonCloseTitle: 'Aceptar',
+      },
+    });
+  });
 });

@@ -87,4 +87,17 @@ describe('KnowledgeBaseComponent', () => {
     expect(console.log).not.toHaveBeenCalled();
   });
   
+  it('should reset all fields on cancel', () => {
+    component.selectedFile = new File(["dummy content"], "dummy.txt");
+    component.fileContent = "dummy content";
+    component.fileError = "Error message";
+    component.confirmationMessage = "Confirmation message";
+
+    component.onCancel();
+
+    expect(component.selectedFile).toBeNull();
+    expect(component.fileContent).toBeNull();
+    expect(component.fileError).toBeNull();
+    expect(component.confirmationMessage).toBeNull();
+  });
 });
