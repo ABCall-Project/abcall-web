@@ -85,6 +85,17 @@ export class DashboardComponent implements OnInit {
     this.closedId = '791353c6-3899-4d35-bcd9-af8775e240bf';
   }
 
+  isWithinDateRange (issueDate: Date): boolean {
+    if (this.initialDate && this.endDate) {
+      return issueDate >= this.initialDate && issueDate <= this.endDate;
+    } else if (this.initialDate) {
+      return issueDate >= this.initialDate;
+    } else if (this.endDate) {
+      return issueDate <= this.endDate;
+    }
+    return true;
+  };
+
   ngOnInit(): void {
     this.issuesServices.getIssuesDasboard(this.customerId).subscribe((issues) => {
       this.totalCreated = issues.filter((issue: any) => issue.status === this.createdId).length;
@@ -116,25 +127,14 @@ export class DashboardComponent implements OnInit {
       existingChart.destroy();
     }
 
-    const isWithinDateRange = (issueDate: Date): boolean => {
-      if (this.initialDate && this.endDate) {
-        return issueDate >= this.initialDate && issueDate <= this.endDate;
-      } else if (this.initialDate) {
-        return issueDate >= this.initialDate;
-      } else if (this.endDate) {
-        return issueDate <= this.endDate;
-      }
-      return true;
-    };
-
-    const registrados = response.filter((issue: any) => issue.status === this.createdId && isWithinDateRange(new Date(issue.created_at))).length;
-    const cerrados = response.filter((issue: any) => issue.status === this.closedId && isWithinDateRange(new Date(issue.created_at))).length;
-    const enCurso = response.filter((issue: any) => issue.status === this.inProgressId && isWithinDateRange(new Date(issue.created_at))).length;
+    const registrados = response.filter((issue: any) => issue.status === this.createdId && this.isWithinDateRange(new Date(issue.created_at))).length;
+    const cerrados = response.filter((issue: any) => issue.status === this.closedId && this.isWithinDateRange(new Date(issue.created_at))).length;
+    const enCurso = response.filter((issue: any) => issue.status === this.inProgressId && this.isWithinDateRange(new Date(issue.created_at))).length;
 
     this.totalCreated = registrados;
     this.totalClosed = cerrados;
     this.totalInProgress = enCurso;
-    
+
     const data = type
       ? [
         type === this.createdId ? registrados : 0,
@@ -153,7 +153,7 @@ export class DashboardComponent implements OnInit {
         }]
       },
       options: {
-        cutout: '50%' 
+        cutout: '50%'
       }
     });
   }
@@ -175,20 +175,9 @@ export class DashboardComponent implements OnInit {
       existingChart.destroy();
     }
 
-    const isWithinDateRange = (issueDate: Date): boolean => {
-      if (this.initialDate && this.endDate) {
-        return issueDate >= this.initialDate && issueDate <= this.endDate;
-      } else if (this.initialDate) {
-        return issueDate >= this.initialDate;
-      } else if (this.endDate) {
-        return issueDate <= this.endDate;
-      }
-      return true;
-    };
-
     const uniqueMonths = [...new Set(
       response
-        .filter((issue: any) => isWithinDateRange(new Date(issue.created_at)))
+        .filter((issue: any) => this.isWithinDateRange(new Date(issue.created_at)))
         .map((issue: any) => {
           const mes = new Date(issue.created_at).getMonth();
           return typeof mes === 'number' ? mes : null;
@@ -202,7 +191,7 @@ export class DashboardComponent implements OnInit {
     const dataPorMes = (mes: number) => {
       return response.filter((issue: any) =>
         new Date(issue.created_at).getMonth() === mes &&
-        isWithinDateRange(new Date(issue.created_at))
+        this.isWithinDateRange(new Date(issue.created_at))
       );
     };
 
@@ -252,20 +241,9 @@ export class DashboardComponent implements OnInit {
     this.totalChatbot = chats;
     this.totalMails = mails;
 
-    const isWithinDateRange = (issueDate: Date): boolean => {
-      if (this.initialDate && this.endDate) {
-        return issueDate >= this.initialDate && issueDate <= this.endDate;
-      } else if (this.initialDate) {
-        return issueDate >= this.initialDate;
-      } else if (this.endDate) {
-        return issueDate <= this.endDate;
-      }
-      return true;
-    };
-
     const uniqueMonths = [...new Set(
       response
-        .filter((issue: any) => isWithinDateRange(new Date(issue.created_at)))
+        .filter((issue: any) => this.isWithinDateRange(new Date(issue.created_at)))
         .map((issue: any) => {
           const mes = new Date(issue.created_at).getMonth();
           return typeof mes === 'number' ? mes : null;
@@ -279,7 +257,7 @@ export class DashboardComponent implements OnInit {
     const dataPorMes = (mes: number) => {
       return response.filter((issue: any) =>
         new Date(issue.created_at).getMonth() === mes &&
-        isWithinDateRange(new Date(issue.created_at))
+        this.isWithinDateRange(new Date(issue.created_at))
       );
     };
 
@@ -329,20 +307,9 @@ export class DashboardComponent implements OnInit {
     this.totalChatbot = chats;
     this.totalMails = mails;
 
-    const isWithinDateRange = (issueDate: Date): boolean => {
-      if (this.initialDate && this.endDate) {
-        return issueDate >= this.initialDate && issueDate <= this.endDate;
-      } else if (this.initialDate) {
-        return issueDate >= this.initialDate;
-      } else if (this.endDate) {
-        return issueDate <= this.endDate;
-      }
-      return true;
-    };
-
     const uniqueMonths = [...new Set(
       response
-        .filter((issue: any) => isWithinDateRange(new Date(issue.created_at)))
+        .filter((issue: any) => this.isWithinDateRange(new Date(issue.created_at)))
         .map((issue: any) => {
           const mes = new Date(issue.created_at).getMonth();
           return typeof mes === 'number' ? mes : null;
@@ -356,7 +323,7 @@ export class DashboardComponent implements OnInit {
     const dataPorMes = (mes: number) => {
       return response.filter((issue: any) =>
         new Date(issue.created_at).getMonth() === mes &&
-        isWithinDateRange(new Date(issue.created_at))
+        this.isWithinDateRange(new Date(issue.created_at))
       );
     };
 
@@ -418,7 +385,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  onDateChange() {   
+  onDateChange() {
     const startDateValue = this.dateForm.get('startDate')?.value;
     const endDateValue = this.dateForm.get('endDate')?.value;
 
@@ -430,13 +397,13 @@ export class DashboardComponent implements OnInit {
       this.createVariacionMensualChart(issues, this.selectedState ?? '');
       this.createDistribucionCanalChart(issues, this.selectedOrigen ?? '');
       this.createEvolucionAcumuladaChart(issues, this.selectedOrigen ?? '');
-    });        
+    });
   }
 
-  resetForm() {      
+  resetForm() {
     this.dateForm.reset();
-      
+
     this.selectedState = null;
-    this.selectedOrigen = null;  
+    this.selectedOrigen = null;
   }
 }
