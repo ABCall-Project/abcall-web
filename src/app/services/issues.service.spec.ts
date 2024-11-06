@@ -25,7 +25,7 @@ describe('IssuesService', () => {
     httpMock.verify();
   });
 
-  it('should retrieve an answer based on a question', () => {
+  it('Should retrieve an answer based on a question', () => {
     const question = 'What is AI?';
     const mockResponse: AnswerResponse = { answer: 'Artificial Intelligence is...' };
 
@@ -38,7 +38,7 @@ describe('IssuesService', () => {
     req.flush(mockResponse);
   });
 
-  it('should retrieve a predictive AI answer based on user ID', () => {
+  it('Should retrieve a predictive AI answer based on user ID', () => {
     const userId = 'user123';
     const mockResponse: AnswerResponse = { answer: 'This is a predictive response.' };
 
@@ -50,7 +50,7 @@ describe('IssuesService', () => {
     expect(req.request.method).toBe('GET');
     req.flush(mockResponse);
   });
-  it('should retrieve issues dashboard data', () => {
+  it('Should retrieve issues dashboard data', () => {
     const customerId = '123';
     const mockIssues: IIssuesDashboard[] = [
       { status: 'open', channel_plan_id: 'plan-1', created_at: new Date('2024-01-01') },
@@ -69,7 +69,7 @@ describe('IssuesService', () => {
     req.flush(mockIssues);
   });
 
-  it('should send parameters in the request when provided', () => {
+  it('Should send parameters in the request when provided', () => {
     const customerId = '123';
     const status = 'open';
     const mockIssues: IIssuesDashboard[] = [
@@ -88,6 +88,20 @@ describe('IssuesService', () => {
     expect(req.request.params.has('status')).toBeTrue();
     expect(req.request.params.get('status')).toBe(status);
     req.flush(mockIssues);
+  });
+
+  it('Should create an issue and return the response', () => {
+    const issueData = new FormData();
+    const expectedMessage = 'mock message';
+    const mockIssueResponse: IssueResponse = { message: expectedMessage };
+
+    service.createIssue(issueData).subscribe((response) => {
+      expect(response.message).toBe(expectedMessage);
+    });
+
+    const req = httpMock.expectOne(`${environment.ApiBase}${environment.createIssue}`);
+    expect(req.request.method).toBe('POST');
+    req.flush(mockIssueResponse); // Simulate the response
   });
 
 });
