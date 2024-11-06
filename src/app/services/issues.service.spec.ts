@@ -50,4 +50,44 @@ describe('IssuesService', () => {
     expect(req.request.method).toBe('GET');
     req.flush(mockResponse);
   });
+  it('should retrieve issues dashboard data', () => {
+    const customerId = '123';
+    const mockIssues: IIssuesDashboard[] = [
+      { status: 'open', channel_plan_id: 'plan-1', created_at: new Date('2024-01-01') },
+      { status: 'closed', channel_plan_id: 'plan-2', created_at: new Date('2024-02-01') }
+    ];
+
+    service.getIssuesDasboard(customerId).subscribe((issues) => {
+      expect(issues.length).toBe(2);
+      expect(issues[0].status).toBe('open');
+    });
+
+    const req = httpMock.expectOne(
+      `${environment.ApiBase}${environment.getIssuesDashboard}`.replace('{CUSTOMER_ID}', customerId)
+    );
+    expect(req.request.method).toBe('GET');
+    req.flush(mockIssues);
+  });
+
+  it('should send parameters in the request when provided', () => {
+    const customerId = '123';
+    const status = 'open';
+    const mockIssues: IIssuesDashboard[] = [
+      { status: 'open', channel_plan_id: 'plan-1', created_at: new Date('2024-01-01') }
+    ];
+
+    service.getIssuesDasboard(customerId, status).subscribe((issues) => {
+      expect(issues.length).toBe(1);
+      expect(issues[0].status).toBe('open');
+    });
+
+    const req = httpMock.expectOne(
+      `${environment.ApiBase}${environment.getIssuesDashboard}&status=open`.replace('{CUSTOMER_ID}', customerId)
+    );
+    expect(req.request.method).toBe('GET');
+    expect(req.request.params.has('status')).toBeTrue();
+    expect(req.request.params.get('status')).toBe(status);
+    req.flush(mockIssues);
+  });
+
 });
