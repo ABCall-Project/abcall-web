@@ -19,6 +19,7 @@ import { Router } from '@angular/router';
 import { IssuesService } from 'src/app/services/issues.service';
 import { ModalPredictiveAnswerComponent } from '../modal-predictive-answer/modal-predictive-answer.component';
 import { UsersService } from 'src/app/services/users/users.service';
+import { CustomersService } from 'src/app/services/customers/customers.service';
 
 
 describe('CreateIssueComponent', () => {
@@ -28,6 +29,7 @@ describe('CreateIssueComponent', () => {
   let mockRouter: jasmine.SpyObj<Router>;
   let mockIssuesService: jasmine.SpyObj<IssuesService>;  
   let usersService: UsersService;
+  let customersService: CustomersService;
 
   beforeEach(async () => {
     dialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
@@ -48,11 +50,13 @@ describe('CreateIssueComponent', () => {
       providers: [
         { provide: MatDialog, useValue: dialogSpy },
         { provide: Router, useValue: mockRouter },
-        { provide: IssuesService, useValue: mockIssuesService }
+        { provide: IssuesService, useValue: mockIssuesService },
+        { provide: CustomersService, useValue: { getCustomers: () => of([]), getChannelByPlan: () => of([]) } },
       ]
     }).compileComponents();    
 
     usersService = TestBed.inject(UsersService);
+    customersService = TestBed.inject(CustomersService);
   });
 
   beforeEach(() => {
@@ -284,6 +288,15 @@ describe('CreateIssueComponent', () => {
     });
   });
 
+  it('should handle error when loading channels', () => {
+    const consoleSpy = spyOn(console, 'error');
+    spyOn(customersService, 'getChannelByPlan').and.returnValue(throwError('Error'));
+
+    component.loadChannels('somePlanId');
+
+    expect(consoleSpy).toHaveBeenCalledWith('Error al cargar los Canales', 'Error');
+  });
+  
   it('should handle error when loading users', () => {
     const consoleSpy = spyOn(console, 'error');
     spyOn(usersService, 'getUsersByRole').and.returnValue(throwError('Error'));
