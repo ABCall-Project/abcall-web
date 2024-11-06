@@ -415,5 +415,21 @@ describe('DashboardComponent', () => {
     );
   });
 
-  
+  it('should handle unexpected values in OnSelectionState', () => {
+  const mockEvent = { value: 'unexpectedValue' };
+  issuesService.getIssuesDasboard.and.returnValue(of([]));
+  component.OnSelectionState(mockEvent as any);
+
+  expect(component.selectedState).toBe('unexpectedValue');
+  expect(issuesService.getIssuesDasboard).toHaveBeenCalled();
+});
+
+it('should handle null values in OnSelectionChange', () => {
+  const mockEvent = { value: null };
+  issuesService.getIssuesDasboard.and.returnValue(of([]));
+  component.OnSelectionChange(mockEvent as any);
+
+  expect(component.selectedOrigen).toBeNull();
+  expect(issuesService.getIssuesDasboard).toHaveBeenCalled();
+});
 });
