@@ -33,11 +33,6 @@ export class IssuesService {
       .pipe(
         map(response => response)
       );
-    return this.http.get<IIssuesDashboard[]>(url)
-      .pipe(
-        map(reponse => {
-          return reponse;
-        }));
   }
 
   createIssue(issue: FormData): Observable<IssueResponse> {
