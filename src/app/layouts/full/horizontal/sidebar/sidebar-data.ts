@@ -31,7 +31,7 @@ export const navItems: NavItem[] = [
             displayName: 'Crear Incidente',
             iconName: 'point',
             route: '/app/new-issue',
-          },
+          }
         ]
       },
       {
@@ -39,6 +39,7 @@ export const navItems: NavItem[] = [
         iconName: 'point',
         route: '/app/dashboard',
       },
+      
     ],
   },
   {
@@ -56,8 +57,11 @@ export const navItems: NavItem[] = [
             iconName: 'point',
             route: '/app/invoices',
           },
-
-         
+          {
+            displayName: 'Cargue Base de Conocimiento',
+            iconName: 'point',
+            route: '/app/knowledge-base',
+          },         
         ],
       },
 

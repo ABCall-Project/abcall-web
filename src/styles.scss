@@ -128,11 +128,111 @@ body {
 }
 
 .responsive-form mat-form-field {
-  flex: 1 1 40%;
+  flex: 1 1 20%;
 }
 
 @media (max-width: 768px) {
   .responsive-form mat-form-field {
     flex: 1 1 100%;
   }
+}
+
+/*Load Knowledge Base */
+
+.file-upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.file-label {
+  font-weight: bold;
+  color: rgba(0, 0, 0, 0.6); /* Color similar al de Material */
+  margin-bottom: 8px;
+}
+
+input[type="file"] {
+  margin-top: 4px;
+}
+
+mat-error {
+  color: #f44336;
+  font-weight: bold;
+}
+
+.file-upload-form {
+  text-align: left;
+  padding-top: 20px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.preview {
+  margin-top: 20px;
+  text-align: left;
+  white-space: pre-wrap;
+  background-color: #f4f4f4;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.confirmation-message {
+  margin-top: 20px;
+  color: green;
+  font-weight: bold;
+}
+
+/*Issue Details*/
+
+.incident-details {
+  max-width: 500px;
+  margin: 0 auto;
+  background-color: #f0f4ff;
+  border-radius: 8px;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  color: #1a1a1a;
+}
+
+.header {
+  background-color: #7366ff;
+  color: white;
+  padding: 16px;
+  text-align: center;
+}
+
+.content {
+  padding: 24px;
+}
+
+.field {
+  display: flex;
+  margin-bottom: 16px;
+}
+
+.label {
+  font-weight: bold;
+  color: #1a1a1a;
+  width: 100px;
+}
+
+.value {
+  color: #333;
+}
+
+.status {
+  color: #7366ff;
+  font-weight: bold;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+  background-color: #f0f4ff;
 }
