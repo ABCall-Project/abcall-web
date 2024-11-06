@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -19,11 +19,20 @@ export class IssuesService {
 
   getIssuesDasboard(customerId: string, status?: string, channelPlanId?: string, createdAt?: Date, closedAt?: Date) {
     const url = `${environment.ApiBase}${environment.getIssuesDashboard}`.replace('{CUSTOMER_ID}', customerId);
-    return this.http.get<IIssuesDashboard[]>(url)
+
+    const createdAtStr = createdAt ? createdAt.toISOString().split('T')[0] : undefined;
+    const closedAtStr = closedAt ? closedAt.toISOString().split('T')[0] : undefined;
+
+    let params = new HttpParams();
+    if (status) params = params.set('status', status);
+    if (channelPlanId) params = params.set('channel_plan_id', channelPlanId);
+    if (createdAtStr) params = params.set('created_at', createdAtStr);
+    if (closedAtStr) params = params.set('closed_at', closedAtStr);
+
+    return this.http.get<IIssuesDashboard[]>(url, { params })
       .pipe(
-        map(reponse => {
-          return reponse;
-        }));
+        map(response => response)
+      );
   }
 
   createIssue(issue: FormData): Observable<IssueResponse> {

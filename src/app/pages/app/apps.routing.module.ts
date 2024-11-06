@@ -3,6 +3,7 @@ import { IssuesComponent } from './issues/issues.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { InvoiceListComponent } from './payment/invoice-list/invoice-list.component';
 import { CreateIssueComponent } from './manage-issues/create-issue/create-issue.component';
+import { KnowledgeBaseComponent } from './knowledge-base/knowledge-base.component';
 
 export const AppsRoutes: Routes = [
   {
@@ -20,5 +21,9 @@ export const AppsRoutes: Routes = [
   {
     path: 'new-issue',
     component: CreateIssueComponent,
+  },
+  {
+    path: 'knowledge-base',
+    component: KnowledgeBaseComponent,
   },
 ];

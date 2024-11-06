@@ -7,6 +7,7 @@ import { MaterialModule } from 'src/app/material.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AppsRoutes } from './apps.routing.module';
 import { MatIconModule } from '@angular/material/icon';
+import { KnowledgeBaseComponent } from './knowledge-base/knowledge-base.component';
 
 @NgModule({
   imports: [
@@ -15,8 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
     FormsModule,
     RouterModule.forChild(AppsRoutes),
     IssuesComponent,
-    DashboardComponent,
-    MatIconModule
+    DashboardComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
