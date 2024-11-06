@@ -9,13 +9,26 @@ import { MatTableModule } from '@angular/material/table';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TablerIconsModule } from 'angular-tabler-icons';
+import { Issue } from 'src/app/models/issue/issue';
+import { IssuesService } from 'src/app/services/issues.service';
 import { ModalIssueDetailComponent } from './modal-issue-detail.component';
 
 describe('ModalIssueDetailComponent', () => {
   let component: ModalIssueDetailComponent;
   let fixture: ComponentFixture<ModalIssueDetailComponent>;
+  let mockIssuesService: jasmine.SpyObj<IssuesService>;
+  let mockIssue: Issue;
 
-  beforeEach(() => {
+
+
+  beforeEach(async () => {
+    mockIssue = {
+      id: '123',
+      subject: 'Test Issue',
+      description: 'Test description',
+      status: 'Open',
+      // Agregar otros campos necesarios según la interfaz `Issue`
+    };
     TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
@@ -32,7 +45,7 @@ describe('ModalIssueDetailComponent', () => {
 
       ],// Import the standalone component here
       providers: [
-        { provide: MAT_DIALOG_DATA, useValue: { issue: {} } }, // Provide mock data for the dialog
+        { provide: MAT_DIALOG_DATA, useValue: { issue: mockIssue } }
       ]
     });
     fixture = TestBed.createComponent(ModalIssueDetailComponent);
@@ -43,4 +56,6 @@ describe('ModalIssueDetailComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+
 });

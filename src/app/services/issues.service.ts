@@ -45,7 +45,7 @@ export class IssuesService {
   }
 
   getIssueById(issueId: string): Observable<Issue> {
-    return this.http.get<Issue>(`${environment.ApiBase}${environment.getIssueByid}${issueId}`);
+    return this.http.get<Issue>(`${environment.ApiIssues}${environment.getIssueByid}${issueId}`);
   }
 
 }
