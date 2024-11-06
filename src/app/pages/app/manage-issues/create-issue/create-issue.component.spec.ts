@@ -18,7 +18,7 @@ import { ModalIssueAiAnswerComponent } from '../modal-issue-ai-answer/modal-issu
 import { Router } from '@angular/router';
 import { IssuesService } from 'src/app/services/issues.service';
 import { ModalPredictiveAnswerComponent } from '../modal-predictive-answer/modal-predictive-answer.component';
-import { Customer } from 'src/app/models/customer/customer';
+import { UsersService } from 'src/app/services/users/users.service';
 
 
 describe('CreateIssueComponent', () => {
@@ -27,7 +27,7 @@ describe('CreateIssueComponent', () => {
   let dialogSpy: jasmine.SpyObj<MatDialog>;
   let mockRouter: jasmine.SpyObj<Router>;
   let mockIssuesService: jasmine.SpyObj<IssuesService>;  
-
+  let usersService: UsersService;
 
   beforeEach(async () => {
     dialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
@@ -48,21 +48,17 @@ describe('CreateIssueComponent', () => {
       providers: [
         { provide: MatDialog, useValue: dialogSpy },
         { provide: Router, useValue: mockRouter },
-        { provide: IssuesService, useValue: mockIssuesService },
-
+        { provide: IssuesService, useValue: mockIssuesService }
       ]
     }).compileComponents();    
 
-    
+    usersService = TestBed.inject(UsersService);
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CreateIssueComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
-    spyOn(console, 'error');
-
-
+    fixture.detectChanges();    
   });
 
   it('should create', () => {
@@ -286,5 +282,14 @@ describe('CreateIssueComponent', () => {
         buttonCloseTitle: 'Aceptar',
       },
     });
+  });
+
+  it('should handle error when loading users', () => {
+    const consoleSpy = spyOn(console, 'error');
+    spyOn(usersService, 'getUsersByRole').and.returnValue(throwError('Error'));
+
+    component.loadUsers('someRoleId');
+
+    expect(consoleSpy).toHaveBeenCalledWith('Error al cargar los Asesores', 'Error');
   });
 });
