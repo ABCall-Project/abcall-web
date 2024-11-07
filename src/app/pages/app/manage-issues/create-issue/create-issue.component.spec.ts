@@ -17,8 +17,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ModalIssueAiAnswerComponent } from '../modal-issue-ai-answer/modal-issue-ai-answer.component';
 import { Router } from '@angular/router';
 import { IssuesService } from 'src/app/services/issues.service';
-import { CustomersService } from 'src/app/services/customers/customers.service';
 import { ModalPredictiveAnswerComponent } from '../modal-predictive-answer/modal-predictive-answer.component';
+import { UsersService } from 'src/app/services/users/users.service';
+import { CustomersService } from 'src/app/services/customers/customers.service';
 
 
 describe('CreateIssueComponent', () => {
@@ -27,15 +28,13 @@ describe('CreateIssueComponent', () => {
   let dialogSpy: jasmine.SpyObj<MatDialog>;
   let mockRouter: jasmine.SpyObj<Router>;
   let mockIssuesService: jasmine.SpyObj<IssuesService>;
-  let mockCustomersService: jasmine.SpyObj<CustomersService>;
-
-
+  let usersService: UsersService;
+  let customersService: CustomersService;
 
   beforeEach(async () => {
     dialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
     mockRouter = jasmine.createSpyObj('Router', ['navigate']);
     mockIssuesService = jasmine.createSpyObj('IssuesService', ['createIssue']);
-    mockCustomersService = jasmine.createSpyObj('CustomersService', ['getCustomers', 'getChannelByPlan']);
 
 
     await TestBed.configureTestingModule({
@@ -52,18 +51,18 @@ describe('CreateIssueComponent', () => {
         { provide: MatDialog, useValue: dialogSpy },
         { provide: Router, useValue: mockRouter },
         { provide: IssuesService, useValue: mockIssuesService },
-
+        { provide: CustomersService, useValue: { getCustomers: () => of([]), getChannelByPlan: () => of([]) } },
       ]
     }).compileComponents();
+
+    usersService = TestBed.inject(UsersService);
+    customersService = TestBed.inject(CustomersService);
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CreateIssueComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    spyOn(console, 'error');
-
-
   });
 
   it('should create', () => {
@@ -224,47 +223,46 @@ describe('CreateIssueComponent', () => {
     component.onCustomerSelect(mockCustomerId);
   });
 
-  // it('should open ModalPredictiveAnswerComponent if customerId is valid', () => {
-  //   const validClientId = '12345';
-  //   component.form.get('customerId')?.setValue(validClientId);
-    
-  //   component.openPredictiveAnswer();
-  
-  //   expect(dialogSpy.open).toHaveBeenCalledWith(ModalPredictiveAnswerComponent, {
-  //     width: '70%',
-  //     data: { userId: validClientId },
-  //   });
-  // });
-  
 
-  // it('should open error modal if customerId is empty', () => {
-  //   component.form.get('customerId')?.setValue('');
+  it('should open ModalPredictiveAnswerComponent with default userId on openPredictiveAnswer', () => {
+    component.openPredictiveAnswer();
 
-  //   spyOn(component, 'openModalErrorUserEmpty').and.callThrough();
-  //   component.openPredictiveAnswer();
+    expect(dialogSpy.open).toHaveBeenCalledWith(ModalPredictiveAnswerComponent, {
+      width: '70%',
+      data: {
+        userId: '090b9b2f-c79c-41c1-944b-9d57cca4d582',
+      },
+    });
+  });
 
-  //   expect(component.openModalErrorUserEmpty).toHaveBeenCalled();
-  //   expect(dialogSpy.open).toHaveBeenCalledWith(ModalMessageComponent, {
-  //     width: '70%',
-  //     data: {
-  //       userId: '090b9b2f-c79c-41c1-944b-9d57cca4d582',
-  //     },
-  //   });
-  // });
+  it('should open ModalMessageComponent with correct data on openModalErrorUserEmpty', () => {
+    component.openModalErrorUserEmpty();
 
-  // it('should open error modal if customerId contains only spaces', () => {
-  //   component.form.get('customerId')?.setValue('   ');
+    expect(dialogSpy.open).toHaveBeenCalledWith(ModalMessageComponent, {
+      data: {
+        title: 'Incidentes',
+        message: 'Debe seleccionar un cliente ',
+        buttonCloseTitle: 'Aceptar',
+      },
+    });
+  });
 
-  //   spyOn(component, 'openModalErrorUserEmpty').and.callThrough();
-  //   component.openPredictiveAnswer();
+  it('should handle error when loading channels', () => {
+    const consoleSpy = spyOn(console, 'error');
+    spyOn(customersService, 'getChannelByPlan').and.returnValue(throwError('Error'));
 
-  //   expect(component.openModalErrorUserEmpty).toHaveBeenCalled();
-  //   expect(dialogSpy.open).toHaveBeenCalledWith(ModalMessageComponent, {
-  //     width: '70%',
-  //     data: {
-  //       userId: '090b9b2f-c79c-41c1-944b-9d57cca4d582',
-  //     },
-  //   });
-  // });
+    component.loadChannels('somePlanId');
+
+    expect(consoleSpy).toHaveBeenCalledWith('Error al cargar los Canales', 'Error');
+  });
+
+  it('should handle error when loading users', () => {
+    const consoleSpy = spyOn(console, 'error');
+    spyOn(usersService, 'getUsersByRole').and.returnValue(throwError('Error'));
+
+    component.loadUsers('someRoleId');
+
+    expect(consoleSpy).toHaveBeenCalledWith('Error al cargar los Asesores', 'Error');
+  });
 
 });

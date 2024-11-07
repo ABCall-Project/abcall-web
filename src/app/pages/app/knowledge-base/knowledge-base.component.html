@@ -1,0 +1,20 @@
+<h1>Cargue de Base de Conocimiento</h1>
+<form (ngSubmit)="onSubmit()" #fileForm="ngForm" class="file-upload-form">
+  <p>Selecciona un archivo de texto:</p>
+  <input type="file" (change)="onFileSelected($event)" accept=".txt" required />
+  
+  <button mat-raised-button color="primary" type="submit" [disabled]="!selectedFile">
+    Cargar Archivo
+  </button>
+
+  <mat-error *ngIf="fileError">{{ fileError }}</mat-error>
+</form>
+
+<div *ngIf="fileContent" class="preview">
+  <h3>Previsualización del archivo:</h3>
+  <pre>{{ fileContent }}</pre>
+</div>
+
+<div *ngIf="confirmationMessage" class="confirmation-message">
+  {{ confirmationMessage }}
+</div>

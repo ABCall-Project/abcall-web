@@ -17,5 +17,5 @@ export const environment = {
     ...customersUrls,
     ...usersUrls,
 
-    key:'54T;uv3Dr885',
+    key: '54T;uv3Dr885',
 }

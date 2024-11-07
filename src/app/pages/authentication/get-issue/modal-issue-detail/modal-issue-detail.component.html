@@ -1,0 +1,51 @@
+<div class="d-flex flex-row justify-content-center align-items-center header-modal">
+    <h2 mat-dialog-title style="color: white;">Solución sugerida</h2>
+</div>
+
+<mat-dialog-content class="mat-typography">
+    <mat-card class="cardWithShadow">
+        <div class="container-fluid">
+            <div class="row d-flex align-items-start" style=" margin-left: 1em;">
+                <div class="col-4 d-flex align-items-start" style="color: #090041;display: table; height: 100%;">
+                    <h3><b>Fecha:</b></h3>
+                </div>
+                <div class="col-8 d-flex justify-content-start" style="color: #090041;">
+                    <div class="cell">{{ issue.created_at | date: 'yyyy-MM-dd HH:mm:ss' }}</div>
+                </div>
+            </div>
+            <div class="row d-flex align-items-start" style=" margin-left: 1em;">
+                <div class="col-4 d-flex align-items-start" style="color: #090041;display: table; height: 100%;">
+                    <h3><b>Caso:</b></h3>
+                </div>
+                <div class="col-8 d-flex justify-content-start" style="color: #090041;"> {{ issue.id }}
+                </div>
+            </div>
+            <div class="row d-flex align-items-start" style=" margin-left: 1em;">
+                <div class="col-4 d-flex align-items-start" style="color: #090041;display: table; height: 100%;">
+                    <h3><b>Nombre:</b></h3>
+                </div>
+                <div class="col-8 d-flex justify-content-start" style="color: #090041;"> {{ issue.subject }}
+                </div>
+            </div>
+            <div class="row d-flex align-items-start" style=" margin-left: 1em;">
+                <div class="col-4 d-flex align-items-start" style="color: #090041;display: table; height: 100%;">
+                    <h3><b>Descripcion:</b></h3>
+                </div>
+                <div class="col-8 d-flex justify-content-start" style="color: #090041;"> {{ issue.description }}
+                </div>
+            </div>
+            <div class="row d-flex align-items-start" style=" margin-left: 1em;">
+                <div class="col-4 d-flex align-items-start" style="color: #090041;display: table; height: 100%;">
+                    <h3><b>Estado:</b></h3>
+                </div>
+                <div class="col-8 d-flex justify-content-start" style="color: #1029b3;"> {{ issue.status }}
+                </div>
+            </div>
+        </div>
+    </mat-card>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+    <button mat-flat-button color="primary" [mat-dialog-close]="true" cdkFocusInitial
+        style="width: 300px;">Cerrar</button>
+</mat-dialog-actions>

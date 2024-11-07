@@ -1,0 +1,48 @@
+<div class="blank-layout-container justify-content-center">
+    <div class="position-relative row w-100 h-100">
+        <div class="col-lg-7 col-xl-8 bg-gredient p-0">
+            <div class="p-24 h-100">
+                <a [routerLink]="['/dashboards/dashboard1']" *ngIf="options.theme === 'light'">
+                    <img src="./assets/images/logos/light-logo.svg" class="align-middle m-2" alt="logo" />
+                </a>
+                <a [routerLink]="['/dashboards/dashboard1']" *ngIf="options.theme === 'dark'">
+                    <img src="./assets/images/logos/light-logo.svg" class="align-middle m-2" alt="logo" />
+                </a>
+
+                <div class="align-items-center justify-content-center img-height d-none d-lg-flex">
+                    <img src="/assets/images/backgrounds/login-bg.svg" alt="login" style="max-width: 500px" />
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5 col-xl-4 p-0">
+            <div class="p-32 d-flex align-items-start align-items-lg-center justify-content-center h-100">
+                <div class="row justify-content-center w-100">
+                    <div class="col-lg-9 max-width-form">
+                        <h4 class="f-w-700 f-s-24 m-0">AbCall - Customer Service</h4>
+
+                        <form class="m-t-30" [formGroup]="form" (ngSubmit)="submit()">
+                            <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Radicado</mat-label>
+                            <mat-form-field appearance="fill" class="w-100" color="primary">
+                                <input matInput formControlName="issueId" placeholder="Ingrese el numero de radicado" />
+                            </mat-form-field>
+                            <div class="d-flex align-items-center m-b-12">
+
+                            </div>
+                            <button mat-flat-button style="background-color: #090041;
+                            color: white;" class="w-100">
+                                Buscar
+                            </button>
+
+                            <!-- input -->
+                        </form>
+                        <span class="d-block f-w-500 d-block m-t-24">¿Aun no estas registrado?
+                            <a [routerLink]="['/authentication/side-register']"
+                                class="text-decoration-none text-primary f-w-500 f-s-14">
+                                Ver Planes</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
