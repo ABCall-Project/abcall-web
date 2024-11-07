@@ -18,4 +18,9 @@ export class CustomersService {
   getChannelByPlan(planId: string): Observable<Channel[]> {
     return this.http.get<Channel[]>(`${environment.ApiBase}${environment.getChannelByPlan}${planId}`);
   }
+
+  loadCustomerDatabaseEntries(customerId: string, entries: { topic: string; content: string }[]): Observable<any> {
+    const payload = { customer_id: customerId, entries };
+    return this.http.post<any>(`${environment.ApiCustomers}/customer/loadCustomerDataBase`, payload);
+  }
 }
