@@ -76,8 +76,41 @@ export class CreateIssueComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.loadCustomers();
-    this.loadUsers(ROLES.Agent)
+    this.customers = [
+      {
+        "id": "845eb227-5356-4169-9799-95a97ec5ce33",
+        "name": "Logan IT",
+        "plan_id": "845eb227-5356-4169-9799-95a97ec5ce33",
+        "date_suscription": "2024-10-12T00:00:00+00:00"
+      }
+    ]
+    this.channels = [
+
+      {
+        "id": "e120f5a3-9444-48b6-88b0-26e2a21b1957",
+        "name": "Email",
+      },
+
+      {
+        "id": "e120f5a3-9444-48b6-88b0-26e2a21b1957",
+        "name": "Telefono",
+      }
+    ]
+
+    // this.loadCustomers();
+    this.agents = [
+      {
+        "id": "e120f5a3-9444-48b6-88b0-26e2a21b1957",
+        "name": "DANNA",
+        "last_name": "LOPEZ",
+        "phone_number": "55555555",
+        "email": "danna@yopmail.com",
+        "address": "Calle luna",
+        "birthdate": "1983-11-19",
+        "role_id": "e4f78f9c-4e24-4588-9315-92dd601c8caa"
+      }
+    ]
+    //this.loadUsers(ROLES.Agent)
   }
 
   openModalIAAnswer() {
