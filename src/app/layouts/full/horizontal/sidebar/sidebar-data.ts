@@ -39,7 +39,7 @@ export const navItems: NavItem[] = [
         iconName: 'point',
         route: '/app/dashboard',
       },
-      
+
     ],
   },
   {
@@ -61,12 +61,17 @@ export const navItems: NavItem[] = [
             displayName: 'Cargue Base de Conocimiento',
             iconName: 'point',
             route: '/app/knowledge-base',
-          },         
+          },
         ],
       },
 
-     
+
     ],
   },
- 
+  {
+    displayName: 'Salir',
+    iconName: 'exit',
+    route: '/authentication/side-login',
+  },
+
 ];
