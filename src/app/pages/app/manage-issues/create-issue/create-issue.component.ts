@@ -78,8 +78,14 @@ export class CreateIssueComponent implements OnInit {
   ngOnInit(): void {
     this.customers = [
       {
-        "id": "845eb227-5356-4169-9799-95a97ec5ce33",
-        "name": "Logan IT",
+        "id": "090b9b2f-c79c-41c1-944b-9d57cca4d582",
+        "name": "MIGUEL TOVAR",
+        "plan_id": "845eb227-5356-4169-9799-95a97ec5ce33",
+        "date_suscription": "2024-10-12T00:00:00+00:00"
+      },
+      {
+        "id": "9c6ace24-775e-4af2-bd95-480c2c540ae9",
+        "name": "MIGUEL VEGA",
         "plan_id": "845eb227-5356-4169-9799-95a97ec5ce33",
         "date_suscription": "2024-10-12T00:00:00+00:00"
       }
@@ -87,13 +93,17 @@ export class CreateIssueComponent implements OnInit {
     this.channels = [
 
       {
-        "id": "e120f5a3-9444-48b6-88b0-26e2a21b1957",
-        "name": "Email",
+        "id": "d256f4b9-f970-4222-9a7b-3e83def73038",
+        "name": "Correo",
       },
 
       {
-        "id": "e120f5a3-9444-48b6-88b0-26e2a21b1957",
-        "name": "Telefono",
+        "id": "6938edfe-9f4b-445b-8dd5-fbaa570a273a",
+        "name": "Llamada",
+      }, {
+
+        "id": "3a46cc3e-b2ee-4aa0-8498-163e04eb1430",
+        "name": "ChatBot",
       }
     ]
 
