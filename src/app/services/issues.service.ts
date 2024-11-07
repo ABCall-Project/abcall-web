@@ -36,7 +36,7 @@ export class IssuesService {
   }
 
   createIssue(issue: FormData): Observable<IssueResponse> {
-    return this.http.post<IssueResponse>(`${environment.ApiBase}${environment.createIssue}`, issue);
+    return this.http.post<IssueResponse>(`http://51.8.255.65:3007${environment.createIssue}`, issue);
   }
 
 
@@ -45,7 +45,7 @@ export class IssuesService {
   }
 
   getIssueById(issueId: string): Observable<Issue> {
-    return this.http.get<Issue>(`${environment.ApiBase}${environment.getIssueByid}${issueId}`);
+    return this.http.get<Issue>(`http://51.8.255.65:3007${environment.getIssueByid}${issueId}`);
   }
 
 }
