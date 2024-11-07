@@ -11,6 +11,7 @@ import { IssueResponse } from '../models/issue/issue-response';
 describe('IssuesService', () => {
   let service: IssuesService;
   let httpMock: HttpTestingController;
+  const api = 'http://51.8.255.65:3007'
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -123,7 +124,7 @@ describe('IssuesService', () => {
       expect(response.message).toBe(expectedMessage);
     });
 
-    const req = httpMock.expectOne(`${environment.ApiBase}${environment.createIssue}`);
+    const req = httpMock.expectOne(`${api}${environment.createIssue}`);
     expect(req.request.method).toBe('POST');
     req.flush(mockIssueResponse);
   });
