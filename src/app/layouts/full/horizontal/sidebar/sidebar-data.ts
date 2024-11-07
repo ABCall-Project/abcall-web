@@ -70,7 +70,7 @@ export const navItems: NavItem[] = [
   },
   {
     displayName: 'Salir',
-    iconName: 'exit',
+    iconName: 'logout',
     route: '/authentication/side-login',
   },
 
