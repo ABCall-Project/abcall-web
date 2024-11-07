@@ -40,7 +40,12 @@ export class IssuesService {
   }
 
 
-  getPredictiveAIAnswer(userId:string): Observable<AnswerResponse> {
-    return this.http.get<AnswerResponse>(`${environment.ApiBase}${environment.getIAPredictiveAnswer}`.replace('{USER_ID}',userId));
+  getPredictiveAIAnswer(userId: string): Observable<AnswerResponse> {
+    return this.http.get<AnswerResponse>(`${environment.ApiBase}${environment.getIAPredictiveAnswer}`.replace('{USER_ID}', userId));
   }
+
+  getIssueById(issueId: string): Observable<Issue> {
+    return this.http.get<Issue>(`${environment.ApiBase}${environment.getIssueByid}${issueId}`);
+  }
+
 }

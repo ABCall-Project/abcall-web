@@ -27,7 +27,7 @@ describe('CreateIssueComponent', () => {
   let fixture: ComponentFixture<CreateIssueComponent>;
   let dialogSpy: jasmine.SpyObj<MatDialog>;
   let mockRouter: jasmine.SpyObj<Router>;
-  let mockIssuesService: jasmine.SpyObj<IssuesService>;  
+  let mockIssuesService: jasmine.SpyObj<IssuesService>;
   let usersService: UsersService;
   let customersService: CustomersService;
 
@@ -53,7 +53,7 @@ describe('CreateIssueComponent', () => {
         { provide: IssuesService, useValue: mockIssuesService },
         { provide: CustomersService, useValue: { getCustomers: () => of([]), getChannelByPlan: () => of([]) } },
       ]
-    }).compileComponents();    
+    }).compileComponents();
 
     usersService = TestBed.inject(UsersService);
     customersService = TestBed.inject(CustomersService);
@@ -62,7 +62,7 @@ describe('CreateIssueComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CreateIssueComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();    
+    fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -223,48 +223,7 @@ describe('CreateIssueComponent', () => {
     component.onCustomerSelect(mockCustomerId);
   });
 
-  // it('should open ModalPredictiveAnswerComponent if customerId is valid', () => {
-  //   const validClientId = '12345';
-  //   component.form.get('customerId')?.setValue(validClientId);
-    
-  //   component.openPredictiveAnswer();
-  
-  //   expect(dialogSpy.open).toHaveBeenCalledWith(ModalPredictiveAnswerComponent, {
-  //     width: '70%',
-  //     data: { userId: validClientId },
-  //   });
-  // });
-  
 
-  // it('should open error modal if customerId is empty', () => {
-  //   component.form.get('customerId')?.setValue('');
-
-  //   spyOn(component, 'openModalErrorUserEmpty').and.callThrough();
-  //   component.openPredictiveAnswer();
-
-  //   expect(component.openModalErrorUserEmpty).toHaveBeenCalled();
-  //   expect(dialogSpy.open).toHaveBeenCalledWith(ModalMessageComponent, {
-  //     width: '70%',
-  //     data: {
-  //       userId: '090b9b2f-c79c-41c1-944b-9d57cca4d582',
-  //     },
-  //   });
-  // });
-
-  // it('should open error modal if customerId contains only spaces', () => {
-  //   component.form.get('customerId')?.setValue('   ');
-
-  //   spyOn(component, 'openModalErrorUserEmpty').and.callThrough();
-  //   component.openPredictiveAnswer();
-
-  //   expect(component.openModalErrorUserEmpty).toHaveBeenCalled();
-  //   expect(dialogSpy.open).toHaveBeenCalledWith(ModalMessageComponent, {
-  //     width: '70%',
-  //     data: {
-  //       userId: '090b9b2f-c79c-41c1-944b-9d57cca4d582',
-  //     },
-  //   });
-  // });
   it('should open ModalPredictiveAnswerComponent with default userId on openPredictiveAnswer', () => {
     component.openPredictiveAnswer();
 
@@ -296,7 +255,7 @@ describe('CreateIssueComponent', () => {
 
     expect(consoleSpy).toHaveBeenCalledWith('Error al cargar los Canales', 'Error');
   });
-  
+
   it('should handle error when loading users', () => {
     const consoleSpy = spyOn(console, 'error');
     spyOn(usersService, 'getUsersByRole').and.returnValue(throwError('Error'));
@@ -305,4 +264,5 @@ describe('CreateIssueComponent', () => {
 
     expect(consoleSpy).toHaveBeenCalledWith('Error al cargar los Asesores', 'Error');
   });
+
 });
