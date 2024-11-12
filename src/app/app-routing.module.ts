@@ -2,31 +2,12 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BlankComponent } from './layouts/blank/blank.component';
 import { FullComponent } from './layouts/full/full.component';
+import { AppSideLoginComponent } from './pages/authentication/side-login/side-login.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: FullComponent,
-    children: [
-      {
-        path: '',
-        redirectTo: '/starter',
-        pathMatch: 'full',
-      },
-      {
-        path: 'starter',
-        loadChildren: () =>
-          import('./pages/pages.module').then((m) => m.PagesModule),
-      },
-      {
-        path: 'app',
-        loadChildren: () => import('./pages/app/apps.module').then((m) => m.AppsModule)
-      }
-    ],
-  },
-  {
-    path: '',
-    component: BlankComponent,
+    component: AppSideLoginComponent,
     children: [
       {
         path: 'authentication',
