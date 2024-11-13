@@ -1,24 +1,62 @@
 <div class="blank-layout-container justify-content-center">
   <div class="position-relative row w-100 h-100">
-    <div class="col-lg-7 col-xl-8 bg-gredient p-0">
+    <div class="col-lg-5 col-xl-8 bg-gredient p-0">
       <div class="p-24 h-100" style="background-color: #DED4EF;">
-        <a [routerLink]="['/dashboards/dashboard1']" *ngIf="options.theme === 'light'">
-          <img src="./assets/images/logos/light-logo.svg" class="align-middle m-2" alt="logo" />
-        </a>
-        <a [routerLink]="['/dashboards/dashboard1']" *ngIf="options.theme === 'dark'">
-          <img src="./assets/images/logos/light-logo.svg" class="align-middle m-2" alt="logo" />
-        </a>
+       
 
         <div class="align-items-center justify-content-center img-height d-none d-lg-flex" >
           <img src="/assets/images/backgrounds/abcallsignin-bg.svg" alt="login" style="max-width: 500px" />
         </div>
+        
       </div>
     </div>
-    <div class="col-lg-5 col-xl-4 p-0">
-      <div class="p-32 d-flex align-items-start align-items-lg-center justify-content-center h-100">
+
+    
+
+
+    <div class="col-lg-7 col-xl-4 p-0">
+
+      <div class="row justify-content-end" style="margin-right: 8em;">
+        <button [matMenuTriggerFor]="flags" mat-icon-button class="language-button m-r-8">
+          <img
+            [src]="selectedLanguage.icon"
+            class=" object-cover "
+          /><span style="font-size: 14px;">{{selectedLanguage.language}}</span>
+        </button>
+        <mat-menu #flags="matMenu" class="cardWithShadow">
+          <button
+            mat-menu-item
+            *ngFor="let lang of languages"
+            (click)="changeLanguage(lang)"
+          >
+            <div class="d-flex align-items-center">
+              <img
+                [src]="lang.icon"
+                class="object-cover m-r-8"
+              />
+              <span class="mat-subtitle-1 f-s-14">{{ lang.language }}</span>
+            </div>
+          </button>
+        </mat-menu>
+    </div>
+      <div class="d-flex align-items-start align-items-lg-start justify-content-center h-100">
+
+       
+
         <div class="row justify-content-center w-100">
+
+          
+
+
           <div class="col-lg-9 max-width-form">
-            <h4 class="f-w-700 f-s-24 m-0">AbCall</h4>
+            <div class="align-items-center justify-content-center  d-none d-lg-flex"  >
+              <img src="/assets/images/backgrounds/ABCall-Espanol 2.svg" style="width: 250px;" alt="login" />
+            </div>
+            <br/>
+            <div class="link-container align-items-center justify-content-center  d-none d-lg-flex">
+              <a href="#" class="active">Empresas</a>
+              <a href="#">Internos</a>
+            </div>
 
             
 
@@ -50,25 +88,36 @@
               </mat-form-field>
 
              
-              <button mat-flat-button color="primary" class="w-100" [disabled]="!form.valid">
+              <button mat-flat-button   style="width: 50%;background-color: #090041; color: white; margin: 0 auto; display: block;" [disabled]="!form.valid">
                 Iniciar Sesión
               </button>
               <!-- input -->
             </form>
-            <span class="d-block f-w-500 d-block m-t-24">
-              <a [routerLink]="['/authentication/side-register']"
-                class="text-decoration-none text-primary f-w-500 f-s-14">
+            <br/>
+            <span style="text-align: center; margin: 0 auto; display: block;">
+              <a [routerLink]="['/authentication/side-register']" style="color: #1AC3D2;"
+                class="text-decoration-none  f-w-500 f-s-14">
                 ¿Olvidaste tu contraseña?</a>
             </span>
 
-            <span class="d-block f-w-500 d-block m-t-24">
-              <a [routerLink]="['/authentication/side-register']"
-                class="text-decoration-none text-primary f-w-500 f-s-14">
-                ¿Aún no estás registrado? Ver planes</a>
+            <span style="text-align: center; margin: 0 auto; display: block;">
+              ¿Aún no estás registrado? &nbsp;<a [routerLink]="['/authentication/side-register']" style="color: #1AC3D2;"
+                class="text-decoration-none  f-w-500 f-s-14">
+                 <b>Ver planes</b></a>
             </span>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
+
+ <!-- Footer -->
+ <div class="footer">
+  <div class="social-links">
+    <a href="#" target="_blank"><img src="/assets/images/logos/Facebook.svg" style="width: 32px;" alt="login" /></a>
+    <a href="#" target="_blank"><img src="/assets/images/logos/Instagram.svg" style="width: 32px;" alt="login" /></a>
+    <a href="#" target="_blank"><img src="/assets/images/logos/LinkedIn.svg" style="width: 32px;" alt="login" /></a>
+  </div>
+  <span style="font-size: 12px;">&copy; ABCall</span>
 </div>
