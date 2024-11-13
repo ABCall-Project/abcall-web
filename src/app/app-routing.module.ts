@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { BlankComponent } from './layouts/blank/blank.component';
 import { FullComponent } from './layouts/full/full.component';
 import { AppSideLoginComponent } from './pages/authentication/side-login/side-login.component';
+import { GetIssueComponent } from './pages/authentication/get-issue/get-issue.component';
 
 
 const routes: Routes = [
@@ -13,6 +14,10 @@ const routes: Routes = [
           import('./pages/authentication/authentication.module').then(
             (m) => m.AuthenticationModule
           )
+  },
+  {
+    path: 'authentication/get-issue',
+    component: GetIssueComponent
   },
   {
     path: 'starter',
@@ -28,7 +33,7 @@ const routes: Routes = [
   {
     path: '**',
     redirectTo: 'authentication/error',
-  },
+  }
 ];
 
 @NgModule({

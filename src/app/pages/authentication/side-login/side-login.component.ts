@@ -13,6 +13,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { TablerIconsModule } from 'angular-tabler-icons';
 import { NgScrollbarModule } from 'ngx-scrollbar';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { AuthUserRequest } from 'src/app/models/auth/authUserRequest';
+import { AuthUserResponse } from 'src/app/models/auth/authUserResponse';
+import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-side-login',
@@ -45,8 +49,9 @@ export class AppSideLoginComponent {
   ];
 
   options = this.settings.getOptions();
+  private snackBarRef: MatSnackBarRef<any>;
 
-  constructor(private settings: CoreService, private router: Router) {}
+  constructor(private settings: CoreService, private router: Router,private authService :AuthService,private snackBar: MatSnackBar) {}
 
   form = new FormGroup({
     uname: new FormControl('', [Validators.required, Validators.minLength(6)]),
@@ -58,11 +63,51 @@ export class AppSideLoginComponent {
   }
 
   submit() {
-    this.router.navigate(['/starter']);
+    if (this.form.valid) {
+      const authRequest: AuthUserRequest = {
+        email: this.form.get('uname')?.value || '', 
+        password: this.form.get('password')?.value || '', 
+      };
+      this.authService.signIn(authRequest).subscribe(response => {
+        console.log('la respuesta');
+        console.log(response)
+        this.router.navigate(['/starter']);
+      },
+      error => {
+        if (error.status === 401) {
+          this.snackBarRef = this.snackBar.open('Contraseña incorrecta', 'Cerrar', {
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            panelClass: ['snackbar-error']
+          });
+          this.closeSnackbarOnClickOutside();
+        } else {
+          console.error('Otro error:', error);
+        }
+      });
+
+    } else {
+      console.log('Formulario no válido');
+    }
+
+    
+    
   }
 
   changeLanguage(lang: any): void {
     //this.translate.use(lang.code);
     this.selectedLanguage = lang;
   }
+
+  private closeSnackbarOnClickOutside() {
+    // Escuchar el clic en el documento para cerrar el snackbar
+    const listener = () => {
+      this.snackBarRef.dismiss();
+      document.removeEventListener('click', listener);
+    };
+    document.addEventListener('click', listener);
+  }
+
+
 }
+
