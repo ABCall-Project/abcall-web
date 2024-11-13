@@ -8,6 +8,7 @@ import { NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule, NgForOf } from '@angular/common';
+import * as CryptoJS from 'crypto-js';
 
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
@@ -17,6 +18,8 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { AuthUserRequest } from 'src/app/models/auth/authUserRequest';
 import { AuthUserResponse } from 'src/app/models/auth/authUserResponse';
 import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
+import { environment } from 'src/environments/environment';
+
 
 @Component({
   selector: 'app-side-login',
@@ -26,7 +29,7 @@ import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
   styleUrls: ['./side-login.component.scss']
 })
 export class AppSideLoginComponent {
-
+  loggedUser:any;
   public selectedLanguage: any = {
     language: 'Español',
     code: 'es',
@@ -71,6 +74,22 @@ export class AppSideLoginComponent {
       this.authService.signIn(authRequest).subscribe(response => {
         console.log('la respuesta');
         console.log(response)
+
+        const encryptionKey = environment.key;
+        this.loggedUser = {
+          userId: response.id, 
+          name: response.name,
+          customerId: "845eb227-5356-4169-9799-95a97ec5ce33",
+          userName: authRequest.email,
+          customerName: "Logan IT Solutions"
+        };
+
+        const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(this.loggedUser), encryptionKey).toString();
+        sessionStorage.setItem('ref', encryptedData);
+
+
+
+
         this.router.navigate(['/starter']);
       },
       error => {
