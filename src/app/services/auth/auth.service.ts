@@ -4,11 +4,13 @@ import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AuthUserResponse } from 'src/app/models/auth/authUserResponse';
 import { AuthUserRequest } from 'src/app/models/auth/authUserRequest';
+import * as CryptoJS from 'crypto-js';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private encryptionKey = environment.key;
 
   constructor(private readonly http: HttpClient) { }
 
@@ -16,5 +18,31 @@ export class AuthService {
     
     return this.http.post<AuthUserResponse>(`${environment.ApiBase}${environment.signin}`, signRequest);
   }
+
+  isAuthenticated(): boolean {
+    const encryptedData = sessionStorage.getItem('ref'); 
+
+    if (!encryptedData) {
+      return false;  
+    }
+
+    try {
+
+      const bytes = CryptoJS.AES.decrypt(encryptedData, this.encryptionKey);
+      const decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+
+      if (decryptedData && decryptedData.userId) {
+        console.log('retorno verdadero');
+        return true;  
+      } else {
+        console.log('retorno falso');
+        return false;  
+      }
+    } catch (error) {
+      console.log('retorno falso por error '+ error);
+      return false;
+    }
+  }
+
 
 }

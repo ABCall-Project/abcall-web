@@ -4,6 +4,7 @@ import { BlankComponent } from './layouts/blank/blank.component';
 import { FullComponent } from './layouts/full/full.component';
 import { AppSideLoginComponent } from './pages/authentication/side-login/side-login.component';
 import { GetIssueComponent } from './pages/authentication/get-issue/get-issue.component';
+import { authGuard } from './guard/auth.guard';
 
 
 const routes: Routes = [
@@ -24,11 +25,13 @@ const routes: Routes = [
     component: FullComponent,
     loadChildren: () =>
       import('./pages/pages.module').then((m) => m.PagesModule),
+    canActivate: [authGuard],
   },
   {
     path: 'app',
     component: FullComponent,
-    loadChildren: () => import('./pages/app/apps.module').then((m) => m.AppsModule)
+    loadChildren: () => import('./pages/app/apps.module').then((m) => m.AppsModule),
+    canActivate: [authGuard],
   },
   {
     path: '**',

@@ -54,7 +54,9 @@ export class AppSideLoginComponent {
   options = this.settings.getOptions();
   private snackBarRef: MatSnackBarRef<any>;
 
-  constructor(private settings: CoreService, private router: Router,private authService :AuthService,private snackBar: MatSnackBar) {}
+  constructor(private settings: CoreService, private router: Router,private authService :AuthService,private snackBar: MatSnackBar) {
+    sessionStorage.removeItem('ref');
+  }
 
   form = new FormGroup({
     uname: new FormControl('', [Validators.required, Validators.minLength(6)]),
