@@ -81,16 +81,17 @@ export class AppSideLoginComponent {
         this.loggedUser = {
           userId: response.id, 
           name: response.name,
-          customerId: "845eb227-5356-4169-9799-95a97ec5ce33",
+          customerId: response.customer_id,
           userName: authRequest.email,
-          customerName: "Logan IT Solutions"
+          customerName: "Logan IT Solutions",
+          token: response.token
         };
-
+        console.log(this.loggedUser);
         const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(this.loggedUser), encryptionKey).toString();
         sessionStorage.setItem('ref', encryptedData);
 
 
-
+        console.log('Datos guardados en sessionStorage:', sessionStorage.getItem('ref'));
 
         this.router.navigate(['/starter']);
       },

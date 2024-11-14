@@ -8,4 +8,5 @@ export interface AuthUserResponse {
     birthdate: string;
     role_id: string;
     token: string;
+    customer_id: string;
 }
