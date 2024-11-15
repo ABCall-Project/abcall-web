@@ -4,6 +4,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { InvoiceListComponent } from './payment/invoice-list/invoice-list.component';
 import { CreateIssueComponent } from './manage-issues/create-issue/create-issue.component';
 import { KnowledgeBaseComponent } from './knowledge-base/knowledge-base.component';
+import { StarterComponent } from '../starter/starter.component';
 import { LoadCustomersComponent } from './load-customers/load-customers.component';
 
 export const AppsRoutes: Routes = [
@@ -27,8 +28,4 @@ export const AppsRoutes: Routes = [
     path: 'knowledge-base',
     component: KnowledgeBaseComponent,
   },
-  {
-    path: 'load-customers',
-    component: LoadCustomersComponent,
-  }
 ];

@@ -76,7 +76,7 @@ export const navItems: NavItem[] = [
   {
     displayName: 'Salir',
     iconName: 'logout',
-    route: '/authentication/side-login',
+    route: '',
   },
 
 ];
