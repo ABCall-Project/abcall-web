@@ -4,6 +4,7 @@ import { CreateIssueComponent } from './create-issue/create-issue.component';
 import { ModalIssueAiAnswerComponent } from './modal-issue-ai-answer/modal-issue-ai-answer.component';
 import { MatIconModule } from '@angular/material/icon';import { ModalPredictiveAnswerComponent } from './modal-predictive-answer/modal-predictive-answer.component';
 import { Nl2brPipe } from './modal-predictive-answer/nl2br.pipe';
+import { AssignIssueComponent } from './assign-issue/assign-issue/assign-issue.component';
 
 
 
@@ -13,7 +14,8 @@ import { Nl2brPipe } from './modal-predictive-answer/nl2br.pipe';
     ModalIssueAiAnswerComponent,
     MatIconModule,
     ModalPredictiveAnswerComponent,
-    Nl2brPipe
+    Nl2brPipe,
+    AssignIssueComponent
   ],
   imports: [
     CommonModule

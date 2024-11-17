@@ -1,0 +1,38 @@
+<div class="container-fluid">
+    <div class="center">
+        <h1>Asignacion de incidente</h1>
+    </div>
+
+    <br /><br />
+    <form class="m-t-30" [formGroup]="form" (ngSubmit)="submit()">
+
+        <div class="form-issues">
+
+            <mat-form-field appearance="fill">
+                <mat-label>Incidente</mat-label>
+                <mat-select formControlName="issueId">
+                    <mat-option *ngFor="let issue of issues" [value]="issue.id">{{ issue.auth_user_id }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Asesor</mat-label>
+                <mat-select formControlName="agentId">
+                    <mat-option *ngFor="let agent of agents" [value]="agent.id">{{ agent.name }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="button-container">
+            <button mat-raised-button class="transparent-button" type="button" (click)="onCancel()">Cancelar</button>
+            &nbsp;&nbsp;&nbsp;
+
+            <button mat-raised-button style="background-color: #090041;
+            color: white;">Confirmar</button>
+        </div>
+
+
+    </form>
+</div>

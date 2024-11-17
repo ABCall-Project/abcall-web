@@ -4,6 +4,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { InvoiceListComponent } from './payment/invoice-list/invoice-list.component';
 import { CreateIssueComponent } from './manage-issues/create-issue/create-issue.component';
 import { KnowledgeBaseComponent } from './knowledge-base/knowledge-base.component';
+import { AssignIssueComponent } from './manage-issues/assign-issue/assign-issue/assign-issue.component';
 
 export const AppsRoutes: Routes = [
   {
@@ -21,6 +22,10 @@ export const AppsRoutes: Routes = [
   {
     path: 'new-issue',
     component: CreateIssueComponent,
+  },
+  {
+    path: 'assign-issue',
+    component: AssignIssueComponent,
   },
   {
     path: 'knowledge-base',
