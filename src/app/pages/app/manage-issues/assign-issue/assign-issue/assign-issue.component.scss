@@ -1,0 +1,42 @@
+.form-issues {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+mat-form-field {
+    flex: 1 1 calc(50% - 10px);
+}
+
+
+button {
+    min-width: 40px;
+    height: 40px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+}
+
+
+.custom-button {
+    background-color: #090041;
+    color: white;
+}
+
+.transparent-button {
+    background-color: transparent;
+    border: 1px solid black;
+    color: black;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+mat-icon {
+    color: rgba(0, 0, 0, 0.6);
+    margin-left: 8px;
+}
