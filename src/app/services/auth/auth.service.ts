@@ -1,6 +1,6 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AuthUserResponse } from 'src/app/models/auth/authUserResponse';
 import { AuthUserRequest } from 'src/app/models/auth/authUserRequest';
@@ -15,59 +15,51 @@ export class AuthService {
   constructor(private readonly http: HttpClient) { }
 
   signIn(signRequest: AuthUserRequest): Observable<AuthUserResponse> {
-    
+    let encrypted_password=this.encryptData(signRequest.password,environment.PHRASE_KEY);
+    signRequest.password=encrypted_password;
     return this.http.post<AuthUserResponse>(`${environment.ApiBase}${environment.signin}`, signRequest);
   }
 
   isAuthenticated(): boolean {
-    const encryptedData = sessionStorage.getItem('ref'); 
-
+    const encryptedData = sessionStorage.getItem('ref');
     if (!encryptedData) {
-      return false;  
+      return false;
     }
-
     try {
-
       const bytes = CryptoJS.AES.decrypt(encryptedData, this.encryptionKey);
       const decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-
-      if (decryptedData && decryptedData.userId) {
-        console.log('retorno verdadero');
-        return true;  
-      } else {
-        console.log('retorno falso');
-        return false;  
-      }
+      return !!(decryptedData && decryptedData.userId);
     } catch (error) {
-      console.log('retorno falso por error '+ error);
+      console.error('Error during authentication check:', error);
       return false;
     }
   }
 
   getToken(): string | null {
-    const encryptionKey = environment.key;
-    console.log(encryptionKey);
     const encryptedData = sessionStorage.getItem('ref');
-  
     if (encryptedData) {
       try {
-        const bytes = CryptoJS.AES.decrypt(encryptedData, encryptionKey);
+        const bytes = CryptoJS.AES.decrypt(encryptedData, this.encryptionKey);
         const decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-  
-        console.log('Datos desencriptados:', decryptedData);
-  
-        console.log('Customer ID:', decryptedData.customerId);
-        console.log('Token:', decryptedData.token);
-  
-        return decryptedData.token;
+        return decryptedData.token || null;
       } catch (error) {
-        console.log('Error al desencriptar o analizar los datos:', error);
-        return null; // Si ocurre un error, retornamos null
+        console.error('Error decrypting token:', error);
+        return null;
       }
     }
     return null;
   }
-  
 
+  deriveKeyFromPassphrase(passphrase: string): string {
+    const salt = CryptoJS.lib.WordArray.random(128 / 8).toString();
+    return CryptoJS.PBKDF2(passphrase, salt, {
+      keySize: 256 / 32,
+      iterations: 100000
+    }).toString();
+  }
 
+  encryptData(data: string, passphrase: string): string {
+    const hash = CryptoJS.HmacSHA256(data, passphrase).toString(CryptoJS.enc.Base64);
+    return hash;
+  }
 }

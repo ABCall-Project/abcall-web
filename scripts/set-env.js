@@ -20,7 +20,8 @@ const envConfigFile = `
 export const config = {
   production: ${process.env.NODE_ENV == 'production'},
   environment: '${process.env.NODE_ENV}',
-  ApiBase: '${process.env.ABCALL_BFF_BASE_URL}'
+  ApiBase: '${process.env.ABCALL_BFF_BASE_URL}',
+  PHRASE_KEY: '${process.env.PHRASE_KEY}'
 };
 `;
 
