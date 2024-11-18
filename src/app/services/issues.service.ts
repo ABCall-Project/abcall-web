@@ -48,4 +48,13 @@ export class IssuesService {
     return this.http.get<Issue>(`http://51.8.255.65:3007${environment.getIssueByid}${issueId}`);
   }
 
+  getAll(): Observable<Issue[]> {
+    return this.http.get<Issue[]>(`${environment.ApiBase}${environment.getAll}`);
+  }
+
+  assignIssue(issueId: string, body: {
+    auth_user_agent_id: string
+  }): Observable<IssueResponse> {
+    return this.http.post<IssueResponse>(`${environment.ApiBase}${environment.assignIssue}${issueId}`, body);
+  }
 }

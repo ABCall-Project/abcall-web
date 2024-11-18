@@ -6,5 +6,7 @@ export interface Issue {
     description: string,
     file?: File,
     status?: string,
-    created_at?: string
+    closed_at?: string,
+    created_at?: string,
+    channel_plan_id?: string
 }
