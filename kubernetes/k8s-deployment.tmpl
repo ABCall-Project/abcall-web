@@ -1,5 +1,5 @@
 ###################################
-# abcall-payment-api
+# abcall-web
 ###################################
 apiVersion: apps/v1
 kind: Deployment
@@ -34,6 +34,11 @@ spec:
                 configMapKeyRef:
                   name: web-configmap
                   key: ABCALL_BFF_BASE_URL
+            - name: "PHRASE_KEY"
+              valueFrom:
+                secretKeyRef:
+                  name: web-secrets
+                  key: PHRASE_KEY
           volumeMounts:
           - name: env-volume
             mountPath: /app/.env
