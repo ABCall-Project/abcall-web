@@ -5,6 +5,7 @@ import { InvoiceListComponent } from './payment/invoice-list/invoice-list.compon
 import { CreateIssueComponent } from './manage-issues/create-issue/create-issue.component';
 import { KnowledgeBaseComponent } from './knowledge-base/knowledge-base.component';
 import { StarterComponent } from '../starter/starter.component';
+import { ClientListComponent } from './client/client-list/client-list.component';
 
 export const AppsRoutes: Routes = [
   {
@@ -30,5 +31,9 @@ export const AppsRoutes: Routes = [
   {
     path: 'starter',
     component: StarterComponent,
+  },
+  {
+    path: 'clients',
+    component: ClientListComponent,
   },
 ];

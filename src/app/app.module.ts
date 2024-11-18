@@ -25,6 +25,7 @@ import { FilterPipe } from './pipe/filter.pipe';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { ClientListComponent } from './pages/app/client/client-list/client-list.component';
 
 
 export function HttpLoaderFactory(http: HttpClient): any {
@@ -57,7 +58,7 @@ export function HttpLoaderFactory(http: HttpClient): any {
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
-      multi: true  
+      multi: true
     }
   ],
   exports: [TablerIconsModule],

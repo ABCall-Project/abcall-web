@@ -62,6 +62,11 @@ export const navItems: NavItem[] = [
             iconName: 'point',
             route: '/app/knowledge-base',
           },
+          {
+            displayName: 'Lista Clientes',
+            iconName: 'point',
+            route: '/app/clients',
+          },
         ],
       },
 
