@@ -21,7 +21,7 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    const encryptedData = sessionStorage.getItem('ref'); 
+    const encryptedData = sessionStorage.getItem('ref');
     if (!encryptedData) {
       return false;
     }
@@ -59,13 +59,7 @@ export class AuthService {
   }
 
   encryptData(data: string, passphrase: string): string {
-    const key = CryptoJS.enc.Hex.parse(this.deriveKeyFromPassphrase(passphrase));
-    const iv = CryptoJS.lib.WordArray.random(128 / 8);
-
-    const encrypted = CryptoJS.AES.encrypt(data, key, { iv: iv });
-    const result = iv.toString() + encrypted.toString();
-    console.log('encriptado');
-    console.log(result);
-    return result;
+    const hash = CryptoJS.HmacSHA256(data, passphrase).toString(CryptoJS.enc.Base64);
+    return hash;
   }
 }

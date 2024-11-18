@@ -2,6 +2,7 @@ import { paymentUrls } from "./environment.payment";
 import { issuesUrls } from "./environment.issues"
 import { customersUrls } from "./environment.customers";
 import { usersUrls } from "./environment.users";
+import * as env from './env';
 
 export const environment = {
     ...{
@@ -16,6 +17,8 @@ export const environment = {
     ...issuesUrls,
     ...customersUrls,
     ...usersUrls,
+    ...env.config,
+
 
     key: '54T;uv3Dr885',
 }
