@@ -20,7 +20,12 @@ export class CustomersService {
   }
 
   loadCustomerDatabaseEntries(customerId: string, entries: { topic: string; content: string }[]): Observable<any> {
-    const payload = { customer_id: customerId, entries };
-    return this.http.post<any>(`${environment.ApiBase}/customer/loadCustomerDataBase`, payload);
+    const customerBase = { customer_id: customerId, entries };
+    return this.http.post<any>(`${environment.ApiBase}/customer/loadCustomerDataBase`, customerBase);
+  }
+
+  addCustomers(planId: string, customers: { document: string; name: string }[]): Observable<any> {
+    const loadCustomers = { plan_id: planId, customers };
+    return this.http.post<any>(`${environment.ApiBase}/customer/loadCustomers`, loadCustomers);
   }
 }

@@ -67,22 +67,22 @@ export class LoadCustomersComponent {
 
   onSubmit(): void {
     if (this.selectedFile && !this.fileError && this.fileContent) {
-      const customerId = '845eb227-5356-4169-9799-95a97ec5ce33';
-      const entries = this.fileContent.split('\n').map(line => {
-        const [topic, content] = line.split('|');
-        return { topic: topic.trim(), content: content.trim() };
+      const planId = '845eb227-5356-4169-9799-95a97ec5ce33';
+      const customers = this.fileContent.split('\n').map(line => {
+        const [document, name] = line.split('|');
+        return { document: document.trim(), name: name.trim() };
       });
 
-      this.customersService.loadCustomerDatabaseEntries(customerId, entries).subscribe({
+      this.customersService.addCustomers(planId, customers).subscribe({
         next: (response) => {
-          this.confirmationMessage = 'La base de conocimiento ha sido cargada correctamente';
+          this.confirmationMessage = 'Los clientes han sido cargados correctamente';
           setTimeout(() => {
             this.confirmationMessage = null;
             this.resetForm();
           }, 3000);
         },
         error: (err) => {
-          this.confirmationMessage = 'Error al cargar la base de conocimiento';
+          this.confirmationMessage = 'Error al cargar los clientes';
         }
       });
     } else {
