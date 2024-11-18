@@ -68,6 +68,11 @@ export const navItems: NavItem[] = [
             route: '/app/knowledge-base',
           },
           {
+            displayName: 'Lista Clientes',
+            iconName: 'point',
+            route: '/app/clients',
+          },
+          {
             displayName: 'Cargue Masivo de Clientes',
             iconName: 'point',
             route: '/app/load-customers',

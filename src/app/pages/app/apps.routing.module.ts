@@ -6,6 +6,7 @@ import { CreateIssueComponent } from './manage-issues/create-issue/create-issue.
 import { KnowledgeBaseComponent } from './knowledge-base/knowledge-base.component';
 import { AssignIssueComponent } from './manage-issues/assign-issue/assign-issue/assign-issue.component';
 import { StarterComponent } from '../starter/starter.component';
+import { ClientListComponent } from './client/client-list/client-list.component';
 import { LoadCustomersComponent } from './load-customers/load-customers.component';
 
 export const AppsRoutes: Routes = [
@@ -32,5 +33,9 @@ export const AppsRoutes: Routes = [
   {
     path: 'knowledge-base',
     component: KnowledgeBaseComponent,
+  },
+  {
+    path: 'starter',
+    component: StarterComponent,
   },
 ];
