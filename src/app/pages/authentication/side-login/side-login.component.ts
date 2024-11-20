@@ -30,6 +30,7 @@ import { environment } from 'src/environments/environment';
 })
 export class AppSideLoginComponent {
   loggedUser:any;
+  hidePassword: boolean = true;
   public selectedLanguage: any = {
     language: 'Español',
     code: 'es',
