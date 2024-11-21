@@ -6,4 +6,5 @@ export const issuesUrls = {
     getIssueByid: '/issue/get_issue_by_id?issue_id=',
     getAll: '/issues/getAllIssues',
     assignIssue: '/issues/assignIssue?issue_id=',
+    openIssues: '/issues/getOpenIssues',
 }

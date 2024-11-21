@@ -36,6 +36,11 @@ export const navItems: NavItem[] = [
             displayName: 'Asignar Incidente',
             iconName: 'point',
             route: '/app/assign-issue',
+          },
+          {
+            displayName: 'Incidentes Abiertos',
+            iconName: 'point',
+            route: '/app/open-issue',
           }
         ]
       },
