@@ -25,13 +25,13 @@ const routes: Routes = [
     component: FullComponent,
     loadChildren: () =>
       import('./pages/pages.module').then((m) => m.PagesModule),
-    // canActivate: [authGuard],
+    canActivate: [authGuard],
   },
   {
     path: 'app',
     component: FullComponent,
     loadChildren: () => import('./pages/app/apps.module').then((m) => m.AppsModule),
-    //canActivate: [authGuard],
+    canActivate: [authGuard],
   },
   {
     path: '**',

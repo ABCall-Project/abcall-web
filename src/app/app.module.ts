@@ -55,11 +55,11 @@ export function HttpLoaderFactory(http: HttpClient): any {
     FullComponent,
   ],
   providers: [
-    // {
-    //   provide: HTTP_INTERCEPTORS,
-    //   useClass: AuthInterceptor,
-    //   multi: true
-    // }
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ],
   exports: [TablerIconsModule],
   bootstrap: [AppComponent],

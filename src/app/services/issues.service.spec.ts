@@ -130,8 +130,6 @@ describe('IssuesService', () => {
     req.flush(mockIssueResponse);
   });
 
-
-
   it('Should retrieve open issues with correct parameters', () => {
     const page = 1;
     const limit = 5;
