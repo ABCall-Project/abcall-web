@@ -6,6 +6,7 @@ import { IIssuesDashboard } from '../models/issue/issues-dashboard';
 import { AnswerResponse } from '../models/issue/answerai-response';
 import { Issue } from '../models/issue/issue';
 import { IssueResponse } from '../models/issue/issue-response';
+import { IssueList } from '../models/issue/issue-list';
 
 @Injectable({
   providedIn: 'root'
@@ -56,5 +57,12 @@ export class IssuesService {
     auth_user_agent_id: string
   }): Observable<IssueResponse> {
     return this.http.post<IssueResponse>(`${environment.ApiBase}${environment.assignIssue}${issueId}`, body);
+  }
+
+  getOpenIssues(page: number = 1, limit: number = 5): Observable<IssueList> {
+    return this.http.get<IssueList>(`${environment.ApiBase}${environment.openIssues}?page=${page}&limit=${limit}`).pipe(
+      map(reponse => {
+        return reponse;
+      }));
   }
 }

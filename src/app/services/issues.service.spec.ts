@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 import { IIssuesDashboard } from '../models/issue/issues-dashboard';
 import { AnswerResponse } from '../models/issue/answerai-response';
 import { IssueResponse } from '../models/issue/issue-response';
+import { IssueList } from '../models/issue/issue-list';
 
 describe('IssuesService', () => {
   let service: IssuesService;
@@ -128,5 +129,43 @@ describe('IssuesService', () => {
     expect(req.request.method).toBe('POST');
     req.flush(mockIssueResponse);
   });
+
+
+
+  it('Should retrieve open issues with correct parameters', () => {
+    const page = 1;
+    const limit = 5;
+
+    const mockResponse: IssueList = {
+      page: page,
+      limit: limit,
+      totalPages: 1,
+      has_next: false,
+      data: [
+        {
+          "id": "7c039d27-82c7-4bbc-9054-d242af4d55d5",
+          "auth_user_id": "e8b8a5d2-0f71-4e4d-b6e3-9c9d64f9cdda",
+          "status": "Created",
+          "subject": "Incidente por chatbot",
+          "description": "Tengo problemas con el internet ",
+          "created_at": "2024-10-24 17:25:33.407560+00:00",
+          "closed_at": "2024-10-24 17:25:33.429142+00:00",
+          "channel_plan_id": "None"
+        }
+      ]
+    };
+
+    service.getOpenIssues(page, limit).subscribe(response => {
+      expect(response).toEqual(mockResponse);
+    });
+
+    const req = httpMock.expectOne(
+      `${environment.ApiBase}${environment.openIssues}?page=${page}&limit=${limit}`
+    );
+
+    expect(req.request.method).toBe('GET');
+    req.flush(mockResponse);
+  });
+
 
 });
