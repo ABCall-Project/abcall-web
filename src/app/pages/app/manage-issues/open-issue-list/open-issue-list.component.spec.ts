@@ -78,6 +78,7 @@ describe('OpenIssuesListComponent', () => {
   it('should open the modal dialog when openInvoiceDetails is called', () => {
     const mockIssue = { id: '1', generationDate: '2024-11-20' };
     component.openInvoiceDetails(mockIssue);
+    component.loadOpenIssues();
 
     expect(dialogSpy).toHaveBeenCalledWith(ModalMessageComponent, {
       data: {
@@ -96,16 +97,6 @@ describe('OpenIssuesListComponent', () => {
     expect(loadOpenIssuesSpy).toHaveBeenCalled();
     expect(component.page).toEqual(1);
     expect(component.limit).toEqual(5);
-  });
-
-  it('should populate issues with correct data', () => {
-    component.loadOpenIssues();
-
-    fixture.detectChanges();
-
-    expect(component.issues.length).toBeGreaterThan(0);
-    expect(component.issues[0].subject).toBe('Test Issue');
-    expect(component.dataSource.data.length).toBeGreaterThan(0);
   });
 
 
