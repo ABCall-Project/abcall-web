@@ -4,6 +4,7 @@ import { BlankComponent } from './layouts/blank/blank.component';
 import { FullComponent } from './layouts/full/full.component';
 import { AppSideLoginComponent } from './pages/authentication/side-login/side-login.component';
 import { GetIssueComponent } from './pages/authentication/get-issue/get-issue.component';
+import { AppSideRegisterComponent } from './pages/authentication/side-register/side-register.component';
 import { authGuard } from './guard/auth.guard';
 
 
@@ -19,6 +20,10 @@ const routes: Routes = [
   {
     path: 'authentication/get-issue',
     component: GetIssueComponent
+  },
+  {
+    path: 'sign-up',
+    component: AppSideRegisterComponent,
   },
   {
     path: 'starter',

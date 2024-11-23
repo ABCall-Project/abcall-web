@@ -2,16 +2,16 @@
   <div class="position-relative row w-100 h-100">
     <div class="col-lg-5 col-xl-8 bg-gredient p-0">
       <div class="p-24 h-100" style="background-color: #DED4EF;">
-       
+
 
         <div class="align-items-center justify-content-center img-height d-none d-lg-flex" >
           <img src="/assets/images/backgrounds/abcallsignin-bg.svg" alt="login" style="max-width: 500px" />
         </div>
-        
+
       </div>
     </div>
 
-    
+
 
 
     <div class="col-lg-7 col-xl-4 p-0">
@@ -41,11 +41,11 @@
     </div>
       <div class="d-flex align-items-start align-items-lg-start justify-content-center h-100">
 
-       
+
 
         <div class="row justify-content-center w-100">
 
-          
+
 
 
           <div class="col-lg-9 max-width-form">
@@ -58,7 +58,7 @@
               <a href="#">Internos</a>
             </div>
 
-            
+
 
             <form class="m-t-30" [formGroup]="form" (ngSubmit)="submit()">
               <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Correo</mat-label>
@@ -100,7 +100,7 @@
               </mat-form-field>
 
 
-             
+
               <button mat-flat-button   style="width: 50%;background-color: #090041; color: white; margin: 0 auto; display: block;" [disabled]="!form.valid">
                 Iniciar Sesión
               </button>
@@ -114,7 +114,7 @@
             </span>
 
             <span style="text-align: center; margin: 0 auto; display: block;">
-              ¿Aún no estás registrado? &nbsp;<a [routerLink]="['/authentication/side-register']" style="color: #1AC3D2;"
+              ¿Aún no estás registrado? &nbsp;<a [routerLink]="['/sign-up']" style="color: #1AC3D2;"
                 class="text-decoration-none  f-w-500 f-s-14">
                  <b>Ver planes</b></a>
             </span>
