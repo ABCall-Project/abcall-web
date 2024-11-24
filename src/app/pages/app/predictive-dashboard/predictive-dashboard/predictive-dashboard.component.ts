@@ -13,6 +13,7 @@ import { Chart } from 'chart.js/auto';
 import { IssuesService } from 'src/app/services/issues.service';
 import * as CryptoJS from 'crypto-js';
 import { environment } from '../../../../../environments/environment';
+import { Issue } from 'src/app/models/issue/issue';
 
 @Component({
   selector: 'app-predictive-dashboard',
@@ -37,19 +38,29 @@ export class PredictiveDashboardComponent {
 
   selectedIssueType: string | null = null;
   selectedWeekDay: string|null=null;
+  topIssueList: Array<Issue> = [];
 
+
+  constructor(private issuesServices: IssuesService) {}
   
 
   ngOnInit(): void {
     this.renderCharts();
-    
+    this.getTopSevenIssues();
+  }
+
+  getTopSevenIssues(){
+    this.issuesServices.getTopSevenIssues().subscribe((issues) =>{
+      this.topIssueList=issues;
+    });
   }
 
   renderCharts(){
+    console.log(this.selectedWeekDay);
     //issues by day
     const realDatabyDay = [5, 8, 10, 6, 7, 4, 3]; 
     const predictedDatabyDay = [4, 7, 9, 6, 6, 5, 4]; 
-    this.createChartIssuesByDay(realDatabyDay, predictedDatabyDay);
+    this.createChartIssuesByDay(realDatabyDay, predictedDatabyDay,this.selectedWeekDay || '');
     //issues by type
     const realDataIssuesType = [5, 8, 10, 6, 7, 4, 13]; 
     const predictedDataIssuesType = [4, 7, 9, 6, 50, 5, 14]; 
@@ -67,27 +78,22 @@ export class PredictiveDashboardComponent {
   resetForm() {
     this.selectedIssueType=null;
     this.selectedWeekDay=null;
+    this.renderCharts();
   }
 
   OnSelectionIssueType(event: MatSelectChange) {
     this.selectedIssueType = event.value;
     this.renderCharts();
-    // this.issuesServices.getIssuesDasboard(this.customerId).subscribe((issues) => {
-    //   this.createEstadoCasosChart(issues, event.value);
-    //   this.createVariacionMensualChart(issues, event.value);
-    // });
+   
   }
 
   OnSelectionWeekDay(event: MatSelectChange) {
     this.selectedWeekDay = event.value;
     this.renderCharts();
-    // this.issuesServices.getIssuesDasboard(this.customerId).subscribe((issues) => {
-    //   this.createEstadoCasosChart(issues, event.value);
-    //   this.createVariacionMensualChart(issues, event.value);
-    // });
+   
   }
 
-  createChartIssuesByDay(realData: number[], predictedData: number[]): void {
+  createChartIssuesByDay(realData: number[], predictedData: number[], selectedDay?: string): void {
     const ctx = document.getElementById('quantityIssues') as HTMLCanvasElement;
     const existingChart = Chart.getChart(ctx);
   
@@ -96,22 +102,35 @@ export class PredictiveDashboardComponent {
     }
   
     const daysOfWeek = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+    let filteredLabels = daysOfWeek;
+    let filteredRealData = realData;
+    let filteredPredictedData = predictedData;
+
+    if (selectedDay) {
+
+      const dayIndex = daysOfWeek.indexOf(selectedDay);
+      if (dayIndex !== -1) {
+        filteredLabels = [daysOfWeek[dayIndex]];
+        filteredRealData = [realData[dayIndex]];
+        filteredPredictedData = [predictedData[dayIndex]];
+      }
+    }
   
     new Chart(ctx, {
       type: 'line',
       data: {
-        labels: daysOfWeek,
+        labels: filteredLabels, // Etiquetas filtradas
         datasets: [
           {
             label: 'Incidentes Reales',
-            data: realData,
+            data: filteredRealData, // Datos reales filtrados
             borderColor: '#090041',
             fill: false,
             tension: 0.4
           },
           {
             label: 'Incidentes Predichos',
-            data: predictedData,
+            data: filteredPredictedData, // Datos predichos filtrados
             borderColor: '#6563ff',
             fill: false,
             tension: 0.4,
@@ -125,7 +144,7 @@ export class PredictiveDashboardComponent {
           x: {
             title: {
               display: true,
-              text: 'Días de la Semana'
+              text: selectedDay ? `Día: ${selectedDay}` : 'Días de la Semana' // Cambiar título del eje X según el filtro
             }
           },
           y: {
@@ -169,7 +188,7 @@ export class PredictiveDashboardComponent {
             borderColor: '#6563ff',
             fill: false,
             tension: 0.4,
-            borderDash: [5, 5] // Línea punteada
+            borderDash: [5, 5] 
           }
         ]
       },
@@ -206,10 +225,10 @@ export class PredictiveDashboardComponent {
     new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: labels, // Etiquetas para los tipos de incidentes
+        labels: labels, 
         datasets: [{
           label: 'Cantidad de Incidentes',
-          data: data, // Cantidad de incidentes por tipo
+          data: data, 
           backgroundColor: [
             '#090041',
             '#272860',

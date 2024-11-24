@@ -65,4 +65,8 @@ export class IssuesService {
         return reponse;
       }));
   }
+
+  getTopSevenIssues(): Observable<Issue[]>{
+    return this.http.get<Issue[]>(`${environment.ApiBase}${environment.topSevenIssues}`);
+  }
 }

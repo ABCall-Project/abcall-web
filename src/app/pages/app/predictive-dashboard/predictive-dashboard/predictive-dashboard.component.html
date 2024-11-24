@@ -9,9 +9,9 @@
           <mat-label>Tipo de incidente</mat-label>
           <mat-select [(value)]="selectedIssueType" (selectionChange)="OnSelectionIssueType($event)">
             <mat-option value="">Todos</mat-option>
-            <mat-option value="574408a7-3aa0-4eab-b279-62ed10e6107e">Registrados</mat-option>
-            <mat-option value="791353c6-3899-4d35-bcd9-af8775e240bf">Solucionados</mat-option>
-            <mat-option value="18e7d7dd-247b-4e27-aa0e-4f15e8ba5930">En curso</mat-option>
+            <mat-option *ngFor="let issue of topIssueList" [value]="issue.subject">
+                {{ issue.subject }}
+              </mat-option>
           </mat-select>
         </mat-form-field>
   
@@ -19,13 +19,13 @@
             <mat-label>Día de la semana</mat-label>
             <mat-select [(value)]="selectedWeekDay" (selectionChange)="OnSelectionWeekDay($event)">
                 <mat-option value="">Todos</mat-option>
-                <mat-option value="1">Lunes</mat-option>
-                <mat-option value="2">Martes</mat-option>
-                <mat-option value="3">Miercoles</mat-option>
-                <mat-option value="4">Jueves</mat-option>
-                <mat-option value="5">Viernes</mat-option>
-                <mat-option value="6">Sábado</mat-option>
-                <mat-option value="7">Domingo</mat-option>
+                <mat-option value="Lunes">Lunes</mat-option>
+                <mat-option value="Martes">Martes</mat-option>
+                <mat-option value="Miércoles">Miércoles</mat-option>
+                <mat-option value="Jueves">Jueves</mat-option>
+                <mat-option value="Viernes">Viernes</mat-option>
+                <mat-option value="Sábado">Sábado</mat-option>
+                <mat-option value="Domingo">Domingo</mat-option>
             </mat-select>
         </mat-form-field>
   
