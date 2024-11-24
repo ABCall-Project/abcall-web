@@ -36,13 +36,30 @@ export const navItems: NavItem[] = [
             displayName: 'Asignar Incidente',
             iconName: 'point',
             route: '/app/assign-issue',
+          },
+          {
+            displayName: 'Incidentes Abiertos',
+            iconName: 'point',
+            route: '/app/open-issue',
           }
         ]
       },
       {
         displayName: 'Tableros de Control',
         iconName: 'point',
-        route: '/app/dashboard',
+        route: '/menu-1',
+        children: [
+          {
+            displayName: 'Tablero de incidentes',
+            iconName: 'point',
+            route: '/app/dashboard',
+          },
+          {
+            displayName: 'Tablero predictivo',
+            iconName: 'point',
+            route: '/app/predictive-dashboard',
+          },
+        ],
       },
 
     ],

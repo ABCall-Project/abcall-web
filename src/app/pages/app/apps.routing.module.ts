@@ -7,6 +7,9 @@ import { KnowledgeBaseComponent } from './knowledge-base/knowledge-base.componen
 import { AssignIssueComponent } from './manage-issues/assign-issue/assign-issue/assign-issue.component';
 import { StarterComponent } from '../starter/starter.component';
 import { ClientListComponent } from './client/client-list/client-list.component';
+import { OpenIssueListComponent } from './manage-issues/open-issue-list/open-issue-list.component';
+import { PredictiveDashboardComponent } from './predictive-dashboard/predictive-dashboard/predictive-dashboard.component';
+
 import { LoadCustomersComponent } from './load-customers/load-customers.component';
 
 export const AppsRoutes: Routes = [
@@ -37,5 +40,13 @@ export const AppsRoutes: Routes = [
   {
     path: 'starter',
     component: StarterComponent,
+  },
+  {
+    path: 'open-issue',
+    component: OpenIssueListComponent,
+  },
+  {
+    path: 'predictive-dashboard',
+    component: PredictiveDashboardComponent,
   },
 ];

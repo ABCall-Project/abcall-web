@@ -1,0 +1,52 @@
+<div class="dashboard">
+    <div class="center">
+      <h1>Indicadores Predictivos</h1>
+    </div>
+    <!-- Filtros -->
+    <div class="filters">
+      <form class="responsive-form">
+        <mat-form-field appearance="fill">
+          <mat-label>Tipo de incidente</mat-label>
+          <mat-select [(value)]="selectedIssueType" (selectionChange)="OnSelectionIssueType($event)">
+            <mat-option value="">Todos</mat-option>
+            <mat-option *ngFor="let issue of topIssueList" [value]="issue.subject">
+                {{ issue.subject }}
+              </mat-option>
+          </mat-select>
+        </mat-form-field>
+  
+        <mat-form-field appearance="fill">
+            <mat-label>Día de la semana</mat-label>
+            <mat-select [(value)]="selectedWeekDay" (selectionChange)="OnSelectionWeekDay($event)">
+                <mat-option value="">Todos</mat-option>
+                <mat-option value="Lunes">Lunes</mat-option>
+                <mat-option value="Martes">Martes</mat-option>
+                <mat-option value="Miércoles">Miércoles</mat-option>
+                <mat-option value="Jueves">Jueves</mat-option>
+                <mat-option value="Viernes">Viernes</mat-option>
+                <mat-option value="Sábado">Sábado</mat-option>
+                <mat-option value="Domingo">Domingo</mat-option>
+            </mat-select>
+        </mat-form-field>
+  
+  
+        
+          
+      </form>
+      <button mat-raised-button color="primary" fontIcon="home" (click)="resetForm()">Limpiar Filtros</button>    
+    </div>
+  
+
+    <div class="charts">
+        <div class="chart-container">
+            <canvas id="quantityIssues"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="waitingTime"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="probability"></canvas>
+        </div>
+    </div>
+  
+  </div>
