@@ -1,0 +1,52 @@
+<div class="dashboard">
+    <div class="center">
+      <h1>Indicadores Predictivos</h1>
+    </div>
+    <!-- Filtros -->
+    <div class="filters">
+      <form class="responsive-form">
+        <mat-form-field appearance="fill">
+          <mat-label>Tipo de incidente</mat-label>
+          <mat-select [(value)]="selectedIssueType" (selectionChange)="OnSelectionIssueType($event)">
+            <mat-option value="">Todos</mat-option>
+            <mat-option value="574408a7-3aa0-4eab-b279-62ed10e6107e">Registrados</mat-option>
+            <mat-option value="791353c6-3899-4d35-bcd9-af8775e240bf">Solucionados</mat-option>
+            <mat-option value="18e7d7dd-247b-4e27-aa0e-4f15e8ba5930">En curso</mat-option>
+          </mat-select>
+        </mat-form-field>
+  
+        <mat-form-field appearance="fill">
+            <mat-label>Día de la semana</mat-label>
+            <mat-select [(value)]="selectedWeekDay" (selectionChange)="OnSelectionWeekDay($event)">
+                <mat-option value="">Todos</mat-option>
+                <mat-option value="1">Lunes</mat-option>
+                <mat-option value="2">Martes</mat-option>
+                <mat-option value="3">Miercoles</mat-option>
+                <mat-option value="4">Jueves</mat-option>
+                <mat-option value="5">Viernes</mat-option>
+                <mat-option value="6">Sábado</mat-option>
+                <mat-option value="7">Domingo</mat-option>
+            </mat-select>
+        </mat-form-field>
+  
+  
+        
+          
+      </form>
+      <button mat-raised-button color="primary" fontIcon="home" (click)="resetForm()">Limpiar Filtros</button>    
+    </div>
+  
+
+    <div class="charts">
+        <div class="chart-container">
+            <canvas id="quantityIssues"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="waitingTime"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="probability"></canvas>
+        </div>
+    </div>
+  
+  </div>
