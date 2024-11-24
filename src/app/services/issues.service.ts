@@ -69,4 +69,8 @@ export class IssuesService {
   getTopSevenIssues(): Observable<Issue[]>{
     return this.http.get<Issue[]>(`${environment.ApiBase}${environment.topSevenIssues}`);
   }
+
+  getPredictiveData(): Observable<{ realDatabyDay: number[], predictedDatabyDay: number[],realDataIssuesType: number[],predictedDataIssuesType: number[],issueQuantity: number[] }> {
+    return this.http.get<{ realDatabyDay: number[], predictedDatabyDay: number[], realDataIssuesType: number[],predictedDataIssuesType: number[],issueQuantity: number[]}>(`${environment.ApiBase}${environment.predictedData}`);
+  }
 }

@@ -62,20 +62,25 @@ export class PredictiveDashboardComponent {
   }
 
   renderCharts(){
-    console.log(this.selectedWeekDay);
-    //issues by day
-    const realDatabyDay = [5, 8, 10, 6, 7, 4, 3]; 
-    const predictedDatabyDay = [4, 7, 9, 6, 6, 5, 4]; 
-    this.createChartIssuesByDay(realDatabyDay, predictedDatabyDay,this.selectedWeekDay || '');
-    //issues by type
-    const realDataIssuesType = [5, 8, 10, 6, 7, 4, 13]; 
-    const predictedDataIssuesType = [4, 7, 9, 6, 50, 5, 14]; 
-    this.createChartWaitingTime(this.issueTypes,realDataIssuesType, predictedDataIssuesType);
 
-    //issues probability
-    const issueTypes = this.issueTypes;
-    const issueQuantity = [12, 8, 5, 15, 3,3,5]; 
-    this.createProbabilityChart(issueTypes,issueQuantity);
+    this.issuesServices.getPredictiveData().subscribe((data)=>{
+      //issues by day
+      const realDatabyDay = data.realDatabyDay; 
+      const predictedDatabyDay = data.predictedDatabyDay;
+      this.createChartIssuesByDay(realDatabyDay, predictedDatabyDay,this.selectedWeekDay || '');
+      //issues by type
+      const realDataIssuesType = data.realDataIssuesType;
+      const predictedDataIssuesType =data.predictedDataIssuesType; 
+      this.createChartWaitingTime(this.issueTypes,realDataIssuesType, predictedDataIssuesType,this.selectedIssueType||'');
+
+      //issues probability
+      const issueTypes = this.issueTypes;
+      const issueQuantity =data.issueQuantity;
+      this.createProbabilityChart(issueTypes,issueQuantity,this.selectedIssueType||'');
+
+    });
+
+    
 
   }
 
@@ -166,30 +171,44 @@ export class PredictiveDashboardComponent {
   }
 
 
-  createChartWaitingTime(issueTypes: string[],realData: number[], predictedData: number[]): void {
+  createChartWaitingTime(issueTypes: string[],realData: number[], predictedData: number[],selectedIssueType?: string): void {
     const ctx = document.getElementById('waitingTime') as HTMLCanvasElement;
     const existingChart = Chart.getChart(ctx);
   
     if (existingChart) {
       existingChart.destroy();
     }
+
+    let filteredLabels = this.issueTypes;
+    let filteredRealData = realData;
+    let filteredPredictedData = predictedData;
+
+    if (selectedIssueType) {
+
+      const issueTypeIndex = this.issueTypes.indexOf(selectedIssueType);
+      if (issueTypeIndex !== -1) {
+        filteredLabels = [this.issueTypes[issueTypeIndex]];
+        filteredRealData = [realData[issueTypeIndex]];
+        filteredPredictedData = [predictedData[issueTypeIndex]];
+      }
+    }
   
     
     new Chart(ctx, {
       type: 'line',
       data: {
-        labels: issueTypes,
+        labels: filteredLabels,
         datasets: [
           {
             label: 'Incidentes Reales',
-            data: realData,
+            data: filteredRealData,
             borderColor: '#090041',
             fill: false,
             tension: 0.4
           },
           {
             label: 'Incidentes Predichos',
-            data: predictedData,
+            data: filteredPredictedData,
             borderColor: '#6563ff',
             fill: false,
             tension: 0.4,
@@ -203,7 +222,7 @@ export class PredictiveDashboardComponent {
           x: {
             title: {
               display: true,
-              text: 'Tipos de incidentes'
+              text: selectedIssueType ? `Incidente: ${selectedIssueType}` : 'Tipos de incidentes' 
             }
           },
           y: {
@@ -219,21 +238,33 @@ export class PredictiveDashboardComponent {
   }
   
 
-  createProbabilityChart(labels: string[], data: number[]): void {
+  createProbabilityChart(labels: string[], data: number[],selectedIssueType?: string): void {
     const ctx = document.getElementById('probability') as HTMLCanvasElement;
     const existingChart = Chart.getChart(ctx);
   
     if (existingChart) {
       existingChart.destroy();
     }
+
+    let filteredLabels = this.issueTypes;
+    let filteredRealData = data;
+
+    if (selectedIssueType) {
+
+      const issueTypeIndex = this.issueTypes.indexOf(selectedIssueType);
+      if (issueTypeIndex !== -1) {
+        filteredLabels = [this.issueTypes[issueTypeIndex]];
+        filteredRealData = [data[issueTypeIndex]];
+      }
+    }
   
     new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: labels, 
+        labels: filteredLabels, 
         datasets: [{
           label: 'Cantidad de Incidentes',
-          data: data, 
+          data: filteredRealData, 
           backgroundColor: [
             '#090041',
             '#272860',
@@ -251,7 +282,7 @@ export class PredictiveDashboardComponent {
           x: {
             title: {
               display: true,
-              text: 'Tipos de Incidentes'
+              text: selectedIssueType ? `Incidente: ${selectedIssueType}` : 'Tipos de incidentes' 
             }
           },
           y: {

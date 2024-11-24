@@ -8,4 +8,5 @@ export const issuesUrls = {
     assignIssue: '/issues/assignIssue?issue_id=',
     openIssues: '/issues/getOpenIssues',
     topSevenIssues: '/issues/getTopSevenIssues',
+    predictedData: '/issues/getPredictedData',
 }
