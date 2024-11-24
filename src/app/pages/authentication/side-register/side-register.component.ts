@@ -22,11 +22,11 @@ export class AppSideRegisterComponent {
   form = new FormGroup({
     nombres: new FormControl('', [Validators.required, Validators.minLength(6)]),
     telefono: new FormControl('', [Validators.required, Validators.minLength(6)]),
-    canal: new FormControl('', [Validators.required, Validators.minLength(6)]),
     nit: new FormControl('', [Validators.required, Validators.minLength(6)]),
     confirmPassword: new FormControl('', [Validators.required, Validators.minLength(6)]),
     email: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required]),
+    lastName: new FormControl('', []),
   });
 
   get f() {
@@ -34,6 +34,6 @@ export class AppSideRegisterComponent {
   }
 
   submit() {
-    this.router.navigate(['/dashboards/dashboard1']);
+    this.router.navigate(['/side-login']);
   }
 }
