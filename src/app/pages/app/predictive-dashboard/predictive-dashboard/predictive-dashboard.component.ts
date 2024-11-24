@@ -39,19 +39,25 @@ export class PredictiveDashboardComponent {
   selectedIssueType: string | null = null;
   selectedWeekDay: string|null=null;
   topIssueList: Array<Issue> = [];
+  issueTypes: string[] = [];
 
 
-  constructor(private issuesServices: IssuesService) {}
+  constructor(private issuesServices: IssuesService) {
+    
+  }
   
 
   ngOnInit(): void {
-    this.renderCharts();
     this.getTopSevenIssues();
+    
+    
   }
 
   getTopSevenIssues(){
     this.issuesServices.getTopSevenIssues().subscribe((issues) =>{
       this.topIssueList=issues;
+      this.issueTypes = this.topIssueList.map(issue => issue.subject);
+      this.renderCharts();
     });
   }
 
@@ -64,10 +70,10 @@ export class PredictiveDashboardComponent {
     //issues by type
     const realDataIssuesType = [5, 8, 10, 6, 7, 4, 13]; 
     const predictedDataIssuesType = [4, 7, 9, 6, 50, 5, 14]; 
-    this.createChartWaitingTime(realDataIssuesType, predictedDataIssuesType);
+    this.createChartWaitingTime(this.issueTypes,realDataIssuesType, predictedDataIssuesType);
 
     //issues probability
-    const issueTypes = ['Falla Técnica', 'Error Humano', 'Interrupción', 'Incidente de Seguridad','Fallo en la red','Fallo sistema operativo', 'Otro'];
+    const issueTypes = this.issueTypes;
     const issueQuantity = [12, 8, 5, 15, 3,3,5]; 
     this.createProbabilityChart(issueTypes,issueQuantity);
 
@@ -119,22 +125,22 @@ export class PredictiveDashboardComponent {
     new Chart(ctx, {
       type: 'line',
       data: {
-        labels: filteredLabels, // Etiquetas filtradas
+        labels: filteredLabels, 
         datasets: [
           {
             label: 'Incidentes Reales',
-            data: filteredRealData, // Datos reales filtrados
+            data: filteredRealData,
             borderColor: '#090041',
             fill: false,
             tension: 0.4
           },
           {
             label: 'Incidentes Predichos',
-            data: filteredPredictedData, // Datos predichos filtrados
+            data: filteredPredictedData, 
             borderColor: '#6563ff',
             fill: false,
             tension: 0.4,
-            borderDash: [5, 5] // Línea punteada
+            borderDash: [5, 5] 
           }
         ]
       },
@@ -160,7 +166,7 @@ export class PredictiveDashboardComponent {
   }
 
 
-  createChartWaitingTime(realData: number[], predictedData: number[]): void {
+  createChartWaitingTime(issueTypes: string[],realData: number[], predictedData: number[]): void {
     const ctx = document.getElementById('waitingTime') as HTMLCanvasElement;
     const existingChart = Chart.getChart(ctx);
   
@@ -168,12 +174,11 @@ export class PredictiveDashboardComponent {
       existingChart.destroy();
     }
   
-    const daysOfWeek = ['Falla Técnica', 'Error Humano', 'Interrupción', 'Incidente de Seguridad','Fallo en la red','Fallo sistema operativo', 'Otro'];
-  
+    
     new Chart(ctx, {
       type: 'line',
       data: {
-        labels: daysOfWeek,
+        labels: issueTypes,
         datasets: [
           {
             label: 'Incidentes Reales',
