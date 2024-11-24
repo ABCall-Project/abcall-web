@@ -58,7 +58,8 @@ jobs:
           ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
           ACR_LOGIN_SERVER: ${{ secrets.ACR_LOGIN_SERVER }}
           AZURE_RESOURCE_GROUP: ${{ secrets.AZURE_RESOURCE_GROUP }}
-          
+          PHRASE_KEY: ${{ secrets.PHRASE_KEY }}
+
         run: |
           echo "Environment variables are set"
       - name: Log in to ACR
@@ -74,8 +75,12 @@ jobs:
           az aks get-credentials --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --name abcall-cluster-east-us
       - name: Deploy to AKS 🚀
         run: |
+          PHRASE_KEY="${{ secrets.PHRASE_KEY }}"
           sed "s/{{IMAGE_TAG}}/build-${GITHUB_RUN_NUMBER}/g" ./kubernetes/k8s-deployment.tmpl > kubernetes/new-k8s-deployment.yaml
+          sed -e "s|{{PHRASE_KEY}}|${PHRASE_KEY}|g" \
+          ./kubernetes/k8s-secrets.tmpl > kubernetes/k8s-secrets.yaml
           kubectl apply -f kubernetes/k8s-configMap.yaml
+          kubectl apply -f kubernetes/k8s-secrets.yaml
           kubectl apply -f kubernetes/new-k8s-deployment.yaml
           kubectl apply -f kubernetes/nginx-configuration.yaml
           kubectl apply -f kubernetes/k8s-ingress.yaml

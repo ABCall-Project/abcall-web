@@ -15,18 +15,7 @@ export class StarterComponent {
   loggedUser:any;
   
   constructor(){
-    const encryptionKey = environment.key;
-    this.loggedUser = {
-      userId: "e120f5a3-9444-48b6-88b0-26e2a21b1957", //agente
-      name: "miguel",
-      customerId: "845eb227-5356-4169-9799-95a97ec5ce33",
-      userName: "mtovar",
-      customerName: "Logan IT Solutions"
-    };
-
-    const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(this.loggedUser), encryptionKey).toString();
-    sessionStorage.setItem('ref', encryptedData);
-
+    
   }
 
   

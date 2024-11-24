@@ -1,0 +1,81 @@
+<div class="container-fluid">
+    <div class="center">
+        <h1>Incidentes Abiertos</h1>
+    </div>
+    <br />
+
+
+    <mat-card class="cardWithShadow">
+        <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center" style="height: 200px;">
+            <mat-spinner [diameter]="48"></mat-spinner>
+        </div>
+        <div *ngIf="!isLoading" class="table-responsive">
+            <table mat-table [dataSource]="dataSource" matSort class="no-wrap m-t-0 v-middle w-100">
+                <ng-container matColumnDef="chk">
+                    <th mat-header-cell *matHeaderCellDef>
+
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="f-s-14">
+                        <mat-checkbox [checked]="isRowSelected(element)" (change)="onCheckboxChange(element)"
+                            color="primary">
+                        </mat-checkbox>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="issueId">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="f-w-600 f-s-15">
+                        Radicado
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="f-s-14">
+                        {{ element.id }}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="subject">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="f-w-600 f-s-15">
+                        Asunto
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="f-s-14">
+                        {{ element.subject }}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="client">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="f-w-600 f-s-15">
+                        Cliente
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="f-s-14">
+                        {{ element.customer}}
+                    </td>
+                </ng-container>
+
+
+                <ng-container matColumnDef="created_at">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="f-w-600 f-s-15">
+                        fecha Creacion
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="f-s-14">
+                        {{ element.created_at | date: 'dd/MM/yyyy hh:mm a' }}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="f-w-600 f-s-15">
+                        Estado
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="f-s-14" style="color: #6563FF;">
+                        {{ element.status }}
+                    </td>
+                </ng-container>
+
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+            <mat-paginator [pageSizeOptions]="[5, 8, 10]" [length]="totalRows" [pageSize]="limit" [pageIndex]="page"
+                (page)="onPageChange($event)" showFirstLastButtons>
+            </mat-paginator>
+        </div>
+    </mat-card>
+
+</div>

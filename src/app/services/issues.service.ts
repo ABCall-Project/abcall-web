@@ -6,6 +6,7 @@ import { IIssuesDashboard } from '../models/issue/issues-dashboard';
 import { AnswerResponse } from '../models/issue/answerai-response';
 import { Issue } from '../models/issue/issue';
 import { IssueResponse } from '../models/issue/issue-response';
+import { IssueList } from '../models/issue/issue-list';
 
 @Injectable({
   providedIn: 'root'
@@ -48,4 +49,28 @@ export class IssuesService {
     return this.http.get<Issue>(`http://51.8.255.65:3007${environment.getIssueByid}${issueId}`);
   }
 
+  getAll(): Observable<Issue[]> {
+    return this.http.get<Issue[]>(`${environment.ApiBase}${environment.getAll}`);
+  }
+
+  assignIssue(issueId: string, body: {
+    auth_user_agent_id: string
+  }): Observable<IssueResponse> {
+    return this.http.post<IssueResponse>(`${environment.ApiBase}${environment.assignIssue}${issueId}`, body);
+  }
+
+  getOpenIssues(page: number = 1, limit: number = 5): Observable<IssueList> {
+    return this.http.get<IssueList>(`${environment.ApiBase}${environment.openIssues}?page=${page}&limit=${limit}`).pipe(
+      map(reponse => {
+        return reponse;
+      }));
+  }
+
+  getTopSevenIssues(): Observable<Issue[]>{
+    return this.http.get<Issue[]>(`${environment.ApiBase}${environment.topSevenIssues}`);
+  }
+
+  getPredictiveData(): Observable<{ realDatabyDay: number[], predictedDatabyDay: number[],realDataIssuesType: number[],predictedDataIssuesType: number[],issueQuantity: number[] }> {
+    return this.http.get<{ realDatabyDay: number[], predictedDatabyDay: number[], realDataIssuesType: number[],predictedDataIssuesType: number[],issueQuantity: number[]}>(`${environment.ApiBase}${environment.predictedData}`);
+  }
 }

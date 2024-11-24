@@ -8,6 +8,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AppsRoutes } from './apps.routing.module';
 import { MatIconModule } from '@angular/material/icon';
 import { KnowledgeBaseComponent } from './knowledge-base/knowledge-base.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { ClientListComponent } from './client/client-list/client-list.component';
 
 @NgModule({
   imports: [
@@ -16,7 +19,12 @@ import { KnowledgeBaseComponent } from './knowledge-base/knowledge-base.componen
     FormsModule,
     RouterModule.forChild(AppsRoutes),
     IssuesComponent,
-    DashboardComponent
+    DashboardComponent,
+    ClientListComponent,
+    CommonModule,
+    MaterialModule,
+    MatTableModule,
+    MatSortModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

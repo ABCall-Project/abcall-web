@@ -8,7 +8,7 @@
     "build": "npm run setenv && ng build --configuration production",
     "watch": "npm run setenv && ng build --watch --configuration development",
     "test": "cross-env NODE_ENV=test npm run setenv && ng test",
-    "test:coverage": "cross-env NODE_ENV=test npm run setenv && ng test --code-coverage --karma-config ./karma.conf.js",
+    "test:coverage": "NODE_ENV=test npm run setenv && ng test --code-coverage --karma-config ./karma.conf.js",
     "test:ci": "NODE_ENV=test npm run setenv && ng test --no-watch --no-progress --browsers=ChromeHeadless",
     "test:coverage:ci": "NODE_ENV=test npm run setenv && ng test --code-coverage --karma-config ./karma.conf.js --no-watch --no-progress --browsers=ChromeHeadless"
   },
@@ -43,7 +43,9 @@
     "@angular/compiler-cli": "^16.0.1",
     "@types/crypto-js": "^4.2.2",
     "@types/date-fns": "^2.6.0",
+    "@types/fernet": "^0.4.3",
     "@types/jasmine": "~4.3.0",
+    "buffer": "^6.0.3",
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
     "jasmine-core": "~4.5.0",
@@ -52,6 +54,8 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
-    "typescript": "~5.0.4"
+    "process": "^0.11.10",
+    "typescript": "~5.0.4",
+    "webpack": "^5.96.1"
   }
 }
