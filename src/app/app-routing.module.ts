@@ -6,7 +6,7 @@ import { AppSideLoginComponent } from './pages/authentication/side-login/side-lo
 import { GetIssueComponent } from './pages/authentication/get-issue/get-issue.component';
 import { AppSideRegisterComponent } from './pages/authentication/side-register/side-register.component';
 import { authGuard } from './guard/auth.guard';
-
+import { PlansComponent } from './pages/authentication/plans/plans.component';
 
 const routes: Routes = [
   {
@@ -15,15 +15,19 @@ const routes: Routes = [
     loadChildren: () =>
       import('./pages/authentication/authentication.module').then(
         (m) => m.AuthenticationModule
-      )
+      ),
   },
   {
     path: 'authentication/get-issue',
-    component: GetIssueComponent
+    component: GetIssueComponent,
   },
   {
     path: 'sign-up',
     component: AppSideRegisterComponent,
+  },
+  {
+    path: 'plans',
+    component: PlansComponent,
   },
   {
     path: 'starter',
@@ -35,17 +39,18 @@ const routes: Routes = [
   {
     path: 'app',
     component: FullComponent,
-    loadChildren: () => import('./pages/app/apps.module').then((m) => m.AppsModule),
+    loadChildren: () =>
+      import('./pages/app/apps.module').then((m) => m.AppsModule),
     canActivate: [authGuard],
   },
   {
     path: '**',
     redirectTo: 'authentication/error',
-  }
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

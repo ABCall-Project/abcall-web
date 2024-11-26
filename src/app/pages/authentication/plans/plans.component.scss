@@ -1,0 +1,144 @@
+.container {
+    height: calc(100vh - 80px);
+}
+
+.mat-form-field {
+    margin-bottom: 16px;
+}
+
+.text-center {
+    flex: 1;
+    text-align: center;
+    margin: 0;
+}
+
+
+.btn-primary-custom {
+    background-color: #090041;
+    width: 240px;
+    height: 40px;
+    color: white;
+    border-radius: 5px;
+    margin-left: 10px;
+    /* Separación entre los botones */
+}
+
+.btn-secondary-custom {
+    background-color: #FFFFFF;
+    width: 240px;
+    height: 40px;
+    color: black;
+    border-radius: 5px;
+}
+$shadow-color: rgba(0, 0, 0, 0.2); // Define shadow color
+$shadow-blur: 10px; // Define blur radius
+$shadow-offset: 0px 4px;
+
+.main-header
+{
+  background: white;
+  padding: 0 2em;
+  background-color: #fff; // Example background color
+  box-shadow: $shadow-offset $shadow-blur $shadow-color; // Apply shadow
+  padding: 20px; // Optional padding
+
+}
+
+header {
+  img {
+    width: 64px;
+  }
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #090041; /* Color de fondo */
+  color: white;
+  text-align: center;
+  padding: 80px 0;
+  height: 56px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  font-size: 14px;
+  div.social-links {
+    display: flex;
+    gap: 15px;
+    a {
+      color: white;
+      font-size: 24px;
+      text-decoration: none;
+    }
+  }
+
+}
+
+.formTitle {
+  margin-top: 5em;
+  margin-bottom: 0.5em;
+}
+
+h1.main-title {
+  font-size: xx-large;
+  color: #272860;
+}
+
+h2.secondary-title {
+  color: black;
+  margin-top: 0.8em;
+}
+
+.plansContainer
+{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 16px;
+  .box {
+    padding: 0;
+    min-width: 350px;
+    border: 1px solid #1AC3D2;
+    flex: 1 1 calc(33.33% - 16px); // 3 columns with spacing
+    max-width: calc(33.33% - 16px);
+    background-color: white;
+    text-align: center;
+    border-radius: 30px;
+
+    @media (max-width: 768px) {
+      flex: 1 1 calc(33.33% - 16px); // 2 columns
+      max-width: calc(33.33% - 16px);
+    }
+
+    @media (max-width: 480px) {
+      flex: 1 1 100%;
+      max-width: 100%;
+    }
+    header {
+      top:0;
+      padding: 1.5em 0;
+      margin: 0;
+      background-color: #1AC3D2;
+      border-radius: 30px 30px 0 0;
+
+      h3 {
+        font-weight: bold;
+        font-size: 1.5em;
+        top: 0;
+        margin: 0;
+        color: white;
+      }
+    }
+    section {
+      padding: 0 1em 1em 1em;
+      h2.price {
+        color: #090041;
+        font-size:x-large;
+        padding: 0.5em 0;
+      }
+    }
+  }
+}
