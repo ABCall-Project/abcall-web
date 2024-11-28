@@ -4,6 +4,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CustomersService } from 'src/app/services/customers/customers.service';
 import { MatDialog } from '@angular/material/dialog';
 import { of, throwError } from 'rxjs';
+import { By } from '@angular/platform-browser';
 
 describe('LoadCustomersComponent', () => {
   let component: LoadCustomersComponent;
@@ -68,6 +69,55 @@ describe('LoadCustomersComponent', () => {
 
     expect(component.fileError).toBe('La estructura del archivo es incorrecta. Cada línea debe contener dos valores separados por "|".');
   }));
+
+  it('should return true for valid file structure in isValidStructure', () => {
+    const validContent = 'row1|field2\nrow2|field2';
+    expect(component.isValidStructure(validContent)).toBeTrue();
+  });
+
+  it('should return false for invalid file structure in isValidStructure', () => {
+    const invalidContent = 'row1|field2\nrow2|field2|field3';
+    expect(component.isValidStructure(invalidContent)).toBeFalse();
+  });
+
+  it('should not proceed on submit if fileError is present', () => {
+    const file = new File(['row1|field2\nrow2'], 'test.txt', { type: 'text/plain' });
+    component.selectedFile = file;
+    component.fileError = 'La estructura del archivo es incorrecta.';
+
+    spyOn(console, 'log');
+    component.onSubmit();
+
+    expect(console.log).not.toHaveBeenCalled();
+  });
+
+  it('should reset all fields on cancel', () => {
+    component.selectedFile = new File(['dummy content'], 'dummy.txt');
+    component.fileContent = 'dummy content';
+    component.fileError = 'Error message';
+    component.confirmationMessage = 'Confirmation message';
+
+    component.onCancel();
+
+    expect(component.selectedFile).toBeNull();
+    expect(component.fileContent).toBeNull();
+    expect(component.fileError).toBeNull();
+    expect(component.confirmationMessage).toBeNull();
+  });
+
+  it('should disable the submit button if fileError is present', () => {
+    const button = fixture.debugElement.query(By.css('button[type="submit"]')).nativeElement;
+    component.fileError = 'File error present';
+    fixture.detectChanges();
+
+    expect(button.disabled).toBeTrue();
+
+    component.fileError = null;
+    component.selectedFile = new File(['valid content'], 'test.txt', { type: 'text/plain' });
+    fixture.detectChanges();
+
+    expect(button.disabled).toBeFalse();
+  });
 
   it('should open dialog with success message on successful submit', fakeAsync(() => {
     const fileContent = 'row1|field1\nrow2|field2';
