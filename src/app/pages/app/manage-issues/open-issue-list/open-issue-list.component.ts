@@ -83,7 +83,7 @@ export class OpenIssueListComponent implements OnInit {
       this.issues = resp.data.map((issue) => {
         const customerName: string = this.customers.find((ele) => ele.id === issue.authUserId)?.name ?? 'Usuario Chatbot';
         return {
-          id: issue.id,
+          id: issue.id.toUpperCase().split('-').pop() ?? '',
           auth_user_id: issue.authUserId,
           status: issue.status,
           subject: issue.subject,
