@@ -1,21 +1,34 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { LoadCustomersComponent } from './load-customers.component';
-import { By } from '@angular/platform-browser';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CustomersService } from 'src/app/services/customers/customers.service';
-import { of } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { of, throwError } from 'rxjs';
+import { By } from '@angular/platform-browser';
 
 describe('LoadCustomersComponent', () => {
   let component: LoadCustomersComponent;
   let fixture: ComponentFixture<LoadCustomersComponent>;
+  let dialogSpy: jasmine.SpyObj<MatDialog>;
+  let customersServiceSpy: jasmine.SpyObj<CustomersService>;
 
   beforeEach(() => {
+    const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+    const customersServiceMock = jasmine.createSpyObj('CustomersService', ['addCustomers']);
+
     TestBed.configureTestingModule({
       imports: [LoadCustomersComponent, HttpClientTestingModule],
-      providers: [CustomersService]
+      providers: [
+        { provide: MatDialog, useValue: matDialogSpy },
+        { provide: CustomersService, useValue: customersServiceMock }
+      ]
     });
+
     fixture = TestBed.createComponent(LoadCustomersComponent);
     component = fixture.componentInstance;
+    dialogSpy = TestBed.inject(MatDialog) as jasmine.SpyObj<MatDialog>;
+    customersServiceSpy = TestBed.inject(CustomersService) as jasmine.SpyObj<CustomersService>;
+
     fixture.detectChanges();
   });
 
@@ -34,7 +47,7 @@ describe('LoadCustomersComponent', () => {
     expect(component.validateFile).toHaveBeenCalled();
   });
 
-  it('should set fileError for a file with invalid structure', (done) => {
+  it('should set fileError for a file with invalid structure', fakeAsync(() => {
     const file = new File(['row1|field2\nrow2|field2|field3'], 'test.txt', { type: 'text/plain' });
     component.selectedFile = file;
 
@@ -52,12 +65,10 @@ describe('LoadCustomersComponent', () => {
     spyOn(window as any, 'FileReader').and.returnValue(mockFileReader);
 
     component.validateFile();
+    tick();
 
-    fixture.whenStable().then(() => {
-      expect(component.fileError).toBe('La estructura del archivo es incorrecta. Cada línea debe contener dos valores separados por "|".');
-      done();
-    });
-  });
+    expect(component.fileError).toBe('La estructura del archivo es incorrecta. Cada línea debe contener dos valores separados por "|".');
+  }));
 
   it('should return true for valid file structure in isValidStructure', () => {
     const validContent = 'row1|field2\nrow2|field2';
@@ -108,25 +119,51 @@ describe('LoadCustomersComponent', () => {
     expect(button.disabled).toBeFalse();
   });
 
-  it('should set confirmationMessage, clear it after 3 seconds, and reset form on successful submit', (done) => {
-    const file = new File(['doc1|name1\ndoc2|name2'], 'test.txt', { type: 'text/plain' });
-    component.selectedFile = file;
-    component.fileContent = 'doc1|name1\ndoc2|name2';
+  it('should open dialog with success message on successful submit', fakeAsync(() => {
+    const fileContent = 'row1|field1\nrow2|field2';
+    component.fileContent = fileContent;
+    component.selectedFile = new File([fileContent], 'test.txt', { type: 'text/plain' });
     component.fileError = null;
 
-    const serviceSpy = spyOn(component['customersService'], 'addCustomers').and.returnValue(of({}));
+    customersServiceSpy.addCustomers.and.returnValue(of({}));
 
     component.onSubmit();
-    fixture.detectChanges();
+    tick();
 
-    expect(component.confirmationMessage).toBe('Los clientes han sido cargados correctamente');
+    expect(customersServiceSpy.addCustomers).toHaveBeenCalled();
+    expect(dialogSpy.open).toHaveBeenCalledWith(jasmine.any(Function), {
+      data: {
+        title: 'Mensaje de Confirmación',
+        message: 'Los clientes han sido cargados correctamente',
+        buttonCloseTitle: 'Aceptar',
+      },
+    });
 
-    setTimeout(() => {
-      expect(component.confirmationMessage).toBeNull();
-      expect(component.selectedFile).toBeNull();
-      expect(component.fileContent).toBeNull();
-      expect(component.fileError).toBeNull();
-      done();
-    }, 3000);
-  });
+    tick(3000);
+
+    expect(component.selectedFile).toBeNull();
+    expect(component.fileContent).toBeNull();
+    expect(component.fileError).toBeNull();
+  }));
+
+  it('should open dialog with error message on failed submit', fakeAsync(() => {
+    const fileContent = 'row1|field1\nrow2|field2';
+    component.fileContent = fileContent;
+    component.selectedFile = new File([fileContent], 'test.txt', { type: 'text/plain' });
+    component.fileError = null;
+
+    customersServiceSpy.addCustomers.and.returnValue(throwError(() => new Error('Error')));
+
+    component.onSubmit();
+    tick();
+
+    expect(customersServiceSpy.addCustomers).toHaveBeenCalled();
+    expect(dialogSpy.open).toHaveBeenCalledWith(jasmine.any(Function), {
+      data: {
+        title: 'Ha ocurrido un error',
+        message: 'Error al cargar los clientes, por favor contacta al administrador',
+        buttonCloseTitle: 'Aceptar',
+      },
+    });
+  }));
 });
