@@ -1,26 +1,21 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { LoadCustomersComponent } from './load-customers.component';
+import { By } from '@angular/platform-browser';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CustomersService } from 'src/app/services/customers/customers.service';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
 
 describe('LoadCustomersComponent', () => {
   let component: LoadCustomersComponent;
   let fixture: ComponentFixture<LoadCustomersComponent>;
-  let customersService: jasmine.SpyObj<CustomersService>;
 
   beforeEach(() => {
-    const serviceSpy = jasmine.createSpyObj('CustomersService', ['addCustomers']);
-
     TestBed.configureTestingModule({
-      imports: [LoadCustomersComponent, HttpClientTestingModule], // Cambiado a imports
-      providers: [{ provide: CustomersService, useValue: serviceSpy }]
+      imports: [LoadCustomersComponent, HttpClientTestingModule],
+      providers: [CustomersService]
     });
-
     fixture = TestBed.createComponent(LoadCustomersComponent);
     component = fixture.componentInstance;
-    customersService = TestBed.inject(CustomersService) as jasmine.SpyObj<CustomersService>;
-
     fixture.detectChanges();
   });
 
@@ -39,7 +34,7 @@ describe('LoadCustomersComponent', () => {
     expect(component.validateFile).toHaveBeenCalled();
   });
 
-  it('should set fileError for a file with invalid structure', fakeAsync(() => {
+  it('should set fileError for a file with invalid structure', (done) => {
     const file = new File(['row1|field2\nrow2|field2|field3'], 'test.txt', { type: 'text/plain' });
     component.selectedFile = file;
 
@@ -57,8 +52,81 @@ describe('LoadCustomersComponent', () => {
     spyOn(window as any, 'FileReader').and.returnValue(mockFileReader);
 
     component.validateFile();
-    tick();
 
-    expect(component.fileError).toBe('La estructura del archivo es incorrecta. Cada línea debe contener dos valores separados por "|".');
-  }));  
+    fixture.whenStable().then(() => {
+      expect(component.fileError).toBe('La estructura del archivo es incorrecta. Cada línea debe contener dos valores separados por "|".');
+      done();
+    });
+  });
+
+  it('should return true for valid file structure in isValidStructure', () => {
+    const validContent = 'row1|field2\nrow2|field2';
+    expect(component.isValidStructure(validContent)).toBeTrue();
+  });
+
+  it('should return false for invalid file structure in isValidStructure', () => {
+    const invalidContent = 'row1|field2\nrow2|field2|field3';
+    expect(component.isValidStructure(invalidContent)).toBeFalse();
+  });
+
+  it('should not proceed on submit if fileError is present', () => {
+    const file = new File(['row1|field2\nrow2'], 'test.txt', { type: 'text/plain' });
+    component.selectedFile = file;
+    component.fileError = 'La estructura del archivo es incorrecta.';
+
+    spyOn(console, 'log');
+    component.onSubmit();
+
+    expect(console.log).not.toHaveBeenCalled();
+  });
+
+  it('should reset all fields on cancel', () => {
+    component.selectedFile = new File(['dummy content'], 'dummy.txt');
+    component.fileContent = 'dummy content';
+    component.fileError = 'Error message';
+    component.confirmationMessage = 'Confirmation message';
+
+    component.onCancel();
+
+    expect(component.selectedFile).toBeNull();
+    expect(component.fileContent).toBeNull();
+    expect(component.fileError).toBeNull();
+    expect(component.confirmationMessage).toBeNull();
+  });
+
+  it('should disable the submit button if fileError is present', () => {
+    const button = fixture.debugElement.query(By.css('button[type="submit"]')).nativeElement;
+    component.fileError = 'File error present';
+    fixture.detectChanges();
+
+    expect(button.disabled).toBeTrue();
+
+    component.fileError = null;
+    component.selectedFile = new File(['valid content'], 'test.txt', { type: 'text/plain' });
+    fixture.detectChanges();
+
+    expect(button.disabled).toBeFalse();
+  });
+
+  it('should set confirmationMessage, clear it after 3 seconds, and reset form on successful submit', (done) => {
+    const file = new File(['doc1|name1\ndoc2|name2'], 'test.txt', { type: 'text/plain' });
+    component.selectedFile = file;
+    component.fileContent = 'doc1|name1\ndoc2|name2';
+    component.fileError = null;
+
+    const serviceSpy = spyOn(component['customersService'], 'addCustomers').and.returnValue(of({}));
+
+    component.onSubmit();
+    fixture.detectChanges();
+
+    expect(component.confirmationMessage).toBe('Los clientes han sido cargados correctamente');
+
+    setTimeout(() => {
+      expect(component.confirmationMessage).toBeNull();
+      expect(component.selectedFile).toBeNull();
+      expect(component.fileContent).toBeNull();
+      expect(component.fileError).toBeNull();
+      done();
+    }, 3000);
+  });
 });
