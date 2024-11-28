@@ -249,7 +249,7 @@ export class CreateIssueComponent implements OnInit {
         this.dialog.open(ModalMessageComponent, {
           data: {
             title: 'Incidentes',
-            message: 'Incidente creado correctamente!',
+            message: response.message,
             buttonCloseTitle: 'Aceptar'
           },
         });
