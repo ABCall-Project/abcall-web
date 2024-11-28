@@ -10,6 +10,7 @@ import { ClientListComponent } from './client/client-list/client-list.component'
 import { OpenIssueListComponent } from './manage-issues/open-issue-list/open-issue-list.component';
 import { PredictiveDashboardComponent } from './predictive-dashboard/predictive-dashboard/predictive-dashboard.component';
 
+import { LoadCustomersComponent } from './load-customers/load-customers.component';
 
 export const AppsRoutes: Routes = [
   {
@@ -41,10 +42,6 @@ export const AppsRoutes: Routes = [
     component: StarterComponent,
   },
   {
-    path: 'clients',
-    component: ClientListComponent,
-  },
-  {
     path: 'open-issue',
     component: OpenIssueListComponent,
   },
@@ -52,4 +49,8 @@ export const AppsRoutes: Routes = [
     path: 'predictive-dashboard',
     component: PredictiveDashboardComponent,
   },
+  {
+    path: 'load-customers',
+    component: LoadCustomersComponent,
+  }
 ];
