@@ -49,4 +49,8 @@ export const AppsRoutes: Routes = [
     path: 'predictive-dashboard',
     component: PredictiveDashboardComponent,
   },
+  {
+    path: 'load-customers',
+    component: LoadCustomersComponent,
+  }
 ];
