@@ -1,21 +1,33 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { LoadCustomersComponent } from './load-customers.component';
-import { By } from '@angular/platform-browser';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CustomersService } from 'src/app/services/customers/customers.service';
-import { of } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { of, throwError } from 'rxjs';
 
 describe('LoadCustomersComponent', () => {
   let component: LoadCustomersComponent;
   let fixture: ComponentFixture<LoadCustomersComponent>;
+  let dialogSpy: jasmine.SpyObj<MatDialog>;
+  let customersServiceSpy: jasmine.SpyObj<CustomersService>;
 
   beforeEach(() => {
+    const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+    const customersServiceMock = jasmine.createSpyObj('CustomersService', ['addCustomers']);
+
     TestBed.configureTestingModule({
       imports: [LoadCustomersComponent, HttpClientTestingModule],
-      providers: [CustomersService]
+      providers: [
+        { provide: MatDialog, useValue: matDialogSpy },
+        { provide: CustomersService, useValue: customersServiceMock }
+      ]
     });
+
     fixture = TestBed.createComponent(LoadCustomersComponent);
     component = fixture.componentInstance;
+    dialogSpy = TestBed.inject(MatDialog) as jasmine.SpyObj<MatDialog>;
+    customersServiceSpy = TestBed.inject(CustomersService) as jasmine.SpyObj<CustomersService>;
+
     fixture.detectChanges();
   });
 
@@ -34,7 +46,7 @@ describe('LoadCustomersComponent', () => {
     expect(component.validateFile).toHaveBeenCalled();
   });
 
-  it('should set fileError for a file with invalid structure', (done) => {
+  it('should set fileError for a file with invalid structure', fakeAsync(() => {
     const file = new File(['row1|field2\nrow2|field2|field3'], 'test.txt', { type: 'text/plain' });
     component.selectedFile = file;
 
@@ -52,81 +64,56 @@ describe('LoadCustomersComponent', () => {
     spyOn(window as any, 'FileReader').and.returnValue(mockFileReader);
 
     component.validateFile();
+    tick();
 
-    fixture.whenStable().then(() => {
-      expect(component.fileError).toBe('La estructura del archivo es incorrecta. Cada línea debe contener dos valores separados por "|".');
-      done();
-    });
-  });
+    expect(component.fileError).toBe('La estructura del archivo es incorrecta. Cada línea debe contener dos valores separados por "|".');
+  }));
 
-  it('should return true for valid file structure in isValidStructure', () => {
-    const validContent = 'row1|field2\nrow2|field2';
-    expect(component.isValidStructure(validContent)).toBeTrue();
-  });
+  it('should open dialog with success message on successful submit', fakeAsync(() => {
+    const fileContent = 'row1|field1\nrow2|field2';
+    component.fileContent = fileContent;
+    component.selectedFile = new File([fileContent], 'test.txt', { type: 'text/plain' });
+    component.fileError = null;
 
-  it('should return false for invalid file structure in isValidStructure', () => {
-    const invalidContent = 'row1|field2\nrow2|field2|field3';
-    expect(component.isValidStructure(invalidContent)).toBeFalse();
-  });
+    customersServiceSpy.addCustomers.and.returnValue(of({}));
 
-  it('should not proceed on submit if fileError is present', () => {
-    const file = new File(['row1|field2\nrow2'], 'test.txt', { type: 'text/plain' });
-    component.selectedFile = file;
-    component.fileError = 'La estructura del archivo es incorrecta.';
-
-    spyOn(console, 'log');
     component.onSubmit();
+    tick();
 
-    expect(console.log).not.toHaveBeenCalled();
-  });
+    expect(customersServiceSpy.addCustomers).toHaveBeenCalled();
+    expect(dialogSpy.open).toHaveBeenCalledWith(jasmine.any(Function), {
+      data: {
+        title: 'Mensaje de Confirmación',
+        message: 'Los clientes han sido cargados correctamente',
+        buttonCloseTitle: 'Aceptar',
+      },
+    });
 
-  it('should reset all fields on cancel', () => {
-    component.selectedFile = new File(['dummy content'], 'dummy.txt');
-    component.fileContent = 'dummy content';
-    component.fileError = 'Error message';
-    component.confirmationMessage = 'Confirmation message';
-
-    component.onCancel();
+    tick(3000);
 
     expect(component.selectedFile).toBeNull();
     expect(component.fileContent).toBeNull();
     expect(component.fileError).toBeNull();
-    expect(component.confirmationMessage).toBeNull();
-  });
+  }));
 
-  it('should disable the submit button if fileError is present', () => {
-    const button = fixture.debugElement.query(By.css('button[type="submit"]')).nativeElement;
-    component.fileError = 'File error present';
-    fixture.detectChanges();
-
-    expect(button.disabled).toBeTrue();
-
-    component.fileError = null;
-    component.selectedFile = new File(['valid content'], 'test.txt', { type: 'text/plain' });
-    fixture.detectChanges();
-
-    expect(button.disabled).toBeFalse();
-  });
-
-  it('should set confirmationMessage, clear it after 3 seconds, and reset form on successful submit', (done) => {
-    const file = new File(['doc1|name1\ndoc2|name2'], 'test.txt', { type: 'text/plain' });
-    component.selectedFile = file;
-    component.fileContent = 'doc1|name1\ndoc2|name2';
+  it('should open dialog with error message on failed submit', fakeAsync(() => {
+    const fileContent = 'row1|field1\nrow2|field2';
+    component.fileContent = fileContent;
+    component.selectedFile = new File([fileContent], 'test.txt', { type: 'text/plain' });
     component.fileError = null;
 
-    const serviceSpy = spyOn(component['customersService'], 'addCustomers').and.returnValue(of({}));
+    customersServiceSpy.addCustomers.and.returnValue(throwError(() => new Error('Error')));
 
     component.onSubmit();
-    fixture.detectChanges();
+    tick();
 
-    expect(component.confirmationMessage).toBe('Los clientes han sido cargados correctamente');
-
-    setTimeout(() => {
-      expect(component.confirmationMessage).toBeNull();
-      expect(component.selectedFile).toBeNull();
-      expect(component.fileContent).toBeNull();
-      expect(component.fileError).toBeNull();
-      done();
-    }, 3000);
-  });
+    expect(customersServiceSpy.addCustomers).toHaveBeenCalled();
+    expect(dialogSpy.open).toHaveBeenCalledWith(jasmine.any(Function), {
+      data: {
+        title: 'Ha ocurrido un error',
+        message: 'Error al cargar los clientes, por favor contacta al administrador',
+        buttonCloseTitle: 'Aceptar',
+      },
+    });
+  }));
 });

@@ -1,0 +1,37 @@
+.file-input-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    border: 2px dashed #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+    background-color: #fff;
+  }
+
+  .file-input-label:hover {
+    border-color: #090041;
+    background-color: #edecf3;
+  }
+
+  .file-input {
+    display: none;
+  }
+
+  .file-input-icon {
+    font-size: 24px;
+    margin-right: 10px;
+    color: #666;
+  }
+
+  .file-input-placeholder {
+    font-size: 16px;
+    color: #666;
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
