@@ -15,6 +15,7 @@ import type { SignUpRequest } from 'src/app/models/auth/signUpRequest';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { ModalMessageComponent } from 'src/app/pages/app/modal-message/modal-message.component';
 import Plan from 'src/app/models/Plan';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-plans',
   standalone: true,
@@ -32,6 +33,7 @@ import Plan from 'src/app/models/Plan';
 })
 export class PlansComponent {
   private planId: string = Plan.ENTREPRENEUR;
+  version: string = environment.VERSION;
   constructor(private authService: AuthService, private router: Router) {}
 
   private navigate() {
