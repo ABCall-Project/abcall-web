@@ -4,12 +4,13 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { MaterialModule } from 'src/app/material.module';
 import { MatDialog } from '@angular/material/dialog';
 import type { SignUpRequest } from 'src/app/models/auth/signUpRequest';
 import { AuthService  } from 'src/app/services/auth/auth.service'
 import { ModalMessageComponent } from 'src/app/pages/app/modal-message/modal-message.component';
+import Plan from 'src/app/models/Plan';
 @Component({
   selector: 'app-side-register',
   standalone: true,
@@ -19,7 +20,7 @@ import { ModalMessageComponent } from 'src/app/pages/app/modal-message/modal-mes
 })
 export class AppSideRegisterComponent {
 
-  constructor(public dialog: MatDialog, private authService: AuthService, private router: Router) { }
+  constructor(public dialog: MatDialog, private authService: AuthService, private router: Router,private route: ActivatedRoute) { }
 
   form = new FormGroup({
     nombres: new FormControl('', [Validators.required, Validators.minLength(6)]),
@@ -46,6 +47,11 @@ export class AppSideRegisterComponent {
   }
 
   submit() {
+
+    let planId = this.route.snapshot.paramMap.get('planId');
+    if (!planId) {
+      planId = Plan.ENTREPRENEUR;
+    }
     const signUpRequest: SignUpRequest = {
       name: this.form.value.nombres ? this.form.value.nombres : '',
       phoneNumber: this.form.value.telefono ? this.form.value.telefono : '',
@@ -53,6 +59,7 @@ export class AppSideRegisterComponent {
       password: this.form.value.password ? this.form.value.password : '',
       document: this.form.value.nit,
       lastname: this.form.value.lastname,
+      planId,
     };
 
     this.authService.signUp(signUpRequest).subscribe((response) => {

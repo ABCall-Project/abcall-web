@@ -80,7 +80,7 @@ export class AuthService {
       birthdate: customerUser.birthdate,
       role_id: Role.COMPANY_ADMIN,
       document: customerUser.document,
-      plan_id: Plan.ENTREPRENEUR,
+      plan_id: customerUser.planId,
     };
     return this.http.post<SignUpResponse>(
       `${environment.ApiBase}/auth/signup`,

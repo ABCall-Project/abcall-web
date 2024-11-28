@@ -31,6 +31,7 @@ import { environment } from 'src/environments/environment';
 export class AppSideLoginComponent {
   loggedUser:any;
   hidePassword: boolean = true;
+  version: string = environment.VERSION;
   public selectedLanguage: any = {
     language: 'Español',
     code: 'es',
@@ -71,8 +72,8 @@ export class AppSideLoginComponent {
   submit() {
     if (this.form.valid) {
       const authRequest: AuthUserRequest = {
-        email: this.form.get('uname')?.value || '', 
-        password: this.form.get('password')?.value || '', 
+        email: this.form.get('uname')?.value || '',
+        password: this.form.get('password')?.value || '',
       };
       this.authService.signIn(authRequest).subscribe(response => {
         console.log('la respuesta');
@@ -80,7 +81,7 @@ export class AppSideLoginComponent {
 
         const encryptionKey = environment.key;
         this.loggedUser = {
-          userId: response.id, 
+          userId: response.id,
           name: response.name,
           customerId: response.customer_id,
           userName: authRequest.email,
@@ -113,8 +114,8 @@ export class AppSideLoginComponent {
       console.log('Formulario no válido');
     }
 
-    
-    
+
+
   }
 
   changeLanguage(lang: any): void {
