@@ -7,6 +7,8 @@ import { MatCardModule } from '@angular/material/card';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { CustomersService } from 'src/app/services/customers/customers.service';
+import { ModalMessageComponent } from '../modal-message/modal-message.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-knowledge-base',
@@ -31,7 +33,7 @@ export class KnowledgeBaseComponent {
   fileError: string | null = null;
   confirmationMessage: string | null = null;
 
-  constructor(private customersService: CustomersService) {}
+  constructor(public dialog: MatDialog, private customersService: CustomersService) {}
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -75,14 +77,26 @@ export class KnowledgeBaseComponent {
 
       this.customersService.loadCustomerDatabaseEntries(customerId, entries).subscribe({
         next: (response) => {
-          this.confirmationMessage = 'La base de conocimiento ha sido cargada correctamente';
+          this.dialog.open(ModalMessageComponent, {
+            data: {
+              title: 'Mensaje de Confirmación',
+              message: 'La base de conocimiento ha sido cargada correctamente',
+              buttonCloseTitle: 'Aceptar'
+            },
+          });
           setTimeout(() => {
             this.confirmationMessage = null;
             this.resetForm();
           }, 3000);
         },
         error: (err) => {
-          this.confirmationMessage = 'Error al cargar la base de conocimiento';
+          this.dialog.open(ModalMessageComponent, {
+            data: {
+              title: 'Ha ocurrido un error',
+              message: 'Error al cargar la base de conocimiento, por favor contacta al administrador',
+              buttonCloseTitle: 'Aceptar'
+            },
+          });          
         }
       });
     } else {
