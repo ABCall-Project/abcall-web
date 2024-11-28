@@ -53,6 +53,7 @@ header {
 footer {
   position: fixed;
   bottom: 0;
+  z-index: 100;
   left: 0;
   width: 100%;
   background-color: #090041; /* Color de fondo */
@@ -107,6 +108,8 @@ h2.secondary-title {
     background-color: white;
     text-align: center;
     border-radius: 30px;
+    height: fit-content;
+    min-height: 600px;
 
     @media (max-width: 768px) {
       flex: 1 1 calc(33.33% - 16px); // 2 columns
@@ -141,4 +144,47 @@ h2.secondary-title {
       }
     }
   }
+}
+
+.features {
+  margin-top:2em;
+}
+
+.features li {
+  text-align: left;
+  list-style: none;
+}
+
+.icon {
+  display:inline;
+  margin-right:2em;
+  color:#1AC3D2;
+  font-size:medium;
+}
+
+button {
+  font-weight: bold;
+  width: 180px;
+  background-color: #090041;
+  margin: 0 auto;
+  display: block;
+}
+
+.plan {
+  &-entrepreneur {
+    margin-top: 3em;
+  }
+  &-business {
+    margin-top: 4.5em;
+  }
+  &-business {
+    &-plus {
+      margin-top: 1.5em;
+    }
+  }
+}
+
+
+.mdc-button {
+  color: white !important;
 }

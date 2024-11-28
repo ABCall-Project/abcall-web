@@ -14,12 +14,48 @@
         <h3>Emprendedor</h3>
       </header>
       <section>
-        <h2 class="price">
-          COP $ 2.500.000
-        </h2>
-        <>
-          <summary>Ideal para aquellos que están comenzando su negocio y buscan una solución de atención al cliente eficiente y accesible.</summary>
-        </>
+        <h2 class="price">COP $ 2.500.000</h2>
+        <p>
+          Ideal para aquellos que están comenzando su negocio y buscan una
+          solución de atención al cliente eficiente y accesible.
+        </p>
+        <ul class="features">
+          <li>
+            <span>
+              <mat-icon class="icon" fontIcon="check_circle_outline"></mat-icon>
+            </span>
+            Atención personalizada a tus clientes durante horas específicas.
+          </li>
+          <li>
+            <span>
+              <mat-icon class="icon" fontIcon="check_circle_outline"></mat-icon>
+            </span>
+            Gestión básica de consultas y pedidos.
+          </li>
+          <li>
+            <span>
+              <mat-icon class="icon" fontIcon="check_circle_outline"></mat-icon>
+            </span>
+            Monitoreo de calidad de llamadas.
+          </li>
+          <li>
+            <span>
+              <mat-icon class="icon" fontIcon="check_circle_outline"></mat-icon>
+            </span>
+            Soporte inicial para resolver dudas comunes.
+          </li>
+          <li>
+            <span>
+              <mat-icon class="icon" fontIcon="check_circle_outline"></mat-icon>
+            </span>
+            Precios accesibles para pequeños emprendedores.
+          </li>
+        </ul>
+        <p>
+          ¡Perfecto para hacer crecer tu negocio sin preocuparte por la atención
+          al cliente!
+        </p>
+        <button mat-button class="button plan-entrepreneur" (click)="onEntrepreneurClick()">Elegir Plan</button>
       </section>
     </div>
     <div class="box">
@@ -27,9 +63,40 @@
         <h3>Empresario</h3>
       </header>
       <section>
-        <h2 class="price">
-          COP $ 7.500.000
-        </h2>
+        <h2 class="price">COP $ 7.500.000</h2>
+        <p>
+          Diseñado para empresas en crecimiento que necesitan una atención al cliente más robusta y constante.
+        </p>
+        <ul class="features">
+          <li>
+            <span>
+              <mat-icon class="icon" fontIcon="check_circle_outline"></mat-icon>
+            </span>
+            Atención 24/7 para que no pierdas ninguna oportunidad de negocio.
+          </li>
+          <li>
+            <span>
+              <mat-icon class="icon" fontIcon="check_circle_outline"></mat-icon>
+            </span>
+            Gestión avanzada de consultas y reclamaciones.
+          </li>
+          <li>
+            <span>
+              <mat-icon class="icon" fontIcon="check_circle_outline"></mat-icon>
+            </span>
+            Entrenamiento especializado para el equipo de atención.
+          </li>
+          <li>
+            <span>
+              <mat-icon class="icon" fontIcon="check_circle_outline"></mat-icon>
+            </span>
+            Integración multicanal (teléfono, email, redes sociales).
+          </li>
+        </ul>
+        <p>
+          ¡Aumenta la satisfacción de tus clientes y la eficiencia de tu equipo con este plan!
+        </p>
+        <button mat-button class="button plan-business"  (click)="onBusinessClick()">Elegir Plan</button>
       </section>
     </div>
     <div class="box">
@@ -37,9 +104,46 @@
         <h3>Empresario Plus</h3>
       </header>
       <section>
-        <h2 class="price">
-          COP $ 12.500.000
-        </h2>
+        <h2 class="price">COP $ 12.500.000</h2>
+        <p>
+          La solución definitiva para empresas consolidadas que buscan un servicio premium y personalizado.
+        </p>
+        <ul class="features">
+          <li>
+            <span>
+              <mat-icon class="icon" fontIcon="check_circle_outline"></mat-icon>
+            </span>
+            Atención al cliente 24/7 con agentes dedicados a tu marca.
+          </li>
+          <li>
+            <span>
+              <mat-icon class="icon" fontIcon="check_circle_outline"></mat-icon>
+            </span>
+            Gestión personalizada y seguimiento de casos complejos.
+          </li>
+          <li>
+            <span>
+              <mat-icon class="icon" fontIcon="check_circle_outline"></mat-icon>
+            </span>
+            Consultoría estratégica para optimizar la experiencia de cliente.
+          </li>
+          <li>
+            <span>
+              <mat-icon class="icon" fontIcon="check_circle_outline"></mat-icon>
+            </span>
+            Análisis en tiempo real de métricas clave para tu negocio.
+          </li>
+          <li>
+            <span>
+              <mat-icon class="icon" fontIcon="check_circle_outline"></mat-icon>
+            </span>
+            Soporte VIP con prioridad en todas tus solicitudes.
+          </li>
+        </ul>
+        <p>
+          ¡Maximiza la fidelización y asegura una experiencia de cliente excepcional!
+        </p>
+        <button mat-button class="button plan-business-plus" (click)="onBusinessPlusClick()">Elegir Plan</button>
       </section>
     </div>
   </section>

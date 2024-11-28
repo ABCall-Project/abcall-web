@@ -7,6 +7,6 @@ export type SignUpRequest = {
   birthdate?: Date;
   roleId?: string;
   document?: string | null;
-  planId?: string;
+  planId?: string | null;
   password: string;
 }

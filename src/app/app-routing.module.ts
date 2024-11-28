@@ -22,7 +22,7 @@ const routes: Routes = [
     component: GetIssueComponent,
   },
   {
-    path: 'sign-up',
+    path: 'sign-up/:planId',
     component: AppSideRegisterComponent,
   },
   {
