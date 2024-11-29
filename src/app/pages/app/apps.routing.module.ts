@@ -52,5 +52,11 @@ export const AppsRoutes: Routes = [
   {
     path: 'load-customers',
     component: LoadCustomersComponent,
+  },
+  {
+    path: 'clients',
+    component: ClientListComponent
+
   }
+
 ];
