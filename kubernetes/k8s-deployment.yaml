@@ -8,7 +8,7 @@ metadata:
   labels:
     app: abcall-web
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: abcall-web
