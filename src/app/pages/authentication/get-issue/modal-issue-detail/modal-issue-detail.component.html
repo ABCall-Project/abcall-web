@@ -17,7 +17,8 @@
                 <div class="col-4 d-flex align-items-start" style="color: #090041;display: table; height: 100%;">
                     <h3><b>Caso:</b></h3>
                 </div>
-                <div class="col-8 d-flex justify-content-start" style="color: #090041;"> {{ issue.id }}
+                <div class="col-8 d-flex justify-content-start" style="color: #090041;"> {{
+                    issue.id.toUpperCase().split('-').pop() ?? ''}}
                 </div>
             </div>
             <div class="row d-flex align-items-start" style=" margin-left: 1em;">
